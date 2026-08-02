@@ -10,8 +10,8 @@ dist/
 downloads/
 eggs/
 .eggs/
-lib/
-lib64/
+/lib/
+/lib64/
 parts/
 sdist/
 var/
@@ -38,57 +38,35 @@ ENV/
 .ipynb_checkpoints/
 *.ipynb_checkpoints
 
-# Data (too big for git, keep local only)
+# Raw Data (keep local only)
 data/raw/*
 !data/raw/.gitkeep
-data/processed/*.nc
-data/synthetic/*.nc
 
-# Model checkpoints (too big)
-checkpoints/*.pt
-checkpoints/*.pth
-checkpoints/*.h5
-
-# Outputs
-outputs/*.png
-outputs/*.pdf
-outputs/*.html
+# Intermediate training checkpoints (too many small epoch files)
+climate_twin/training/checkpoints/india_round_*
+climate_twin/training/runs/
 
 # OS
 .DS_Store
 Thumbs.db
 desktop.ini
 
-# Logs
+# Logs and DBs
 *.log
 logs/
+runs.db
+*.db
 
-# Frontend build outputs
+# Frontend build outputs and local environment
 web/node_modules/
 web/.next/
 web/out/
 web/*.tsbuildinfo
-
-# Streamlit Lab
-mausamsetu/lab/runs/
-mausamsetu/lab/exports/
-
-# climate_twin (cloned HF space) — rebuilt/generated artifacts
-data/processed/
-checkpoints/
-climate_twin/training/checkpoints/
-climate_twin/training/runs/
-climate_twin/exports/
-*.grd
-*.GRD
-*.h5
-*.nc
-*.npz
-runs.db
-*.db
 .env
 
-# Pretrained models and temp files
+# Streamlit Lab runs
+mausamsetu/lab/runs/
+
+# Temporary and uninitialized directories
 pretained/
-pretrained/
 *.tmp*
