@@ -1,0 +1,22 @@
+{
+  "status": 200,
+  "response": {
+    "presets": [
+      {
+        "label": "SSP1-2.6 (1.5°C)",
+        "delta_temp_c": 1.5,
+        "delta_rain_pct": 5.0
+      },
+      {
+        "label": "SSP2-4.5 (2.0°C)",
+        "delta_temp_c": 2.0,
+        "delta_rain_pct": 8.0
+      },
+      {
+        "label": "SSP5-8.5 (4.4°C)",
+        "delta_temp_c": 4.4,
+        "delta_rain_pct": 15.0
+      }
+    ]
+  }
+}

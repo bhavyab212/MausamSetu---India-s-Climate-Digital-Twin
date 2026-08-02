@@ -1,0 +1,14 @@
+[server]
+headless = true
+runOnSave = false
+fileWatcherType = "none"
+maxMessageSize = 1500
+enableCORS = false
+enableXsrfProtection = false
+enableWebsocketCompression = false
+
+[browser]
+gatherUsageStats = false
+
+[runner]
+fastReruns = true

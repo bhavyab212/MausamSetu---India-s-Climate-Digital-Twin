@@ -1,0 +1,34 @@
+# rounds.yaml — default walk-forward training schedule for the 🔥 Training tab.
+# These are UI defaults only; the sidebar controls in app_v2.py override them per run.
+# Region is chosen by the global 🌍 Region selector (india | cauvery).
+
+schedule:
+  start_year: 1975          # first year of available IMD cube (both regions: 1975)
+  end_year: 2025            # last year
+  initial_window_years: 10  # first training window length
+  step_unit: years          # years | months | days
+  step_size: 1
+  window_mode: expanding    # expanding | rolling
+  rolling_years: 10         # used only when window_mode == rolling
+  max_rounds: 500           # hard cap (training/schedule.py MAX_ROUNDS)
+
+hyperparameters:
+  optimizer: AdamW
+  scheduler: cosine         # cosine | plateau | step | none
+  precision: bf16           # bf16 | fp16 | fp32
+  learning_rate: 0.001
+  weight_decay: 0.0001
+  epochs_per_round: 30
+  patience: 8
+  min_delta: 0.0001
+  mc_samples: 20            # MC-dropout ensemble members
+  monitor: val_rmse         # val_rmse | val_loss | csi
+  seq_length: 10            # context length (years) fed to the ConvLSTM
+
+run:
+  mode: manual              # manual (one round at a time) | auto (run all)
+  train_mode: warm_start    # warm_start | fresh per round
+  device: cuda              # walk-forward training refuses CPU
+
+# Checkpoints are written region-prefixed under training/checkpoints/ as
+#   <region>_round_<NNN>_<val_period>.pt   e.g. cauvery_round_003_2019.pt

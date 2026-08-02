@@ -1,0 +1,128 @@
+{
+  "status": 200,
+  "response": {
+    "variables": [
+      {
+        "name": "rain",
+        "unit": "mm/day",
+        "description": "Daily gridded rainfall (IMD 0.25°)",
+        "dtype": "float32",
+        "dims": [
+          "time",
+          "lat",
+          "lon"
+        ]
+      },
+      {
+        "name": "tmax",
+        "unit": "degC",
+        "description": "Daily maximum air temperature (IMD 1.0°)",
+        "dtype": "float32",
+        "dims": [
+          "time",
+          "lat",
+          "lon"
+        ]
+      },
+      {
+        "name": "tmin",
+        "unit": "degC",
+        "description": "Daily minimum air temperature (IMD 1.0°)",
+        "dtype": "float32",
+        "dims": [
+          "time",
+          "lat",
+          "lon"
+        ]
+      },
+      {
+        "name": "insat_lst",
+        "unit": "degC",
+        "description": "Daily maximum air temperature (IMD 1.0°)",
+        "dtype": "float32",
+        "dims": [
+          "time",
+          "lat",
+          "lon"
+        ]
+      },
+      {
+        "name": "insat_rain",
+        "unit": "mm/day",
+        "description": "Daily gridded rainfall (IMD 0.25°)",
+        "dtype": "float32",
+        "dims": [
+          "time",
+          "lat",
+          "lon"
+        ]
+      },
+      {
+        "name": "rain_anom",
+        "unit": "mm/day",
+        "description": "Daily gridded rainfall (IMD 0.25°)",
+        "dtype": "float32",
+        "dims": [
+          "time",
+          "lat",
+          "lon"
+        ]
+      },
+      {
+        "name": "rain_clim",
+        "unit": "mm/day",
+        "description": "Daily gridded rainfall (IMD 0.25°)",
+        "dtype": "float32",
+        "dims": [
+          "dayofyear",
+          "lat",
+          "lon"
+        ]
+      },
+      {
+        "name": "tmax_anom",
+        "unit": "degC",
+        "description": "Daily maximum air temperature (IMD 1.0°)",
+        "dtype": "float32",
+        "dims": [
+          "time",
+          "lat",
+          "lon"
+        ]
+      },
+      {
+        "name": "tmax_clim",
+        "unit": "degC",
+        "description": "Daily maximum air temperature (IMD 1.0°)",
+        "dtype": "float32",
+        "dims": [
+          "dayofyear",
+          "lat",
+          "lon"
+        ]
+      },
+      {
+        "name": "tmin_anom",
+        "unit": "degC",
+        "description": "Daily minimum air temperature (IMD 1.0°)",
+        "dtype": "float32",
+        "dims": [
+          "time",
+          "lat",
+          "lon"
+        ]
+      },
+      {
+        "name": "tmin_clim",
+        "unit": "degC",
+        "description": "Daily minimum air temperature (IMD 1.0°)",
+        "dtype": "float32",
+        "dims": [
+          "dayofyear",
+          "lat",
+          "lon"
+        ]
+      }
+    ]
+  }
+}

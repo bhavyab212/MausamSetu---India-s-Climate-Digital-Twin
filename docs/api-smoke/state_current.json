@@ -1,0 +1,36 @@
+{
+  "status": 200,
+  "response": {
+    "date_ist": "2023-12-31T05:30:00+05:30",
+    "basin_rainfall_mm_per_day": 0.011257005579937309,
+    "basin_tmax_c": 29.256906858632263,
+    "basin_tmin_c": 19.09635134482048,
+    "completeness": {
+      "valid_cells": 311,
+      "basin_cells": 311,
+      "completeness_pct": 100.0
+    },
+    "kpis": [
+      {
+        "label": "Basin rainfall",
+        "value": 0.011257005579937309,
+        "unit": "mm/day"
+      },
+      {
+        "label": "Basin Tmax",
+        "value": 29.256906858632263,
+        "unit": "degC"
+      },
+      {
+        "label": "Basin Tmin",
+        "value": 19.09635134482048,
+        "unit": "degC"
+      },
+      {
+        "label": "Data completeness",
+        "value": 100.0,
+        "unit": "%"
+      }
+    ]
+  }
+}

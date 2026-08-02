@@ -1,0 +1,17 @@
+{
+  "status": 200,
+  "response": {
+    "thresholds": {
+      "rain_warning_mm_per_day": 13.704292047888615,
+      "rain_critical_mm_per_day": 21.177141573886253,
+      "heat_warning_c": 40.0,
+      "heat_critical_c": 45.0,
+      "sources": {
+        "rain_warning_mm_per_day": "train_p95_2020_2021",
+        "rain_critical_mm_per_day": "train_p99_2020_2021",
+        "heat_warning_c": "config.HEAT_STRESS_TEMP",
+        "heat_critical_c": "config.EXTREME_HEAT_TEMP"
+      }
+    }
+  }
+}

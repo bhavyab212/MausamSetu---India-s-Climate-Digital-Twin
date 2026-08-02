@@ -1,0 +1,94 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+
+# Virtual Environment
+venv/
+env/
+ENV/
+.venv/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Jupyter
+.ipynb_checkpoints/
+*.ipynb_checkpoints
+
+# Data (too big for git, keep local only)
+data/raw/*
+!data/raw/.gitkeep
+data/processed/*.nc
+data/synthetic/*.nc
+
+# Model checkpoints (too big)
+checkpoints/*.pt
+checkpoints/*.pth
+checkpoints/*.h5
+
+# Outputs
+outputs/*.png
+outputs/*.pdf
+outputs/*.html
+
+# OS
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Logs
+*.log
+logs/
+
+# Frontend build outputs
+web/node_modules/
+web/.next/
+web/out/
+web/*.tsbuildinfo
+
+# Streamlit Lab
+mausamsetu/lab/runs/
+mausamsetu/lab/exports/
+
+# climate_twin (cloned HF space) — rebuilt/generated artifacts
+data/processed/
+checkpoints/
+climate_twin/training/checkpoints/
+climate_twin/training/runs/
+climate_twin/exports/
+*.grd
+*.GRD
+*.h5
+*.nc
+*.npz
+runs.db
+*.db
+.env
+
+# Pretrained models and temp files
+pretained/
+pretrained/
+*.tmp*

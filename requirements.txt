@@ -1,0 +1,69 @@
+# MausamSetu — Python Dependencies
+# ============================================================================
+# Install with: pip install -r requirements.txt
+# Python 3.10 or 3.12 recommended (3.13 has some incompatibilities)
+# ============================================================================
+
+# --- Core scientific stack ---
+numpy>=1.26,<2.2          # numerical arrays (the grid is a numpy array)
+pandas>=2.0               # date handling, tabular data
+scipy>=1.11               # interpolation, statistics, spatial ops
+
+# --- Gridded data (THE key libraries) ---
+xarray>=2024.1            # opens & slices gridded climate data
+netCDF4>=1.6              # reads .nc files
+h5py>=3.10                # reads .h5 files (INSAT satellite)
+dask>=2024.1              # lazy loading for big arrays
+
+# --- Geospatial ---
+cartopy>=0.22             # map plotting with India borders
+pyproj>=3.6               # coordinate projections
+shapely>=2.0              # geometry
+
+# --- Plotting ---
+matplotlib>=3.8           # static plots
+plotly>=5.20              # interactive plots
+folium>=0.15              # web maps (Leaflet)
+seaborn>=0.13             # statistical viz
+
+# --- Deep learning ---
+torch>=2.2                # PyTorch (the AI engine)
+torchvision>=0.17         # image ops
+einops>=0.7               # tensor rearrangement (cleaner code)
+scikit-learn>=1.4         # simple ML + metrics
+tqdm>=4.66                # progress bars during training
+
+# --- Dashboard (FastAPI backend, Next.js frontend lives in web/) ---
+fastapi[all]>=0.115       # HTTP layer that wraps mausamsetu/ for the Next.js frontend
+pydantic>=2               # strict request/response contracts
+python-multipart>=0.0.9   # required by FastAPI form handling
+uvicorn[standard]>=0.30   # ASGI server for `scripts/run_api.py`
+
+# --- Legacy dashboard (deprecated, kept only for the archived Streamlit demo) ---
+streamlit>=1.32           # legacy Streamlit prototype in mausamsetu/dashboard/_legacy_streamlit/
+streamlit-folium>=0.19    # legacy folium maps
+altair>=5.2               # legacy declarative charts
+
+# --- Utilities ---
+requests>=2.31            # download files from URLs
+python-dotenv>=1.0        # environment variables
+pyyaml>=6.0               # config files
+click>=8.1                # command-line scripts
+
+# --- Testing ---
+pytest>=8.0               # unit tests
+pytest-cov>=4.1           # coverage
+
+# --- Hydrology / Impact models ---
+# pysheds>=0.3            # river basin flow (optional; install separately if needed)
+# rasterio>=1.3           # DEM/GeoTIFF (optional)
+
+# --- Notebook support ---
+jupyter>=1.0              # for local notebook exploration
+ipykernel>=6.29           # kernel for VS Code
+
+# --- Optional heavy packages (install only when needed) ---
+# earthkit-data>=0.5      # ECMWF's data toolkit
+# ai-models>=0.4          # ecmwf-lab pretrained model runner
+# transformers>=4.40      # Hugging Face (for foundation models)
+# xesmf>=0.8              # advanced regridding (needs conda usually)

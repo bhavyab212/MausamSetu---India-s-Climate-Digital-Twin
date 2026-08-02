@@ -1,0 +1,10 @@
+streamlit
+plotly
+matplotlib
+numpy==1.26.4
+pandas
+scipy==1.13.1
+tensorflow-cpu
+xarray
+netCDF4
+h5py

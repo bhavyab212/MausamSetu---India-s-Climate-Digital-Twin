@@ -1,0 +1,9 @@
+{
+  "status": 200,
+  "response": {
+    "status": "ok",
+    "model_loaded": true,
+    "datacube_days": 1461,
+    "ist_time": "2026-07-26T10:04:25.402043+05:30"
+  }
+}
