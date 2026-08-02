@@ -1,0 +1,18 @@
+Starting MausamSetu API
+  URL: http://127.0.0.1:8011
+  Live probe: http://127.0.0.1:8011/livez
+  Readiness: http://127.0.0.1:8011/api/v1/health
+  Reload: disabled
+✓ Loaded checkpoint from L:\MausamSetu\checkpoints\forecaster_best.pt (val_loss=3.175966885354784)
+INFO:     127.0.0.1:54427 - "GET /livez HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54428 - "GET /api/v1/health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54429 - "GET /api/v1/validation/metrics HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57622 - "GET /api/v1/data/grid/2023-07-15?var=rain HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57623 - "GET /api/v1/forecast/assimilation/2023-07-15?var=rain HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57624 - "GET /api/v1/data/timeseries?lat=12.3&lon=76.6&days=7&end_date=2023-07-15 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57625 - "GET /api/v1/validation/metrics/date/2023-07-15 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57627 - "GET /api/v1/impacts/hydrology?start_date=2023-07-15&days=7 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57628 - "GET /api/v1/impacts/heat?start_date=2023-07-15&days=7 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57629 - "GET /api/v1/impacts/rupee?start_date=2023-07-15&days=7&delta_temp_c=0&delta_rain_pct=0 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:64440 - "GET /api/v1 HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:57228 - "GET /favicon.ico HTTP/1.1" 404 Not Found

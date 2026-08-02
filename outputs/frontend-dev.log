@@ -1,0 +1,17 @@
+$ next dev "--port" "3000"
+  ▲ Next.js 14.2.35
+  - Local:        http://localhost:3000
+  - Environments: .env.local
+
+ ✓ Starting...
+ ✓ Ready in 2.9s
+ ○ Compiling /kitchen-sink ...
+ ✓ Compiled /kitchen-sink in 3.2s (871 modules)
+ GET /kitchen-sink 200 in 3544ms
+ ✓ Compiled in 324ms (434 modules)
+ ✓ Compiled in 312ms (434 modules)
+ ✓ Compiled in 190ms (434 modules)
+ ✓ Compiled in 106ms (420 modules)
+ ✓ Compiled in 180ms (434 modules)
+ ✓ Compiled in 612ms (449 modules)
+[?25h

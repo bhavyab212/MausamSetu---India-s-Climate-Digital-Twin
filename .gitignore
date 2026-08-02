@@ -1,72 +1,52 @@
-# Python
+# Python Runtime, Virtual Environment, & Cache
 __pycache__/
 *.py[cod]
 *$py.class
 *.so
 .Python
-build/
-develop-eggs/
-dist/
-downloads/
-eggs/
-.eggs/
+/build/
+/develop-eggs/
+/dist/
+/downloads/
+/eggs/
+/.eggs/
 /lib/
 /lib64/
-parts/
-sdist/
-var/
-wheels/
+/parts/
+/sdist/
+/var/
+/wheels/
 *.egg-info/
 .installed.cfg
 *.egg
 MANIFEST
 
-# Virtual Environment
 venv/
 env/
 ENV/
 .venv/
+*.pyd
 
-# IDE
+# Frontend Packages & Compiler Cache
+web/node_modules/
+node_modules/
+web/.next/
+web/out/
+*.tsbuildinfo
+/.pnp
+.pnp.js
+.yarn/install-state.gz
+
+# IDE & System Files
 .vscode/
 .idea/
 *.swp
 *.swo
 *~
-
-# Jupyter
-.ipynb_checkpoints/
-*.ipynb_checkpoints
-
-# Raw Data (keep local only)
-data/raw/*
-!data/raw/.gitkeep
-
-# Intermediate training checkpoints (too many small epoch files)
-climate_twin/training/checkpoints/india_round_*
-climate_twin/training/runs/
-
-# OS
 .DS_Store
 Thumbs.db
 desktop.ini
 
-# Logs and DBs
-*.log
-logs/
-runs.db
-*.db
-
-# Frontend build outputs and local environment
-web/node_modules/
-web/.next/
-web/out/
-web/*.tsbuildinfo
-.env
-
-# Streamlit Lab runs
-mausamsetu/lab/runs/
-
-# Temporary and uninitialized directories
+# Temporary editor files and uninitialized folders
 pretained/
 *.tmp*
