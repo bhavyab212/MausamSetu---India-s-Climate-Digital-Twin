@@ -1,0 +1,29 @@
+{
+  "name": "india_v112",
+  "region": "india",
+  "arch": {
+    "seq_length": 3,
+    "hidden": 32,
+    "channels": 2,
+    "residual_scale": 0.1,
+    "grid": [
+      129,
+      135
+    ]
+  },
+  "metrics": {
+    "rmse": 0.03564010374248028,
+    "mae": 0.02818881720304489,
+    "bias": 0.014210634864866734,
+    "pearson_r": 0.9476476870027234,
+    "pod": 0.9992811665639763,
+    "far": 0.009186351706036745,
+    "csi": 0.9901209677419355,
+    "ensemble_calibration": 0.6331587429492345
+  },
+  "epochs_trained": 3497,
+  "rounds_trained": 500,
+  "created_at": "2026-08-02T23:54:04.686550+05:30",
+  "updated_at": "2026-08-02T23:54:04.686550+05:30",
+  "notes": "new \u00b7 warm_start"
+}

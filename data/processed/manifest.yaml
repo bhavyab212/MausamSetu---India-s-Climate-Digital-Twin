@@ -1,0 +1,99 @@
+generator: climate_twin/data/build_cube.py
+generated_at_ist: '2026-08-06T11:36:01.726135+05:30'
+git_hash: 336284da20c618ec6063e1a18c4f50d00f50d805
+master_grid:
+  extent_lat:
+  - 6.5
+  - 38.5
+  extent_lon:
+  - 66.5
+  - 100.0
+  n_lat: 129
+  n_lon: 135
+  resolution_deg: 0.25
+regions_built:
+- india
+- cauvery
+years:
+- 2018
+- 2025
+train_years:
+- 2018
+- 2023
+variables:
+- rain
+- tmax
+- tmin
+- insat_lst
+readers:
+  rainfall:
+    module: data.readers.imd_rainfall_nc
+    format: NetCDF-4
+    dtype: float32
+    fill: NaN (built-in)
+  tmax:
+    module: data.readers.imd_temperature
+    format: IMD .GRD
+    dtype: float32
+    shape: days×31×31
+    sentinel: 99.9
+    unit: degC
+  tmin:
+    module: data.readers.imd_temperature
+    format: IMD .GRD
+    dtype: float32
+    shape: days×31×31
+    sentinel: 99.9
+    unit: degC
+  insat_lst:
+    module: data.readers.insat_lst
+    format: HDF5 curvilinear 974×1067
+    dtype: float32
+    sentinel: -999.0
+    unit_native: Kelvin
+    cadence_native: daily (already averaged per file description)
+regrid:
+  rain: native (0.25°, no regrid)
+  tmax: bilinear 1°→0.25°
+  tmin: bilinear 1°→0.25°
+  insat_lst: conservative area-average curvilinear→0.25°
+missing_policy:
+  interp_gap_days_max: 3
+  gap_gt_max: left NaN
+  cell_missing_gt_20pct_of_window: reported (not zero-filled)
+  recorded_as_sidecar:
+  - tmax_is_interpolated
+  - tmin_is_interpolated
+sources:
+  rainfall:
+    count: 75
+    first: RF25_ind1951_rfp25.nc
+    last: RF25_ind2025_rfp25.nc
+    md5_first: 2244cb3b61e178933f81f116cb951b80
+    md5_last: 66790bbe46f4557232e5a821f0637522
+  tmax:
+    count: 75
+    first: Maxtemp_MaxT_1951.GRD
+    last: Maxtemp_MaxT_2025.GRD
+    md5_first: 802ac7eecb49bd9937ffd0359545595a
+    md5_last: 8da60e3bae24b53acff43aa7e81e4690
+  tmin:
+    count: 75
+    first: Mintemp_MinT_1951.GRD
+    last: Mintemp_MinT_2025.GRD
+    md5_first: 628678400218a7f58e1a328263e0c854
+    md5_last: 63f4ec4d7abffbe10c18082c71283c7e
+  insat:
+    count: 362
+    first: INSAT_LST_IndiaMean_01APR2020.h5
+    last: INSAT_LST_IndiaMean_30SEP2021.h5
+    md5_first: 5de130eabb13fa7b806b190ad259cabe
+    md5_last: fd4d77a5fe78fe1d0d911e9f4f793826
+outputs:
+  cubes:
+  - L:/MausamSetu/data/processed/india.nc
+  - L:/MausamSetu/data/processed/cauvery.nc
+  norm_stats:
+  - L:/MausamSetu/data/processed/india_norm_stats.json
+  - L:/MausamSetu/data/processed/cauvery_norm_stats.json
+notes: ''

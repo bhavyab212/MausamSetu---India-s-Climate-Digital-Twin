@@ -1,0 +1,19 @@
+name: "Mettur / Stanley Reservoir (Cauvery Basin)"
+region: "cauvery"
+capacity_tcm: 93470.0   # Total capacity in Thousand Cubic Meters (93.47 TMC)
+dead_pool_tcm: 5000.0   # Dead pool capacity in TCM
+flood_threshold_tcm: 85000.0 # Flood warning storage level in TCM
+max_discharge_tcm_per_week: 15000.0 # Max discharge capacity per week
+
+# Downstream agricultural & drinking demand curve (52 weeks, TCM per week)
+demand_peak_week: 30    # Week 30 (Monsoon peak / Samba crop season start)
+base_demand_tcm_per_week: 1200.0
+peak_demand_tcm_per_week: 4500.0
+
+# Penalties & Weights
+reward_weights:
+  demand_met: 1.0
+  flood_penalty: 5.0
+  drought_penalty: 3.0
+  dead_pool_penalty: 10.0
+  spill_penalty: 10.0

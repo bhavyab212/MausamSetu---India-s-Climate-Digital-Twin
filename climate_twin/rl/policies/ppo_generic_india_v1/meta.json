@@ -1,0 +1,9 @@
+{
+  "agent_name": "ppo_generic_india_v1",
+  "env_name": "generic_india",
+  "parent_name": "",
+  "total_timesteps": 10000,
+  "total_reward": 31.28558545536765,
+  "demand_met_pct": 100.0,
+  "flood_events": 0
+}

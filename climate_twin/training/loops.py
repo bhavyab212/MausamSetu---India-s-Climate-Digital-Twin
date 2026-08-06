@@ -46,6 +46,7 @@ class RoundConfig:
     physics_water_balance: float = 0.10
     physics_spatial_smooth: float = 0.05
     physics_temporal_smooth: float = 0.05
+    physics_tmax_tmin: float = 0.02      # Phase 5e: soft hinge tmax ≥ tmin
     recency_weighting: bool = True
     recency_half_life_years: int = 20
     seed: int = 42
@@ -54,6 +55,7 @@ class RoundConfig:
     hidden: int = 32
     residual_scale: float = 0.1
     mc_samples: int = 20
+    freeze_recurrent: bool = False
 
     def to_dict(self) -> dict[str, Any]:
         return {k: v for k, v in self.__dict__.items()}
@@ -72,6 +74,7 @@ class TrainingProgress:
     baseline_metrics: dict[str, dict[str, float]] = field(default_factory=dict)
     train_losses: list[float] = field(default_factory=list)
     val_losses: list[float] = field(default_factory=list)
+    val_rmses: list[float] = field(default_factory=list)
     grad_norms: list[float] = field(default_factory=list)
     lrs: list[float] = field(default_factory=list)
     elapsed: float = 0.0
@@ -84,15 +87,16 @@ class TrainingProgress:
 
 
 def _build_optimizer(model: nn.Module, cfg: RoundConfig) -> torch.optim.Optimizer:
+    params = [p for p in model.parameters() if p.requires_grad]
     if cfg.optimizer_name == "SGD":
-        return torch.optim.SGD(model.parameters(), lr=cfg.lr, weight_decay=cfg.weight_decay, momentum=0.9)
+        return torch.optim.SGD(params, lr=cfg.lr, weight_decay=cfg.weight_decay, momentum=0.9)
     elif cfg.optimizer_name == "Lion":
         try:
             from lion_pytorch import Lion
-            return Lion(model.parameters(), lr=cfg.lr, weight_decay=cfg.weight_decay)
+            return Lion(params, lr=cfg.lr, weight_decay=cfg.weight_decay)
         except ImportError:
             pass
-    return torch.optim.AdamW(model.parameters(), lr=cfg.lr, weight_decay=cfg.weight_decay)
+    return torch.optim.AdamW(params, lr=cfg.lr, weight_decay=cfg.weight_decay)
 
 
 def _build_scheduler(optimizer, cfg: RoundConfig, steps_per_epoch: int):
@@ -112,27 +116,71 @@ def _build_scheduler(optimizer, cfg: RoundConfig, steps_per_epoch: int):
 
 
 def _masked_loss(pred: torch.Tensor, target: torch.Tensor, mask: torch.Tensor) -> torch.Tensor:
-    """Masked Huber loss matching the TF model's loss.
+    """NaN-safe masked Huber loss.
 
-    pred/target: (B, C, H, W). mask: (H, W) land mask — broadcast over B and C.
+    pred/target: (B, C, H, W). mask: (H, W) region land mask.
+
+    Post-Phase-4 the target may carry NaN where a variable was unavailable
+    (e.g. INSAT LST outside 2020-2021). We form a per-cell "valid" mask =
+    ``land_mask AND target_is_finite`` and average only over those cells.
+    Cells whose target is NaN contribute zero and don't count toward the
+    denominator — so missing data is masked, never zero-filled.
     """
-    diff = pred - target
+    m = mask.view(1, 1, *mask.shape[-2:])                # (1,1,H,W)
+    finite = torch.isfinite(target)                       # (B,C,H,W)
+    valid = finite & (m > 0)                              # bool
+
+    # Zero-out NaN targets so multiplication produces finite numbers.
+    tgt_safe = torch.where(finite, target, torch.zeros_like(target))
+    diff = pred - tgt_safe
     abs_diff = torch.abs(diff)
     delta = 0.08
     quadratic = torch.minimum(abs_diff, torch.tensor(delta, device=pred.device))
     linear = abs_diff - quadratic
     huber = 0.5 * quadratic ** 2 + delta * linear
-    m = mask.view(1, 1, *mask.shape[-2:])           # (1,1,H,W) → broadcasts to (B,C,H,W)
-    masked = huber * m
-    denom = mask.sum() * pred.shape[0] * pred.shape[1] + 1e-8
-    return masked.sum() / denom
+
+    huber = huber * valid.to(huber.dtype)
+    denom = valid.to(huber.dtype).sum() + 1e-8
+    return huber.sum() / denom
 
 
 def _spatial_smoothness(pred: torch.Tensor, mask: torch.Tensor) -> torch.Tensor:
-    """TV-L2 spatial smoothness penalty."""
+    """TV-L2 spatial smoothness penalty (land-mask weighted)."""
+    m = mask.view(1, 1, *mask.shape[-2:])
     dx = (pred[:, :, :, 1:] - pred[:, :, :, :-1]) ** 2
     dy = (pred[:, :, 1:, :] - pred[:, :, :-1, :]) ** 2
-    return (dx.mean() + dy.mean())
+    mx = m[:, :, :, 1:] * m[:, :, :, :-1]
+    my = m[:, :, 1:, :] * m[:, :, :-1, :]
+    num = (dx * mx).sum() + (dy * my).sum()
+    denom = mx.sum() + my.sum() + 1e-8
+    return num / denom
+
+
+def _tmax_ge_tmin_penalty(
+    pred: torch.Tensor,
+    mask: torch.Tensor,
+    variables: list[str] | None,
+) -> torch.Tensor:
+    """Hinge penalty enforcing tmax ≥ tmin on land cells.
+
+    Requires ``variables`` to expose both channel names. Returns 0 when the
+    round doesn't include both variables (e.g. rain-only mini-run).
+    """
+    if not variables:
+        return torch.tensor(0.0, device=pred.device, dtype=pred.dtype)
+    try:
+        i_max = variables.index("tmax")
+        i_min = variables.index("tmin")
+    except ValueError:
+        return torch.tensor(0.0, device=pred.device, dtype=pred.dtype)
+
+    tmax = pred[:, i_max]                                  # (B, H, W)
+    tmin = pred[:, i_min]
+    viol = torch.clamp(tmin - tmax, min=0.0)               # >0 when tmin>tmax
+    m = mask.view(1, *mask.shape[-2:])
+    viol = viol * m
+    denom = m.sum() * pred.shape[0] + 1e-8
+    return viol.sum() / denom
 
 
 def train_one_round(
@@ -149,6 +197,8 @@ def train_one_round(
     val_period: str = "",
     region: str = "india",
     on_epoch: Callable[[dict], None] | None = None,
+    variables: list[str] | None = None,
+    manifest_sig: str | None = None,
 ) -> tuple[ClimateTwinModel, dict[str, Any]]:
     """Train one walk-forward round.
 
@@ -164,6 +214,11 @@ def train_one_round(
         stop_check: callable that returns True when user wants to stop
         round_num: for checkpoint naming
         val_period: for checkpoint naming
+        variables: ordered list of channel names (Phase 5d contract). Recorded
+            in the checkpoint so ``load_checkpoint`` can refuse a mismatched
+            load. Length must equal the last dim of ``train_data``.
+        manifest_sig: signature of the cube these tensors came from — stored
+            alongside so a stale-cube-vs-code drift is auditable.
 
     Returns:
         (trained_model, final_metrics_dict)
@@ -181,6 +236,14 @@ def train_one_round(
     # Data shapes: input is (N, T, H, W, C) → need (N, T, C, H, W) for PyTorch
     H, W = mask.shape
     C = train_data.shape[-1]
+
+    # Variable-list ↔ channel-count consistency (Phase 5d contract).
+    if variables is not None and len(variables) != C:
+        progress.error = (
+            f"variables list length {len(variables)} != channel count {C} "
+            f"(train_data channels={C}, variables={variables})"
+        )
+        return model, {}
 
     X_train = torch.from_numpy(train_data.transpose(0, 1, 4, 2, 3)).float()
     Y_train = torch.from_numpy(train_targets.transpose(0, 3, 1, 2)).float()
@@ -208,6 +271,12 @@ def train_one_round(
             residual_scale=cfg.residual_scale,
         )
     model = model.to(device)
+
+    if cfg.freeze_recurrent:
+        for name, param in model.named_parameters():
+            if "cell" in name or "bn" in name:
+                param.requires_grad = False
+
     model.train()
 
     optimizer = _build_optimizer(model, cfg)
@@ -248,6 +317,12 @@ def train_one_round(
 
                 if cfg.physics_spatial_smooth > 0:
                     loss = loss + cfg.physics_spatial_smooth * _spatial_smoothness(pred, mask_t)
+
+                # tmax ≥ tmin physics penalty (only active when both variables present)
+                if cfg.physics_tmax_tmin > 0 and variables:
+                    loss = loss + cfg.physics_tmax_tmin * _tmax_ge_tmin_penalty(
+                        pred, mask_t, variables
+                    )
 
             scaler.scale(loss).backward()
 
@@ -310,6 +385,7 @@ def train_one_round(
         progress.val_metrics = avg_metrics
         progress.train_losses.append(avg_train)
         progress.val_losses.append(val_loss)
+        progress.val_rmses.append(float(avg_metrics.get("rmse", float("nan"))))
         progress.grad_norms.append(avg_grad)
         progress.lrs.append(optimizer.param_groups[0]["lr"])
         progress.elapsed = time.time() - t_start
@@ -350,10 +426,12 @@ def train_one_round(
             best_val = monitor_val
             patience_counter = 0
             progress.best_val = best_val
-            # Save best checkpoint
+            # Save best checkpoint (Phase 5d contract: variable list + sig + grid)
             ckpt_path = save_checkpoint(
                 model, optimizer, round_num, val_period,
                 cfg.to_dict(), avg_metrics, epoch + 1, region=region,
+                variables=variables, manifest_sig=manifest_sig,
+                grid_shape=(H, W),
             )
         else:
             patience_counter += 1

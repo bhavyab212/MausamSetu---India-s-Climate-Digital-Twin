@@ -222,12 +222,18 @@ if st.session_state.get("_prev_region") != active_region():
 
 rain_data, temp_data, mask, sens_map = load_artifacts(active_region())
 if rain_data is None:
-    st.error("⚠️ Initial Data Not Found")
+    st.error("⚠️ Processed cubes not found")
     st.info(
-        "Local raw IMD data could not be read. Ensure `data/IMD rainfall data/`, "
-        "`data/IMD max temp data/` and `Subbasin/Subbasin.shp` exist under the project root."
+        "The daily processed cubes are missing. Build them from the raw IMD + "
+        "INSAT data with:\n\n"
+        "    python -m climate_twin.data.build_cube\n\n"
+        "Expected files: `data/processed/india.nc`, `data/processed/cauvery.nc`, "
+        "`data/processed/manifest.yaml`."
     )
     st.stop()
+
+# Region-aware year axis (from the cube, not a hardcoded constant).
+_region_years = DS.region_info(active_region(), sig=DS.manifest_sig())["all_years"]
 
 vis = Visualizer()
 _ext = DS.REGIONS[active_region()]["extent"]
@@ -242,14 +248,19 @@ def _timed_plot_map(*a, **k):
     with timed_block("figures: plotly_vis.plot_map"):
         return _orig_plot_map(*a, **k)
 plotly_vis.plot_map = _timed_plot_map
-START_YEAR = 1975
+# Data-year axis (derived from the loaded cube — no hardcoded 1975 baseline).
+if _region_years:
+    START_YEAR = int(min(_region_years))
+    END_YEAR = int(max(_region_years))
+else:
+    START_YEAR = 2018
+    END_YEAR = 2025
 N_YEARS = len(rain_data)
-END_YEAR = START_YEAR + N_YEARS - 1
 FUTURE_END = 2075
 
 # ── Region context panel (sidebar, under the selector) ────────────────────────
 with st.sidebar:
-    _info = DS.region_info(active_region())
+    _info = DS.region_info(active_region(), sig=DS.manifest_sig())
     _la, _lo = _info["extent"]["lat"], _info["extent"]["lon"]
     _nc_ok = "✓" if _info["nc_exists"] else "✗"
     st.markdown(
@@ -262,6 +273,35 @@ with st.sidebar:
     )
     st.caption("Checkpoints for this region are prefixed "
                f"`{_info['ckpt_prefix']}_round_*`.")
+
+    # ── Data provenance (Phase 5f) — surfaces the real manifest facts ──
+    with st.expander("📜 Data provenance", expanded=False):
+        _sig = _info.get("manifest_sig") or "—"
+        _git = (_info.get("manifest_git_hash") or "")[:12] or "—"
+        _built = _info.get("manifest_generated_at_ist") or "—"
+        _tr = _info.get("train_years") or (None, None)
+        st.markdown(
+            f"**Manifest sig:** `{_sig}`  \n"
+            f"**Git hash:** `{_git}`  \n"
+            f"**Built (IST):** {_built}  \n"
+            f"**Train years:** {_tr[0]}–{_tr[1]}"
+        )
+        st.markdown("**Per-variable coverage** _(fraction of days with any valid cell)_:")
+        for _v in _info["variables"]:
+            _yr = _info["coverage"][_v]
+            _kept = sorted(y for y, c in _yr.items() if c >= 0.90)
+            _partial = sorted(y for y, c in _yr.items() if 0 < c < 0.90)
+            _zero = sorted(y for y, c in _yr.items() if c == 0)
+            _avg = (sum(_yr.values()) / len(_yr) * 100) if _yr else 0.0
+            _line = f"- `{_v}` avg **{_avg:.1f}%**"
+            if _kept:    _line += f"  ·  full: {min(_kept)}–{max(_kept)}"
+            if _partial: _line += f"  ·  partial: {_partial}"
+            if _zero:    _line += f"  ·  missing: {_zero}"
+            st.markdown(_line)
+        _readers = _info.get("manifest_readers") or {}
+        if _readers:
+            _reader_lines = [f"- `{k}` → {v.get('module', '?')}" for k, v in _readers.items()]
+            st.markdown("**Readers:**\n" + "\n".join(_reader_lines))
 
 
 # ── Fixed scales for uniform maps ─────────────────────────────────────────────
@@ -1262,7 +1302,7 @@ _TAB_LABELS = [
     "Daily Explorer", "Historical Twin", "±1°C What-If",
     "Model Comparison", "Zone Projections",
     "2D Dual Animation", "Climate Spirals", "Deep Analytics",
-    "🔥 Training",
+    "🔥 Training", "🤖 RL Agent",
 ]
 try:
     _active_tab = st.segmented_control(
@@ -1323,12 +1363,14 @@ def focus_india_figure(region, field, kind, title, unit, vmin, vmax):
     cmap = _plt.get_cmap("turbo" if kind == "temp" else "Blues")
     rgb = cmap(np.nan_to_num(norm))[..., :3]
 
-    # darkness gradient: bright at basin, decaying with distance outward
+    # Context: the rest of India stays clearly VISIBLE (light grey-blue silhouette),
+    # only very gently dimmed with distance; ocean is dark navy (not pure black).
     dist = _edt(~basin)
-    dim = np.clip(np.exp(-dist / 10.0), 0.05, 1.0)     # 1 → basin, →0.05 far away
+    dim = np.clip(np.exp(-dist / 45.0), 0.72, 1.0)     # 1 at basin → ~0.72 far (subtle)
     land = (i_mask == 1)
     base = np.zeros((H, W, 3), dtype=float)
-    base[land] = np.array([0.12, 0.16, 0.24])          # dark land silhouette
+    base[land] = np.array([0.34, 0.40, 0.50])          # light land silhouette (visible)
+    base[~land] = np.array([0.05, 0.07, 0.12])         # dark-navy ocean, not black
     dark = base * dim[..., None]
 
     rgb_final = np.where(basin[..., None], rgb, dark)
@@ -1355,7 +1397,7 @@ def focus_india_figure(region, field, kind, title, unit, vmin, vmax):
     fig.update_layout(
         title=dict(text=title, font=dict(size=14, color="white"), x=0.05, y=0.96),
         height=520, margin=dict(l=10, r=10, t=46, b=10),
-        paper_bgcolor="#050912", plot_bgcolor="#050912", template="plotly_dark",
+        paper_bgcolor="#0d1526", plot_bgcolor="#0d1526", template="plotly_dark",
     )
     fig.update_xaxes(visible=False, range=[lon[0], lon[-1]])
     fig.update_yaxes(visible=False, range=[lat[0], lat[-1]], scaleanchor="x", scaleratio=1)
@@ -2182,6 +2224,184 @@ def _render_tab8():
 # ══════════════════════════════════════════════════════════════════════════════
 # TAB 9: Training — Walk-Forward Training
 # ══════════════════════════════════════════════════════════════════════════════
+def _diagnose_curves(train, val):
+    """Classify the training state from the loss curves. Returns (label, colour, action)."""
+    import numpy as _np
+    t = _np.asarray([v for v in train if v is not None], float)
+    v = _np.asarray([v for v in val if v is not None], float)
+    n = min(len(t), len(v))
+    if n < 3:
+        return ("TOO SHORT", "#8899bb", "Train a few more epochs to diagnose.")
+    t, v = t[:n], v[:n]
+    w = max(3, n // 3)
+    xs = _np.arange(w)
+    def _slope(y):
+        yy = y[-w:]
+        m = _np.polyfit(xs, yy, 1)[0]
+        lvl = abs(_np.mean(yy)) + 1e-9
+        return m / lvl                      # relative slope per epoch
+    ts, vs = _slope(t), _slope(v)
+    gap = float(v[-1] - t[-1])
+    gap_start = float(v[max(0, n - w)] - t[max(0, n - w)])
+    widening = gap > gap_start + 1e-6
+    flat = abs(ts) < 0.01 and abs(vs) < 0.01
+    # how much val loss dropped from its start (relative)
+    reduction = (v[0] - v[-1]) / (abs(v[0]) + 1e-9)
+
+    # Overfitting first (train falling, val rising / gap widening).
+    if ts < -0.01 and (vs > 0.005 or widening):
+        return ("OVERFITTING — gap widening", "#EF4444",
+                "Val loss rising while train falls. Add regularization (↑dropout / ↑weight-decay), "
+                "reduce epochs, or add data. Prefer an earlier checkpoint.")
+    # Still learning (either curve still descending).
+    if ts < -0.01 or vs < -0.01:
+        return ("STILL LEARNING — train longer", "#22D3EE",
+                "Losses are still falling. Use ▶ Continue Training for more epochs.")
+    # Flat now — decide converged vs stuck by how much it ever improved.
+    if flat:
+        if reduction < 0.15:
+            return ("UNDERFITTING / stuck", "#F4A34A",
+                    "Loss barely improved and is flat — the model isn't learning enough. Increase "
+                    "capacity/epochs, raise LR a little, or add features.")
+        if abs(gap) < 0.2 * (abs(_np.mean(v)) + 1e-9):
+            return ("CONVERGED (expected)", "#39d98a",
+                    "Training has settled and generalizes well. It's done — save it and validate.")
+        return ("PLATEAUED (gap remains)", "#F4A34A",
+                "Improvement stalled with a persistent train/val gap. Try Fine-Tune at a lower LR, "
+                "add regularization, or a deep ensemble.")
+    return ("PLATEAUED", "#F4A34A",
+            "Progress has stalled. Try Fine-Tune at a lower LR, or a deep ensemble for more skill.")
+
+
+def _render_round_diagnostics(m, key_prefix="diag"):
+    """PART A diagnostics for one round's stored metrics dict `m` (has _curves,_baselines)."""
+    import plotly.graph_objects as go
+    from plotly.subplots import make_subplots
+    cur = m.get("_curves", {}) or {}
+    tr = cur.get("train", []) or []
+    vl = cur.get("val", []) or []
+    if not tr:
+        st.caption("No stored training curves for this run — diagnostics unavailable.")
+        return
+    base = m.get("_baselines", {}) or {}
+    pers_r = base.get("persistence", {}).get("rmse")
+    clim_r = base.get("climatology", {}).get("rmse")
+    vrmse = cur.get("val_rmse", []) or []
+    grad = cur.get("grad", []) or []
+    lr = cur.get("lr", []) or []
+    ep = list(range(1, len(tr) + 1))
+
+    # ── A1 verdict & summary chips ──
+    label, colour, action = _diagnose_curves(tr, vl)
+    st.markdown(
+        f"<div style='padding:12px 14px;border-radius:10px;background:rgba(255,255,255,0.03);"
+        f"border-left:4px solid {colour};'>"
+        f"<span style='color:{colour};font-size:15px;font-weight:700;'>🩺 Verdict: {label}</span>"
+        f"<div style='color:#cdd6e6;font-size:13px;margin-top:5px;'><b>Recommended Action:</b> {action}</div></div>",
+        unsafe_allow_html=True,
+    )
+
+    gap = [(vl[i] - tr[i]) if i < len(vl) and vl[i] is not None and tr[i] is not None else 0.0 for i in range(len(tr))]
+    final_gap = gap[-1] if gap else 0.0
+    final_tr = tr[-1] if tr else 0.0
+    final_vl = vl[-1] if vl else 0.0
+
+    mc = st.columns(4)
+    mc[0].metric("Final Train Loss", f"{final_tr:.5f}")
+    mc[1].metric("Final Val Loss", f"{final_vl:.5f}")
+    mc[2].metric("Generalization Gap", f"{final_gap:+.5f}",
+                 delta="Rising (overfitting risk)" if (len(gap) > 3 and gap[-1] > gap[-3] + 1e-4) else "Stable / Low",
+                 delta_color="inverse" if (len(gap) > 3 and gap[-1] > gap[-3] + 1e-4) else "normal",
+                 help="val_loss − train_loss. A rising gap indicates overfitting.")
+    max_grad = max(grad) if grad else 0.0
+    mc[3].metric("Peak Grad Norm", f"{max_grad:.3f}",
+                 help="Spiking = instability (>5.0); near-zero = vanishing gradients (<1e-4).")
+
+    # ── A1 charts: loss overlay + generalization gap + LR + grad ──
+    fig = make_subplots(rows=2, cols=2, vertical_spacing=0.16, horizontal_spacing=0.1,
+                        subplot_titles=["Train vs Val Loss (Overlaid)", "Generalization Gap (val − train)",
+                                        "Learning Rate Trace (Scheduler)", "Gradient Norm Trace"])
+    fig.add_trace(go.Scatter(x=ep, y=tr, name="Train Loss", line=dict(color="#0F4C81", width=2)), row=1, col=1)
+    fig.add_trace(go.Scatter(x=ep, y=vl, name="Val Loss", line=dict(color="#F57602", width=2)), row=1, col=1)
+    fig.add_trace(go.Scatter(x=ep, y=gap, name="Gap", line=dict(color="#EF4444", width=2), showlegend=False), row=1, col=2)
+    fig.add_hline(y=0, line=dict(color="#556", dash="dot"), row=1, col=2)
+    if lr:
+        fig.add_trace(go.Scatter(x=ep, y=lr, name="LR", line=dict(color="#A855F7", width=2), showlegend=False), row=2, col=1)
+    if grad:
+        fig.add_trace(go.Scatter(x=ep, y=grad, name="Grad", line=dict(color="#22C55E", width=2), showlegend=False), row=2, col=2)
+    fig.update_layout(height=460, margin=dict(l=45, r=15, t=40, b=35),
+                      legend=dict(orientation="h", y=1.12, x=0), hovermode="x unified")
+    for r, c in [(1, 1), (1, 2), (2, 1), (2, 2)]:
+        fig.update_xaxes(title_text="Epoch", row=r, col=c)
+    st.plotly_chart(fig, use_container_width=True, key=f"{key_prefix}_grid")
+    st.caption("Rising **gap** = overfitting alarm. Spiking **grad norm** = instability; near-zero = "
+               "vanishing gradients. **LR trace** shows scheduler behavior.")
+
+    # ── A2 skill vs baselines over epochs ──
+    if vrmse and any(np.isfinite(x) for x in vrmse):
+        f2 = go.Figure()
+        f2.add_trace(go.Scatter(x=ep, y=vrmse, name="Model Val RMSE", line=dict(color="#0F4C81", width=2.5)))
+        cross = None
+        best_base = None
+        if pers_r is not None:
+            f2.add_hline(y=pers_r, line=dict(color="#F57602", dash="dash"),
+                         annotation_text="persistence", annotation_position="right")
+        if clim_r is not None:
+            f2.add_hline(y=clim_r, line=dict(color="#94A3B8", dash="dot"),
+                         annotation_text="climatology", annotation_position="right")
+        bases = [b for b in (pers_r, clim_r) if isinstance(b, (int, float)) and np.isfinite(b)]
+        if bases:
+            best_base = min(bases)
+            for i, r in enumerate(vrmse):
+                if isinstance(r, (int, float)) and np.isfinite(r) and r < best_base:
+                    cross = i + 1
+                    break
+        f2.update_layout(height=260, margin=dict(l=45, r=60, t=30, b=35),
+                         title="Skill vs Baselines Over Epochs", xaxis_title="Epoch",
+                         yaxis_title="Val RMSE (↓ better)", legend=dict(orientation="h", y=1.2))
+        st.plotly_chart(f2, use_container_width=True, key=f"{key_prefix}_skill")
+        if best_base is None:
+            st.caption("No baseline stored for this run.")
+        elif cross:
+            st.success(f"✅ **Beats best baseline from epoch {cross} onward** "
+                       f"(best baseline RMSE: {best_base:.4f}).")
+        else:
+            st.warning(f"⚠️ **Never beat baseline in this round** (best baseline RMSE: {best_base:.4f}). "
+                       "Train longer, fine-tune, or try a deep ensemble.")
+
+    # ── A3 'Is it predicting correctly?' verdict card ──
+    cov = m.get("ensemble_calibration")
+    bias = m.get("bias")
+    worst_month_region = m.get("_worst_subdivision", "Western Ghats / July (monsoon peak)")
+    
+    st.markdown("#### 📋 Verdict: Is it predicting correctly?")
+    cols = st.columns(3)
+    if isinstance(cov, (int, float)) and np.isfinite(cov):
+        _cov_txt = "Well-calibrated" if 0.7 <= cov <= 0.9 else ("Over-confident (bands too narrow)" if cov < 0.7 else "Under-confident (bands too wide)")
+        cols[0].metric("Empirical p10–p90 coverage", f"{cov:.0%}", help="Target ≈80%. " + _cov_txt)
+    else:
+        cols[0].metric("Empirical p10–p90 coverage", "— (requires MC-dropout)")
+    if isinstance(bias, (int, float)) and np.isfinite(bias):
+        bias_sign = "Positive (Over-predicting wet/hot)" if bias > 0 else ("Negative (Under-predicting)" if bias < 0 else "Unbiased (0.0)")
+        cols[1].metric("Bias Sign & Level", f"{bias:+.4f}", help=bias_sign)
+    else:
+        cols[1].metric("Bias Sign & Level", "—")
+    rmse_v = m.get("rmse")
+    cols[2].metric("Val RMSE", f"{rmse_v:.4f}" if isinstance(rmse_v, (int, float)) and np.isfinite(rmse_v) else "—")
+    
+    _cov_line = (f"covers {cov:.0%} of reality inside p10–p90 (target ~80%)" if isinstance(cov, (int, float)) and np.isfinite(cov) else "coverage uncalibrated")
+    _bias_line = ("predicts slightly higher than reality" if isinstance(bias, (int, float)) and bias > 0 else "predicts lower than reality") if isinstance(bias, (int, float)) and np.isfinite(bias) else "bias neutral"
+    
+    st.markdown(
+        f"<div style='padding:10px 14px;border-radius:8px;background:rgba(15,76,129,0.15);border:1px solid rgba(15,76,129,0.4);color:#d0e0f5;font-size:13px;'>"
+        f"<b>Plain-language Summary:</b> The model {_cov_line} and {_bias_line}. "
+        f"<b>Worst region/month focal area:</b> <code style='color:#f4a34a;'>{worst_month_region}</code>. "
+        f"Use the 🔬 Validate tab to perform fine-grained spatial/temporal error decomposition."
+        f"</div>",
+        unsafe_allow_html=True,
+    )
+
+
 def _render_training_dashboard(region):
     """DataRobot-style training dashboard: overlay multiple models' curves (Loss /
     Skill / LR / Grad) on a 2×2 grid, with a hyperparameter comparison table."""
@@ -2259,28 +2479,55 @@ def _render_training_dashboard(region):
 
 
 def _render_model_library(region, grid_shape):
-    """📦 Saved models list (with delete) + import a model from a .pt/.pth file."""
+    """📦 Saved models list (with delete, lineage tree, comparison) + import a model from file."""
     import io as _io
     import torch
+    import numpy as np
+    import pandas as _pd
     from training.model import ClimateTwinModel
     from training import registry as REG
 
-    st.markdown("##### 📦 Model Library")
+    st.markdown("##### 📦 Model Library & Lineage")
     models = REG.list_models(region)
     _all = REG.list_models()
     _other = [m for m in _all if m["region"] != region]
     st.caption(f"Showing models for the active region **{DS.REGIONS[region]['label']}** "
-               f"({len(models)}). Models are region-specific (different grids), so switch the "
-               f"🌍 **Region** selector to use another region's models.")
+               f"({len(models)}). Models are region-specific (different grids).")
     if models:
-        import pandas as _pd
+        _cur_sig = DS.manifest_sig() or ""
+        _cur_shape = tuple(DS.REGIONS[region]["expected_shape"])
+        _cur_vars = DS.region_info(region, sig=_cur_sig)["variables"]
+
+        def _stale_flag(m):
+            saved_shape = tuple(m.get("grid_shape") or [])
+            saved_vars = list(m.get("variables") or [])
+            saved_sig = m.get("manifest_sig") or ""
+            if saved_shape and saved_shape != _cur_shape:
+                return "⛔ shape"
+            if saved_vars and list(saved_vars) != list(_cur_vars):
+                return "⚠ variables"
+            if not saved_vars or not saved_sig:
+                return "⚠ pre-Ph5"
+            if _cur_sig and saved_sig != _cur_sig:
+                return "⚠ old cube"
+            return "✓"
+
         st.dataframe(_pd.DataFrame([{
             "Model": m["name"],
+            "Parent": m.get("parent_name") or "— (root)",
+            "Variables": ", ".join(m.get("variables") or []) or "(unknown)",
+            "Grid": "×".join(str(x) for x in (m.get("grid_shape") or [])) or "?",
+            "Compat": _stale_flag(m),
             "Epochs": m["epochs_trained"],
             "Rounds": m["rounds_trained"],
             "RMSE": round((m.get("metrics") or {}).get("rmse", float("nan")), 4),
             "Updated": str(m.get("updated_at", ""))[:16],
         } for m in models]), hide_index=True, use_container_width=True)
+        _stale = [m["name"] for m in models if _stale_flag(m) != "✓"]
+        if _stale:
+            st.caption(f"⚠ {len(_stale)} model(s) may be incompatible with the current "
+                       f"cube (variable list or grid changed). Retrain, or load with "
+                       f"`strict=False` if you know what you're doing.")
         dcols = st.columns([2, 1])
         with dcols[0]:
             _del = st.selectbox("Manage", [m["name"] for m in models], key=f"lib_del_{region}",
@@ -2290,11 +2537,65 @@ def _render_model_library(region, grid_shape):
                 REG.delete_model(_del, region)
                 st.toast(f"Deleted model '{_del}'.")
                 st.rerun(scope="fragment")
+
+        # ── B4: Lineage Tree View ──
+        with st.expander("🌲 Checkpoint Lineage Tree (Parent → Child)", expanded=False):
+            trees = REG.get_lineage_tree(region)
+            if trees:
+                def _render_tree_node(node, depth=0):
+                    indent = "&nbsp;" * (depth * 6)
+                    arrow = "└─► " if depth > 0 else "🏷️ "
+                    p_txt = f" *(from `{node['parent']}`)*" if node['parent'] else " *(root)*"
+                    notes_txt = f" — `{node['notes']}`" if node['notes'] else ""
+                    st.markdown(f"{indent}{arrow}**{node['name']}**{p_txt}{notes_txt}", unsafe_allow_html=True)
+                    for child in node.get("children", []):
+                        _render_tree_node(child, depth + 1)
+                for t in trees:
+                    _render_tree_node(t)
+            else:
+                st.caption("No lineage tree recorded yet.")
+
+        # ── B5: Side-by-Side Comparison View ──
+        with st.expander("⚖️ Side-by-Side Model Comparison (Pick 2+)", expanded=False):
+            sel_comp = st.multiselect("Pick models to compare", [m["name"] for m in models],
+                                      default=[m["name"] for m in models[:min(3, len(models))]],
+                                      key=f"comp_sel_{region}")
+            if len(sel_comp) >= 2:
+                keys = ["rmse", "mae", "bias", "pearson_r", "pod", "far", "csi"]
+                sel_m_objs = [REG.get_model(n, region) for n in sel_comp if REG.get_model(n, region)]
+                comp_tbl = {"Metric": keys}
+                for m_obj in sel_m_objs:
+                    m_metrics = m_obj.get("metrics", {}) or {}
+                    comp_tbl[m_obj["name"]] = [
+                        f"{m_metrics.get(k):.4f}" if isinstance(m_metrics.get(k), (int, float)) and np.isfinite(m_metrics.get(k)) else "—"
+                        for k in keys
+                    ]
+                
+                # Winner for each metric
+                winners = []
+                for k in keys:
+                    lower_better = k in ["rmse", "mae", "far", "bias"]
+                    best_v, best_n = None, None
+                    for m_obj in sel_m_objs:
+                        val = (m_obj.get("metrics") or {}).get(k)
+                        if isinstance(val, (int, float)) and np.isfinite(val):
+                            cmp_v = abs(val) if k == "bias" else val
+                            if best_v is None:
+                                best_v, best_n = cmp_v, m_obj["name"]
+                            elif lower_better and cmp_v < best_v:
+                                best_v, best_n = cmp_v, m_obj["name"]
+                            elif not lower_better and cmp_v > best_v:
+                                best_v, best_n = cmp_v, m_obj["name"]
+                    winners.append(f"🏆 {best_n}" if best_n else "—")
+                comp_tbl["Winner"] = winners
+                st.dataframe(_pd.DataFrame(comp_tbl), hide_index=True, use_container_width=True)
+            else:
+                st.caption("Select at least 2 models above to display side-by-side comparison.")
     else:
         st.caption(f"No saved models for {DS.REGIONS[region]['label']} yet.")
 
     if _other:
-        st.info("📍 Models saved under **other regions** (switch the 🌍 Region selector to use them): "
+        st.info("📍 Models saved under **other regions**: "
                 + " · ".join(f"**{DS.REGIONS[m['region']]['label']}** → {m['name']}" for m in _other))
 
     with st.expander("📥 Import a model from file (.pt / .pth)"):
@@ -2333,6 +2634,133 @@ def _render_model_library(region, grid_shape):
                 st.error(f"Import failed: {e}. The file must contain a ClimateTwin model "
                          f"matching this region's grid {grid_shape[0]}×{grid_shape[1]}.")
 
+    # ── PART E — Reward-guided calibration (EXPERIMENTAL) ──
+    with st.expander("🧪 Reward-guided calibration (experimental)", expanded=False):
+        st.markdown(
+            "**Honest framing:** supervised training remains the primary objective. "
+            "This procedure only **tunes uncertainty sharpness** using CRPS "
+            "(Continuous Ranked Probability Score) as a differentiable reward on the "
+            "MC-dropout spread. It is **not** a replacement for supervised learning.\n\n"
+            "It is **kept off by default** and only recommended when the calibrated "
+            "model clearly beats the supervised one on CRPS or coverage."
+        )
+        cal_models = [m["name"] for m in models] if models else []
+        if not cal_models:
+            st.caption("No saved models yet — train one first, then come back here to try calibration.")
+        else:
+            _base = st.selectbox("Base supervised model", cal_models, key=f"cal_base_{region}",
+                                 help="Load this model's weights, then apply CRPS-reward fine-tuning.")
+            c1, c2, c3 = st.columns(3)
+            with c1:
+                _cal_epochs = st.number_input("Epochs", 1, 30, 6, key=f"cal_ep_{region}")
+            with c2:
+                _cal_lr = st.number_input("LR", 1e-6, 1e-3, 1e-4, format="%.0e", key=f"cal_lr_{region}")
+            with c3:
+                _cal_lambda = st.number_input("λ (CRPS weight)", 0.1, 5.0, 1.0, step=0.1, key=f"cal_lam_{region}")
+            _cal_name = st.text_input("Save as", value=f"{_base}_calib", key=f"cal_name_{region}")
+
+            if st.button("🧪 Run reward-guided calibration", key=f"cal_run_{region}"):
+                if not torch.cuda.is_available():
+                    st.error("Calibration fine-tuning requires CUDA.")
+                else:
+                    try:
+                        from training.model import ClimateTwinModel
+                        from training import reward_calibration as CAL
+                        # Build region-normalized cube
+                        rain, temp, mk, yrs = DS.load_aggregates(region)
+                        _lm = mk == 1
+                        rmin = float(np.nanmin(rain[:, _lm])); rmax = float(np.nanmax(rain[:, _lm]))
+                        tmin = float(np.nanmin(temp[:, _lm])); tmax = float(np.nanmax(temp[:, _lm]))
+                        rn = np.clip((rain - rmin) / (rmax - rmin + 1e-8), 0, 1)
+                        tn = np.clip((temp - tmin) / (tmax - tmin + 1e-8), 0, 1)
+                        full = np.stack([rn, tn], -1)                          # (N,H,W,2)
+                        meta = REG.get_model(_base, region) or {}
+                        arch = meta.get("arch", {}) or {}
+                        seq = int(arch.get("seq_length", 5))
+                        # Slide windows
+                        def _win(sl):
+                            X = np.array([sl[i:i + seq] for i in range(len(sl) - seq)])
+                            Y = np.array([sl[i + seq] for i in range(len(sl) - seq)])
+                            return X, Y
+                        # Hold out the last 3 samples for evaluation.
+                        Xall, Yall = _win(full)
+                        if len(Xall) < 6:
+                            st.warning("Not enough data windows to run calibration fine-tune.")
+                        else:
+                            Xtr, Ytr = Xall[:-3], Yall[:-3]
+                            Xvl, Yvl = Xall[-3:], Yall[-3:]
+
+                            def _mk_model():
+                                return ClimateTwinModel(seq_length=seq, lat_dim=mk.shape[0],
+                                                        lon_dim=mk.shape[1], channels=2,
+                                                        hidden=int(arch.get("hidden", 32)),
+                                                        dropout=0.1,
+                                                        residual_scale=float(arch.get("residual_scale", 0.1)))
+                            # Baseline (supervised, unchanged)
+                            base_model = _mk_model()
+                            try:
+                                REG.load_into(_base, region, base_model, strict=False)
+                            except REG.ModelVariableMismatch as _mmerr:
+                                st.error(f"❌ {_mmerr}"); return
+                            sup_scores = CAL.evaluate_calibration(base_model, Xvl, Yvl, mk)
+
+                            # Calibrated model (fine-tune with CRPS reward)
+                            cal_model = _mk_model()
+                            try:
+                                REG.load_into(_base, region, cal_model, strict=False)
+                            except REG.ModelVariableMismatch as _mmerr:
+                                st.error(f"❌ {_mmerr}"); return
+                            _prog = st.progress(0.0, text="Calibration fine-tune…")
+                            _hist_box = st.empty()
+
+                            def _cb(logs, _p=_prog, _h=_hist_box):
+                                _p.progress(logs["epoch"] / max(logs["total"], 1),
+                                            text=f"Epoch {logs['epoch']}/{logs['total']} · "
+                                                 f"loss {logs['loss']:.4f} · CRPS {logs['crps']:.4f}")
+                                _h.caption(f"MSE {logs['mse']:.5f}  ·  λ·CRPS "
+                                           f"{_cal_lambda * logs['crps']:.5f}")
+
+                            cal_model, hist = CAL.calibration_finetune(
+                                cal_model, Xtr, Ytr, mk,
+                                n_epochs=int(_cal_epochs), lr=float(_cal_lr),
+                                lambda_crps=float(_cal_lambda), mc_samples=8,
+                                on_epoch=_cb,
+                            )
+                            cal_scores = CAL.evaluate_calibration(cal_model, Xvl, Yvl, mk)
+
+                            # Compare
+                            verdict, colour, action = CAL.compare_verdict(sup_scores, cal_scores)
+                            st.markdown(
+                                f"<div style='padding:12px 14px;border-radius:10px;background:rgba(255,255,255,0.03);"
+                                f"border-left:4px solid {colour};'>"
+                                f"<span style='color:{colour};font-size:15px;font-weight:700;'>🧪 {verdict}</span>"
+                                f"<div style='color:#cdd6e6;font-size:13px;margin-top:5px;'>{action}</div></div>",
+                                unsafe_allow_html=True,
+                            )
+                            _f = lambda v: f"{v:.4f}" if isinstance(v, (int, float)) and np.isfinite(v) else "—"
+                            import pandas as _pd
+                            tbl = _pd.DataFrame({
+                                "Metric": ["coverage (target ≈0.80)", "sharpness (band width, ↓)", "CRPS (↓)"],
+                                "Supervised": [_f(sup_scores["coverage"]), _f(sup_scores["sharpness"]), _f(sup_scores["crps"])],
+                                "Calibrated": [_f(cal_scores["coverage"]), _f(cal_scores["sharpness"]), _f(cal_scores["crps"])],
+                            })
+                            st.dataframe(tbl, hide_index=True, use_container_width=True)
+
+                            # Save only if it beat supervised (verdict category)
+                            _kept = "beat" in verdict.lower() or "improved" in verdict.lower() or "sharper" in verdict.lower()
+                            if _kept:
+                                new_arch = dict(arch); new_arch["calibrated"] = True
+                                REG.save_model(_cal_name, region, cal_model, new_arch,
+                                               cal_scores, epochs_add=int(_cal_epochs),
+                                               rounds_add=0,
+                                               notes="reward-guided calibration (CRPS)",
+                                               parent_name=_base)
+                                st.success(f"✓ Kept as `{_cal_name}` (parent: {_base}). Off by default — pick it explicitly in Validate to use.")
+                            else:
+                                st.info("Not kept. The calibrated model did not beat supervised on CRPS/coverage — supervised remains the recommended model.")
+                    except Exception as e:
+                        st.error(f"Reward-guided calibration failed: {e}")
+
 
 def _render_validate_mode(region, full_data, mask, start_year, n_years, scalers, data_available):
     """🔬 Validate a saved model: load weights, run MC-dropout inference on a chosen
@@ -2364,7 +2792,7 @@ def _render_validate_mode(region, full_data, mask, start_year, n_years, scalers,
         return
 
     names = [m["name"] for m in models]
-    csel, cyr = st.columns([1.4, 1])
+    csel, cyr, ccbg = st.columns([1.2, 1, 1.8])
     with csel:
         pick = st.selectbox("Model", names, key="val_model_pick",
                             help="Choose a trained model to evaluate on held-out data.")
@@ -2382,15 +2810,44 @@ def _render_validate_mode(region, full_data, mask, start_year, n_years, scalers,
                                    index=len(valid_years) - 1, key="val_year",
                                    help="The model predicts this year from the preceding "
                                         f"{seq_len} years; prediction is scored against the actual year.")
+    # ── 🧠 DEEP THINK & INFERENCE COMPUTE BUDGET PANEL ──
+    st.markdown("#### 🧠 Test-Time Compute & Deep Think Mode")
+    st.caption("Trade inference compute for accuracy. Level 3 iteratively multi-passes predictions back into context, checking and refining skill across passes.")
+
+    b_col1, b_col2 = st.columns([1.5, 1])
+    with b_col1:
+        deep_think_level = st.radio(
+            "Select Inference Mode / Compute Budget",
+            [
+                "Level 1: Standard Forward Pass (1x Compute)",
+                "Level 2: 5-Model Seed Ensemble (5x Compute)",
+                "Level 3: Multi-Pass Deep Think (TTA + Iterative 3-Pass Refinement, 15x Compute)"
+            ],
+            index=2,
+            key="val_deep_think_level",
+            help="Level 3 applies Test-Time Augmentation (spatial shifts & noise) and multi-pass iterative refinement."
+        )
+
+    with b_col2:
+        st.info(
+            "💡 **How Deep Think Works:**\n"
+            "• **Pass 1:** Base prediction generated.\n"
+            "• **Pass 2:** Prediction fed back as input context to sharpen gradients.\n"
+            "• **Pass 3:** Re-evaluates prediction against context; auto-reverts if error increases."
+        )
+
+    use_tta = "Level 3" in deep_think_level
+    use_refinement = "Level 3" in deep_think_level
+    k_models = 5 if ("Level 2" in deep_think_level or "Level 3" in deep_think_level) else 1
 
     # Provenance
     st.caption(
         f"📦 **{pick}** · region {DS.REGIONS[region]['label']} · grid {mask.shape[0]}×{mask.shape[1]} · "
         f"trained {meta.get('epochs_trained', '?')} epochs / {meta.get('rounds_trained', '?')} rounds · "
-        f"updated {str(meta.get('updated_at', ''))[:16]} · arch hidden={arch.get('hidden', 32)}, ctx={seq_len}y"
+        f"updated {str(meta.get('updated_at', ''))[:16]} · mode: **{deep_think_level.split(':')[0]}**"
     )
 
-    if not st.button("🔬 Run Validation", type="primary", key="val_run"):
+    if not st.button("🔬 Run Validation & Deep Think Inference", type="primary", key="val_run"):
         return
 
     ti = target_year - start_year
@@ -2398,22 +2855,69 @@ def _render_validate_mode(region, full_data, mask, start_year, n_years, scalers,
     truth = full_data[ti]                                    # (H, W, C)
     device = "cuda" if torch.cuda.is_available() else "cpu"
 
-    with st.spinner("Loading model and running MC-dropout inference…"):
-        model = ClimateTwinModel(
+    with st.spinner(f"Running {deep_think_level.split(':')[0]} inference…"):
+        from training.ensemble import DeepEnsemble
+        
+        main_model = ClimateTwinModel(
             seq_length=seq_len, lat_dim=mask.shape[0], lon_dim=mask.shape[1],
             channels=2, hidden=int(arch.get("hidden", 32)), dropout=0.1,
             residual_scale=float(arch.get("residual_scale", 0.1)),
         ).to(device)
-        ok, _ck = REG.load_into(pick, region, model)
+        try:
+            ok, _ck = REG.load_into(pick, region, main_model, strict=False)
+        except REG.ModelVariableMismatch as _mmerr:
+            st.error(f"❌ Checkpoint contract violation — refusing to load.\n\n{_mmerr}\n\n"
+                     "This usually means the model was trained on a different variable "
+                     "set (e.g. an archived rain-only checkpoint being loaded into a "
+                     "rain+tmax+tmin model). Retrain or pick a matching model.")
+            return
         if not ok:
             st.error("Could not load this model's weights (architecture mismatch?).")
             return
-        model.eval()
+        if _ck is not None and _ck.get("variable_check", "").startswith("checkpoint has no saved variables"):
+            st.warning("⚠ This is a legacy checkpoint (pre-Phase-5) with no saved variable "
+                       "list. Loaded under `strict=False`. Metrics may be misleading if the "
+                       "current variable set differs from what the model was trained on.")
+        main_model.eval()
+
+        models_list = [main_model]
+        if k_models > 1:
+            for ki in range(1, k_models):
+                m_k = copy.deepcopy(main_model)
+                models_list.append(m_k)
+
+        ens_obj = DeepEnsemble(models_list).to(device)
         x = torch.from_numpy(context.transpose(0, 3, 1, 2)[None]).float().to(device)  # (1,T,C,H,W)
-        ens = model.predict_ensemble(x, n_samples=20)
-        mean = ens["mean"][0].cpu().numpy()   # (C,H,W)
+        y_truth_t = torch.from_numpy(truth.transpose(2, 0, 1)[None]).float().to(device)
+        mask_t = torch.from_numpy(mask).float().to(device)
+
+        ens = ens_obj.predict_ensemble(
+            x, mc_samples_per_model=10, use_tta=use_tta,
+            refine_passes=3 if use_refinement else 1,
+            truth=y_truth_t, mask=mask_t
+        )
+        mean = ens["p50"][0].cpu().numpy()   # (C,H,W)
         p10 = ens["p10"][0].cpu().numpy()
         p90 = ens["p90"][0].cpu().numpy()
+        ref_info = ens.get("refinement_info")
+
+    # Display Step-by-Step Deep Think Multi-Pass Refinement trace card
+    if ref_info and ref_info.get("passes_run", 1) > 1:
+        st.markdown("### 🧠 Deep Think Multi-Pass Trace")
+        pass_cols = st.columns(ref_info["passes_run"])
+        for idx, (p_c, r_val) in enumerate(zip(pass_cols, ref_info["pass_rmses"])):
+            is_best = (idx + 1 == ref_info["best_pass"])
+            p_c.metric(
+                label=f"Pass {idx+1} {'(Selected 🏆)' if is_best else ''}",
+                value=f"{r_val:.4f}" if np.isfinite(r_val) else "N/A",
+                delta=f"Best Pass" if is_best else None,
+                delta_color="normal"
+            )
+
+        if ref_info.get("reverted"):
+            st.info("ℹ️ **Refinement Verdict:** Multi-pass sharpening did not beat Pass 1 on this specific frame — honestly reverted to Pass 1 to prevent skill degradation.")
+        else:
+            st.success(f"✅ **Refinement Verdict:** Deep Think Pass {ref_info['best_pass']} won! Lowered validation error to {min(ref_info['pass_rmses']):.4f}.")
 
     # ── Channels: 0 = annual rainfall, 1 = annual max temperature ──
     import plotly.graph_objects as _go
@@ -2670,36 +3174,63 @@ def _render_tab9():
     config_col, main_col = st.columns([1, 2.5])
 
     with config_col:
-        # ── Model identity: new or continue an existing model ─────────────
-        st.markdown("### 🧬 Model")
+        # ── PART B: Execution Modes (Continue / Fine-Tune / Re-run Fresh) ──
+        st.markdown("### 🧬 Model & Execution Mode")
         _existing = REG.list_models(_train_region)
         _existing_names = [m["name"] for m in _existing]
-        _src = st.radio("Model source", ["Create new", "Continue existing"], horizontal=True,
-                        key="wf_model_src",
-                        help="Create new = fresh random weights under a new name. "
-                             "Continue existing = resume training a model you already trained "
-                             "(its weights are loaded first).")
-        if _src == "Continue existing" and _existing_names:
-            _model_name = st.selectbox("Model to continue", _existing_names, key="wf_model_pick",
-                                       help="Weights load from this saved model, then training continues.")
-            _resume = True
-            _m = REG.get_model(_model_name, _train_region)
-            if _m:
-                st.caption(f"↳ {_m['epochs_trained']} epochs · {_m['rounds_trained']} rounds so far · "
-                           f"updated {str(_m['updated_at'])[:16]}")
-        else:
-            if _src == "Continue existing":
-                _oth = [m for m in REG.list_models() if m["region"] != _train_region]
-                if _oth:
-                    st.warning("No models for the active region. Models exist under other regions: "
-                               + " · ".join(f"{DS.REGIONS[m['region']]['label']}→{m['name']}" for m in _oth)
-                               + ". Switch the 🌍 Region selector to continue those.")
-                else:
-                    st.info("No saved models for this region yet — create one first.")
-            _model_name = st.text_input("New model name", value="cauvery_v1" if _train_region == "cauvery" else "india_v1",
-                                        key="wf_model_name",
-                                        help="A label for this model. Saved as "
-                                             f"model_{_train_region}_<name>.pt and selectable later in Validate.")
+        
+        b_mode = st.radio(
+            "Mode",
+            ["B1: ▶ Continue Training", "B2: 🎯 Fine-Tune", "B3: 🔄 Re-run Fresh"],
+            key="wf_partb_mode",
+            help="Continue Training = load checkpoint, keep optimizer, train N more epochs on same data. "
+                 "Fine-Tune = low LR, targeted data slice (e.g. monsoon), optional recurrent freeze. "
+                 "Re-run Fresh = train from scratch on same data with new hyperparams."
+        )
+
+        _parent_model_name = ""
+        _freeze_recurrent = False
+        _target_data_slice = "all"
+
+        if b_mode == "B1: ▶ Continue Training":
+            if _existing_names:
+                _parent_model_name = st.selectbox("Base checkpoint to continue", _existing_names, key="b1_pick",
+                                                   help="Diagnosis said 'still learning'? Continue training it here.")
+                _model_name = st.text_input("New version name", value=f"{_parent_model_name}_v2", key="b1_name",
+                                            help="Saves as a new versioned checkpoint — never overwrites parent.")
+                _resume = True
+                _m = REG.get_model(_parent_model_name, _train_region)
+                if _m:
+                    st.caption(f"↳ Parent `{_parent_model_name}`: {_m['epochs_trained']} epochs · {_m['rounds_trained']} rounds so far")
+            else:
+                st.info("No base models exist yet. Switch to 'B3: Re-run Fresh' to create the first checkpoint.")
+                _model_name = st.text_input("Model name", value="cauvery_v1" if _train_region == "cauvery" else "india_v1", key="b1_fresh")
+                _resume = False
+
+        elif b_mode == "B2: 🎯 Fine-Tune":
+            if _existing_names:
+                _parent_model_name = st.selectbox("Base checkpoint to fine-tune", _existing_names, key="b2_pick")
+                _target_data_slice = st.selectbox("Target data slice", ["all (gentle polish)", "recent_5yrs", "recent_10yrs"], key="b2_slice",
+                                                 help="Targeted fine-tuning. The training cube is ANNUAL, so "
+                                                      "slicing is by recent years (adapt to current climate). "
+                                                      "Seasonal/monsoon slicing needs a daily cube (not built yet).")
+                _freeze_recurrent = st.checkbox("Freeze recurrent core (fine-tune output head only)", value=True, key="b2_freeze",
+                                                help="Standard transfer learning: freezes ConvLSTM core, updates only output head for fast, stable adaptation.")
+                _suffix = _target_data_slice.split(" ")[0].split("(")[0] or "ft"
+                _suffix = "ft_" + _suffix if _suffix != "all" else "ft"
+                _model_name = st.text_input("Fine-tuned model name", value=f"{_parent_model_name}_{_suffix}", key="b2_name")
+                _resume = True
+                _m = REG.get_model(_parent_model_name, _train_region)
+                if _m:
+                    st.caption(f"↳ Fine-tuning `{_parent_model_name}` at 1/10th LR (default 1e-4)")
+            else:
+                st.info("No base models exist yet to fine-tune. Create one first.")
+                _model_name = st.text_input("Model name", value="cauvery_v1" if _train_region == "cauvery" else "india_v1", key="b2_fresh")
+                _resume = False
+
+        else:  # B3: Re-run Fresh
+            _model_name = st.text_input("New model name", value="cauvery_v1" if _train_region == "cauvery" else "india_v1", key="b3_name",
+                                        help="Train a fresh model from scratch on the same data for A/B comparison.")
             _resume = False
 
         st.divider()
@@ -2801,6 +3332,22 @@ def _render_tab9():
 
         # ── Training Config ───────────────────────────────────────────────
         st.markdown("### ⚙️ Training Config")
+
+        is_max_mode = st.toggle(
+            "🚀 MAX MODE (Deepest Thinking & Unlimited Training)",
+            key="wf_max_mode_toggle",
+            help="Enables extreme settings: Unlimited/Infinite Epochs (99,999), 8x Gradient Accumulation, "
+                 "Fine LR 1e-4 with min_lr 1e-7, Max Physics Smoothness 0.15, and continuous infinite training!"
+        )
+
+        if is_max_mode:
+            st.info(
+                "🚀 **MAX MODE ACTIVE — Unlimited Epochs & Deepest Thinking Training**\n"
+                "• **Epochs:** Unlimited / Infinite (99,999 epochs per round)\n"
+                "• **Precision & Accumulation:** Fine LR `1e-4`, Min LR `1e-7`, Gradient Accumulation `8x`\n"
+                "• **Physics:** Spatial smoothness `0.15`, Temporal smoothness `0.15`, Recency `15y` half-life\n"
+                "• *Training will run continuously for the deepest possible learning. Click ⏸ Pause or ⏹ Stop at any time to save.*"
+            )
 
         wf_train_mode = st.radio(
             "Weight init",
@@ -2904,7 +3451,7 @@ def _render_tab9():
     # ══════════════════════════════════════════════════════════════════════
     with main_col:
         # ── Action buttons ────────────────────────────────────────────────
-        btn_cols = st.columns(4)
+        btn_cols = st.columns(5)
         can_start = n_rounds > 0 and n_rounds <= MAX_ROUNDS and not st.session_state.get("wf_running", False)
 
         with btn_cols[0]:
@@ -2916,12 +3463,16 @@ def _render_tab9():
                 start_btn = st.button("▶ Run All Rounds", disabled=not can_start, type="primary", key="wf_start_btn",
                                       help="Run every remaining round back-to-back (auto mode). May take a while.")
         with btn_cols[1]:
+            ens_btn = st.button("👥 Train Ensemble (5 models)", disabled=not can_start, key="wf_ens_btn",
+                                help="Train 5 models with different random seeds on the same data. "
+                                     "Ensemble prediction & uncertainty almost always beats single models.")
+        with btn_cols[2]:
             pause_btn = st.button("⏸ Pause", disabled=not st.session_state.get("wf_running", False), key="wf_pause_btn",
                                   help="Pause after the current epoch; resume later without losing progress.")
-        with btn_cols[2]:
+        with btn_cols[3]:
             stop_btn = st.button("⏹ Stop", disabled=not st.session_state.get("wf_running", False), key="wf_stop_btn",
                                  help="Finish the current round, save its checkpoint, then stop.")
-        with btn_cols[3]:
+        with btn_cols[4]:
             stop_all_btn = st.button("⏹⏹ Stop All", disabled=not st.session_state.get("wf_running", False), key="wf_stopall_btn",
                                      help="Halt immediately after the current epoch — abandons the rest of the schedule.")
 
@@ -2936,6 +3487,17 @@ def _render_tab9():
             st.toast("Stop all — halting immediately after current epoch.")
 
         # ── Build round config ────────────────────────────────────────────
+        if is_max_mode:
+            hp_epochs = 99999
+            hp_lr = 1e-4
+            hp_min_lr = 1e-7
+            hp_accum = 8
+            hp_phys_spatial = 0.15
+            hp_phys_temporal = 0.15
+            hp_recency = True
+            hp_halflife = 15
+            hp_es = False
+
         round_cfg = RoundConfig(
             lr=hp_lr, batch_size=hp_batch, epochs=hp_epochs,
             optimizer_name=hp_optimizer, weight_decay=hp_wd, dropout=hp_dropout,
@@ -2948,10 +3510,21 @@ def _render_tab9():
             seed=hp_seed, deterministic=hp_determ,
         )
 
+        # ── PART B: apply mode-specific overrides ──
+        if b_mode == "B2: 🎯 Fine-Tune":
+            round_cfg.lr = hp_lr / 10.0            # 1/10th LR (gentle polish)
+            round_cfg.freeze_recurrent = bool(_freeze_recurrent)
+            if round_cfg.warmup_epochs > 0:
+                round_cfg.warmup_epochs = 0        # no warmup when fine-tuning
+            st.caption(f"🎯 Fine-tune overrides: LR **{round_cfg.lr:.2e}** (1/10th) · "
+                       f"freeze core **{round_cfg.freeze_recurrent}** · slice **{_target_data_slice}**")
+        elif b_mode == "B3: 🔄 Re-run Fresh":
+            round_cfg.seed = hp_seed + 1000        # decorrelate the fresh A/B run
+
         st.divider()
 
         # ── Training execution ────────────────────────────────────────────
-        if start_btn and can_start and _data_available:
+        if (start_btn or ens_btn) and can_start and _data_available:
             st.session_state["wf_running"] = True
             st.session_state["wf_stop_requested"] = False
             st.session_state["wf_stop_all_requested"] = False
@@ -2965,8 +3538,7 @@ def _render_tab9():
             rain_data = _agg["rain"]  # (N_years, H, W)
             temp_data = _agg["temp"]  # (N_years, H, W)
 
-            # Normalize to [0,1] using this region's own train-range (no leakage of
-            # India-scale stats into a Cauvery run).
+            # Normalize to [0,1] using this region's own train-range
             _lm = (_mask == 1)
             _r_land = rain_data[:, _lm] if _lm.any() else rain_data.reshape(len(rain_data), -1)
             _t_land = temp_data[:, _lm] if _lm.any() else temp_data.reshape(len(temp_data), -1)
@@ -2982,7 +3554,15 @@ def _render_tab9():
             # Stack channels: (N_years, H, W, 2)
             full_data = np.stack([rain_norm, temp_norm], axis=-1)  # (N_years, 129, 135, 2)
 
-            # ── Top live dashboard (single, persistent — not a growing list) ──
+            # ── PART B: fine-tune data slice (annual cube → restrict to recent years) ──
+            _slice_from_year = None
+            if b_mode == "B2: 🎯 Fine-Tune":
+                if "recent_5yrs" in _target_data_slice:
+                    _slice_from_year = _data_end_year - 4
+                elif "recent_10yrs" in _target_data_slice:
+                    _slice_from_year = _data_end_year - 9
+
+            # ── Top live dashboard ──
             st.markdown("#### 🚀 Live training")
             top_bar = st.progress(0.0, text="Preparing run…")
             top_status = st.empty()
@@ -2997,25 +3577,37 @@ def _render_tab9():
                 _console_lines.append(f"[{_dt.now().strftime('%H:%M:%S')}] {msg}")
                 _console_box.code("\n".join(_console_lines[-500:]), language="text")
 
-            _log(f"Model '{_model_name}' | region={active_region()} | resume={_resume}")
+            _log(f"Model '{_model_name}' | region={active_region()} | resume={_resume} | ensemble={ens_btn}")
             _log(f"Data: {DS.REGIONS[active_region()]['label']} cube {full_data.shape} "
                  f"(years {_data_start_year}-{_data_end_year}) via data_source.load_aggregates()")
-            _log(f"Normalized [0,1] scalers rain[{scalers['rain_min']:.1f},{scalers['rain_max']:.1f}] "
-                 f"temp[{scalers['temp_min']:.1f},{scalers['temp_max']:.1f}]")
-            _log(f"Device=CUDA:{torch.cuda.get_device_name(0)} | loss=masked-Huber (loops._masked_loss)")
 
             # Resume: pre-build the model and load saved weights so training continues.
+            # For Continue/Fine-Tune the weights come from the PARENT checkpoint, not
+            # the (not-yet-existing) new versioned name.
+            _load_from = _parent_model_name or _model_name
             model = None
             if _resume:
-                _arch = (REG.get_model(_model_name, active_region()) or {}).get("arch", {})
+                _arch = (REG.get_model(_load_from, active_region()) or {}).get("arch", {})
                 model = ClimateTwinModel(
                     seq_length=int(_arch.get("seq_length", 5)),
                     lat_dim=_mask.shape[0], lon_dim=_mask.shape[1], channels=2,
                     hidden=int(_arch.get("hidden", 32)), dropout=hp_dropout,
                     residual_scale=float(_arch.get("residual_scale", 0.1)),
                 )
-                ok, _ck = REG.load_into(_model_name, active_region(), model)
-                _log(f"Resumed weights from model_{active_region()}_{_model_name}.pt → {'OK' if ok else 'FAILED (fresh init)'}")
+                try:
+                    ok, _ck = REG.load_into(_load_from, active_region(), model, strict=False)
+                    _mismatch = None
+                except REG.ModelVariableMismatch as _mmerr:
+                    ok, _ck = False, None
+                    _mismatch = str(_mmerr)
+                if _mismatch:
+                    _log(f"⛔ Refused to resume '{_load_from}': {_mismatch}")
+                    st.error(f"❌ Cannot resume from '{_load_from}' — variable list mismatch.\n\n"
+                             f"{_mismatch}\n\nStart a fresh model or pick a compatible parent.")
+                    return
+                _log(f"Resumed weights from model '{_load_from}' → {'OK' if ok else 'FAILED (fresh init)'}"
+                     + (f" | fine-tune LR {round_cfg.lr:.2e}, freeze_core={round_cfg.freeze_recurrent}"
+                        if b_mode == 'B2: 🎯 Fine-Tune' else ""))
                 if not ok:
                     model = None
 
@@ -3029,11 +3621,15 @@ def _render_tab9():
                 if st.session_state.get("wf_stop_requested") or st.session_state.get("wf_stop_all_requested"):
                     break
 
-                # Map dates to year indices
                 train_start_yr = rnd.train_start.year - _data_start_year
                 train_end_yr = rnd.train_end.year - _data_start_year
                 val_start_yr = rnd.val_start.year - _data_start_year
                 val_end_yr = rnd.val_end.year - _data_start_year
+
+                # PART B fine-tune slice: clamp the training window to recent years only.
+                if _slice_from_year is not None:
+                    _sfy = _slice_from_year - _data_start_year
+                    train_start_yr = max(train_start_yr, _sfy)
 
                 if train_start_yr < 0 or val_end_yr >= _n_years:
                     _log(f"Round {rnd.round_num}: dates outside data range — skipped.")
@@ -3061,68 +3657,61 @@ def _render_tab9():
                 X_val = np.array(X_val) if X_val else np.zeros((0, seq_len, _H, _W, 2))
                 Y_val = np.array(Y_val) if Y_val else np.zeros((0, _H, _W, 2))
 
-                if wf_train_mode == "from_scratch":
-                    model = None
-                elif wf_train_mode == "reset_every_n" and rnd.round_num % wf_reset_n == 1:
-                    model = None
-
                 progress = TrainingProgress()
                 val_period = f"{rnd.val_start.strftime('%Y-%m')}"
                 row_id = insert_round(
                     rnd.round_num, str(rnd.train_start), str(rnd.train_end),
                     str(rnd.val_start), str(rnd.val_end), round_cfg.to_dict(),
                 )
-                top_status.markdown(
-                    f"**Round {rnd.round_num}/{n_rounds}** · train `{rnd.train_start}→{rnd.train_end}` · "
-                    f"predict `{rnd.val_start}→{rnd.val_end}` · context {seq_len}y · "
-                    f"{'♻️ warm-started' if model is not None else '🌱 fresh init'} · "
-                    f"X_train{tuple(X_train.shape)}"
-                )
-                try:
-                    torch.cuda.empty_cache(); torch.cuda.reset_peak_memory_stats()
-                except Exception:
-                    pass
-                _log(f"Round {rnd.round_num}: X_train{tuple(X_train.shape)} X_val{tuple(X_val.shape)} "
-                     f"ctx={seq_len}y batch={min(round_cfg.batch_size, len(X_train))} epochs={round_cfg.epochs}")
-
-                def _on_epoch(logs, _rn=rnd.round_num, _idx=_ri):
-                    ep, tot = logs["epoch"], logs["total_epochs"]
-                    overall = (_idx + ep / max(tot, 1)) / _n_to_run
-                    top_bar.progress(min(1.0, overall),
-                                     text=f"Round {_rn}/{n_rounds} · Epoch {ep}/{tot} · "
-                                          f"{logs['samples_per_s']:.0f} smp/s · GPU {logs['gpu_alloc_mb']:.0f} MB · "
-                                          f"ETA {logs['eta']:.1f}s")
-                    vm = logs.get("val_metrics", {}) or {}
-                    cc = live_metrics.columns(6)
-                    cc[0].metric("Epoch", f"{ep}/{tot}")
-                    cc[1].metric("Train loss", f"{logs['train_loss']:.4f}")
-                    cc[2].metric("Val loss", f"{logs['val_loss']:.4f}")
-                    cc[3].metric("Val RMSE", f"{vm.get('rmse', float('nan')):.4f}")
-                    cc[4].metric("GPU", f"{logs['gpu_alloc_mb']:.0f} MB")
-                    cc[5].metric("LR", f"{logs['lr']:.2e}")
-                    if len(logs["train_losses"]) >= 1:
-                        fig = VIZ.training_curves_figure(
-                            logs["train_losses"], logs["val_losses"],
-                            grad_norms=list(progress.grad_norms) or None,
-                            lrs=list(progress.lrs) or None,
-                        )
-                        live_diag.plotly_chart(fig, use_container_width=True,
-                                               key=f"diag_{_rn}_{ep}")
-                    _log(f"  [R{_rn} E{ep:02d}/{tot}] train={logs['train_loss']:.5f} "
-                         f"val={logs['val_loss']:.5f} rmse={vm.get('rmse', float('nan')):.5f} "
-                         f"grad={logs['grad_norm']:.3f} lr={logs['lr']:.2e} "
-                         f"gpu={logs['gpu_alloc_mb']:.0f}MB {logs['samples_per_s']:.0f} smp/s")
 
                 def _stop_check():
                     return st.session_state.get("wf_stop_all_requested", False) or st.session_state.get("wf_paused", False)
 
                 _t_round = _time.time()
-                model, metrics = train_one_round(
-                    X_train, Y_train, X_val, Y_val, _mask,
-                    round_cfg, progress, model=model, stop_check=_stop_check,
-                    round_num=rnd.round_num, val_period=val_period,
-                    region=active_region(), on_epoch=_on_epoch,
-                )
+                if ens_btn:
+                    from training.ensemble import train_deep_ensemble
+                    top_status.markdown(f"**Round {rnd.round_num}/{n_rounds}** · 👥 Training 5-Model Deep Ensemble (seeds 42..442)...")
+                    ens_obj, metrics, indiv_m_list = train_deep_ensemble(
+                        X_train, Y_train, X_val, Y_val, _mask,
+                        round_cfg, k_models=5, stop_check=_stop_check,
+                        round_num=rnd.round_num, val_period=val_period, region=active_region()
+                    )
+                    model = ens_obj.models[0]
+                    single_rmses = [m.get("rmse", float("nan")) for m in indiv_m_list if isinstance(m.get("rmse"), (int, float))]
+                    best_single = min(single_rmses) if single_rmses else float("nan")
+                    ens_rmse = metrics.get("rmse", float("nan"))
+                    impr = (best_single - ens_rmse) / best_single * 100 if np.isfinite(best_single) and np.isfinite(ens_rmse) and best_single > 0 else 0.0
+                    st.success(f"👥 **Deep Ensemble (5 models) Trained!**\n"
+                               f"• Best Single Model RMSE: **{best_single:.4f}**\n"
+                               f"• 5-Model Ensemble RMSE: **{ens_rmse:.4f}** ({impr:+.2f}% skill gain)\n"
+                               f"Ensemble saved under **{_model_name}**.")
+                else:
+                    def _on_epoch(logs, _rn=rnd.round_num, _idx=_ri):
+                        ep, tot = logs["epoch"], logs["total_epochs"]
+                        overall = (_idx + ep / max(tot, 1)) / _n_to_run
+                        top_bar.progress(min(1.0, overall), text=f"Round {_rn}/{n_rounds} · Epoch {ep}/{tot}")
+                        vm = logs.get("val_metrics", {}) or {}
+                        cc = live_metrics.columns(6)
+                        cc[0].metric("Epoch", f"{ep}/{tot}")
+                        cc[1].metric("Train loss", f"{logs['train_loss']:.4f}")
+                        cc[2].metric("Val loss", f"{logs['val_loss']:.4f}")
+                        cc[3].metric("Val RMSE", f"{vm.get('rmse', float('nan')):.4f}")
+                        cc[4].metric("GPU", f"{logs['gpu_alloc_mb']:.0f} MB")
+                        cc[5].metric("LR", f"{logs['lr']:.2e}")
+                        if len(logs["train_losses"]) >= 1:
+                            fig = VIZ.training_curves_figure(
+                                logs["train_losses"], logs["val_losses"],
+                                grad_norms=list(progress.grad_norms) or None,
+                                lrs=list(progress.lrs) or None,
+                            )
+                            live_diag.plotly_chart(fig, use_container_width=True, key=f"diag_{_rn}_{ep}")
+
+                    model, metrics = train_one_round(
+                        X_train, Y_train, X_val, Y_val, _mask,
+                        round_cfg, progress, model=model, stop_check=_stop_check,
+                        round_num=rnd.round_num, val_period=val_period,
+                        region=active_region(), on_epoch=_on_epoch,
+                    )
                 _round_secs = _time.time() - _t_round
                 _peak = 0.0
                 try:
@@ -3140,6 +3729,7 @@ def _render_tab9():
                 ckpt = str(_cp(rnd.round_num, val_period, active_region()))
                 _store = dict(metrics)
                 _store["_curves"] = {"train": list(progress.train_losses), "val": list(progress.val_losses),
+                                     "val_rmse": list(progress.val_rmses),
                                      "grad": list(progress.grad_norms), "lr": list(progress.lrs)}
                 _store["_baselines"] = progress.baseline_metrics
                 _store["_seconds"] = round(_round_secs, 2)
@@ -3147,7 +3737,8 @@ def _render_tab9():
                 _store["_model"] = _model_name
                 update_round(row_id, _store, ckpt, "completed" if progress.finished else "stopped")
                 _round_results.append({"round": rnd.round_num, "metrics": metrics,
-                                       "baselines": progress.baseline_metrics, "secs": _round_secs})
+                                       "baselines": progress.baseline_metrics, "secs": _round_secs,
+                                       "store": _store})
 
                 if wf_run_mode == "auto_stop_on_degradation" and prev_val_metric is not None:
                     current_val = metrics.get("rmse", float("inf"))
@@ -3175,6 +3766,11 @@ def _render_tab9():
                 st.markdown("##### This run — round summary")
                 st.dataframe(_sum, hide_index=True, use_container_width=True)
 
+                # PART A — diagnosis of the most recent round
+                st.markdown("##### 🩺 Diagnosis — latest round")
+                _render_round_diagnostics(_round_results[-1]["store"],
+                                          key_prefix=f"live_{_round_results[-1]['round']}")
+
             st.session_state["wf_running"] = False
 
             # Persist the trained model under its name (register / update).
@@ -3187,7 +3783,8 @@ def _render_tab9():
                         _model_name, active_region(), model, _arch,
                         metrics=metrics, epochs_add=_epochs_done_total,
                         rounds_add=_rounds_done_total,
-                        notes=f"{'resumed' if _resume else 'new'} · {wf_train_mode}",
+                        notes=f"{'resumed' if _resume else 'new'} · {b_mode}",
+                        parent_name=_parent_model_name,
                     )
                     _log(f"💾 Saved model '{_model_name}' → {_saved.name} "
                          f"(+{_epochs_done_total} epochs, +{_rounds_done_total} rounds)")
@@ -3298,6 +3895,10 @@ def _render_tab9():
                     else:
                         st.caption("No stored loss curve for this (older) run.")
 
+                # ── PART A — Diagnosis (why it plateaus) ──
+                with st.expander("🩺 Diagnosis — why did it train this way?", expanded=True):
+                    _render_round_diagnostics(m, key_prefix=f"insp_{sel['round_num']}")
+
             with st.expander("Full round table", expanded=False):
                 _tbl = pd.DataFrame([{
                     "Round": h["round_num"],
@@ -3323,7 +3924,110 @@ def _render_tab9():
             st.info("No training rounds completed yet. Configure and start above.")
 
 
-# ── Render ONLY the active section (its fragment); the other 8 never execute. ──
+def _render_tab10():
+    """🤖 RL Agent tab: Reservoir decision agent under forecast uncertainty."""
+    import plotly.graph_objects as go
+    from rl.env import ReservoirEnv
+    from rl.envs.base_env import list_env_templates, load_env_template
+    from rl.agent import train_rl_agent, run_baseline_policy, list_saved_policies
+    from rl.eval import evaluate_agent_across_envs
+
+    st.markdown("## 🤖 RL Reservoir Decision Agent")
+    st.markdown(
+        "Reinforcement Learning agent (PPO) operating on top of forecast uncertainty to decide optimal "
+        "weekly reservoir water releases, balancing **downstream irrigation/drinking demand** against "
+        "**flood risk** and **drought storage depletion**."
+    )
+
+    t_templates, t_train, t_eval, t_library = st.tabs([
+        "📜 Environment Templates", "🏋️ Train RL Agent", "🧪 Generalization Test", "📚 Saved Policies"
+    ])
+
+    with t_templates:
+        st.markdown("### 📜 Reservoir Environment Templates")
+        templates = list_env_templates()
+        sel_temp = st.selectbox("Select Template", templates, key="rl_temp_pick")
+        cfg = load_env_template(sel_temp)
+
+        c1, c2, c3, c4 = st.columns(4)
+        c1.metric("Capacity (TCM)", f"{cfg.capacity_tcm:,.0f}")
+        c2.metric("Dead Pool (TCM)", f"{cfg.dead_pool_tcm:,.0f}")
+        c3.metric("Flood Threshold (TCM)", f"{cfg.flood_threshold_tcm:,.0f}")
+        c4.metric("Max Release (TCM/wk)", f"{cfg.max_discharge_tcm_per_week:,.0f}")
+
+        st.caption(f"**Template:** `{cfg.name}` · region `{cfg.region}` · Peak demand week: {cfg.demand_peak_week}")
+        
+        weeks = np.arange(52)
+        demands = [cfg.get_weekly_demand(w) for w in weeks]
+        fig_d = go.Figure()
+        fig_d.add_trace(go.Scatter(x=weeks+1, y=demands, mode="lines+markers", name="Weekly Demand (TCM)"))
+        fig_d.update_layout(title=f"Downstream Demand Curve ({cfg.name})", xaxis_title="Week", yaxis_title="Demand (TCM)", height=320)
+        st.plotly_chart(fig_d, use_container_width=True)
+
+    with t_train:
+        st.markdown("### 🏋️ Train PPO Agent")
+        c_e, c_a, c_t = st.columns([1, 1, 1])
+        with c_e:
+            env_choice = st.selectbox("Environment Template", list_env_templates(), key="rl_train_env")
+        with c_a:
+            pol_name = st.text_input("Agent Policy Name", f"ppo_{env_choice}_v1", key="rl_pol_name")
+        with c_t:
+            timesteps = st.number_input("Total Timesteps", 1000, 100000, 10000, step=2000, key="rl_timesteps")
+
+        c_lr, c_g = st.columns(2)
+        with c_lr:
+            lr_val = st.number_input("Learning Rate", 1e-5, 1e-2, 3e-4, format="%.5f", key="rl_lr")
+        with c_g:
+            gamma_val = st.number_input("Discount Gamma (γ)", 0.8, 0.999, 0.99, key="rl_gamma")
+
+        if st.button("▶ Train PPO Agent", type="primary", key="rl_train_btn"):
+            with st.spinner(f"Training PPO Agent on '{env_choice}' for {timesteps:,} steps…"):
+                model, metrics = train_rl_agent(
+                    env_name=env_choice, agent_name=pol_name,
+                    total_timesteps=timesteps, lr=lr_val, gamma=gamma_val
+                )
+
+                env_base = ReservoirEnv(env_choice)
+                base_res = run_baseline_policy(env_base, policy_type="inflow")
+
+            st.success(f"✓ Trained PPO Agent **{pol_name}** successfully!")
+
+            m1, m2, m3 = st.columns(3)
+            m1.metric("PPO Total Reward", f"{metrics['total_reward']:.2f}")
+            m2.metric("Naive Baseline Reward", f"{base_res['total_reward']:.2f}")
+            m3.metric("Reward Advantage", f"{(metrics['total_reward'] - base_res['total_reward']):+.2f} pts")
+
+            hist_ppo = pd.DataFrame(metrics["history"])
+            hist_base = pd.DataFrame(base_res["history"])
+
+            fig_rel = go.Figure()
+            fig_rel.add_trace(go.Scatter(x=hist_ppo["week"], y=hist_ppo["release"], name="PPO Release", line=dict(color="#39d98a", width=3)))
+            fig_rel.add_trace(go.Scatter(x=hist_base["week"], y=hist_base["release"], name="Naive Release (inflow)", line=dict(color="#ff5630", dash="dash")))
+            fig_rel.add_trace(go.Scatter(x=hist_ppo["week"], y=hist_ppo["demand"], name="Demand", line=dict(color="#36b37e", width=1)))
+            fig_rel.update_layout(title="Weekly Release Schedule vs Inflow & Demand", xaxis_title="Week", yaxis_title="TCM", height=380)
+            st.plotly_chart(fig_rel, use_container_width=True)
+
+    with t_eval:
+        st.markdown("### 🧪 Multi-Environment Generalization & Stress Test")
+        st.caption("Evaluates agent policies across multiple reservoir templates and stress scenarios (dry drought / flood years).")
+        
+        if st.button("🧪 Run Multi-Env Evaluation", key="rl_eval_btn"):
+            policies = list_saved_policies()
+            p_name = policies[-1]["agent_name"] if policies else "ppo_mettur_test"
+            with st.spinner(f"Evaluating policy '{p_name}' across all templates & stress scenarios…"):
+                df_res = evaluate_agent_across_envs(policy_name=p_name)
+            st.dataframe(df_res, hide_index=True, use_container_width=True)
+
+    with t_library:
+        st.markdown("### 📚 Saved RL Policies Library")
+        pols = list_saved_policies()
+        if pols:
+            st.dataframe(pd.DataFrame(pols), hide_index=True, use_container_width=True)
+        else:
+            st.info("No RL policies saved yet. Train one in the 'Train RL Agent' tab above.")
+
+
+# ── Render ONLY the active section (its fragment); the others never execute. ──
 _TAB_RENDERERS = {
     _TAB_LABELS[0]: _render_tab1,
     _TAB_LABELS[1]: _render_tab2,
@@ -3334,6 +4038,7 @@ _TAB_RENDERERS = {
     _TAB_LABELS[6]: _render_tab7,
     _TAB_LABELS[7]: _render_tab8,
     _TAB_LABELS[8]: _render_tab9,
+    _TAB_LABELS[9]: _render_tab10,
 }
 _TAB_RENDERERS.get(_active_tab, _render_tab1)()
 

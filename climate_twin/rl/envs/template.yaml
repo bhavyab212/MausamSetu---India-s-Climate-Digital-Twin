@@ -1,0 +1,18 @@
+# Reservoir Environment Template (Copy and edit to add a new reservoir)
+name: "Custom Reservoir Template"
+region: "india"          # 'india', 'cauvery', etc.
+capacity_tcm: 50000.0    # Capacity in Thousand Cubic Meters (TCM)
+dead_pool_tcm: 4000.0     # Minimum storage before dead pool penalty
+flood_threshold_tcm: 45000.0 # Flood threshold level
+max_discharge_tcm_per_week: 10000.0 # Maximum release rate per week
+
+demand_peak_week: 30     # Week number of peak demand (1 to 52)
+base_demand_tcm_per_week: 800.0
+peak_demand_tcm_per_week: 3000.0
+
+reward_weights:
+  demand_met: 1.0        # Reward multiplier for meeting water demand
+  flood_penalty: 5.0     # Penalty multiplier for flooding/overflow
+  drought_penalty: 3.0   # Penalty multiplier for storage dropping too low
+  dead_pool_penalty: 10.0 # Sharp penalty for dead pool violation
+  spill_penalty: 10.0    # Sharp penalty for uncontrolled spill

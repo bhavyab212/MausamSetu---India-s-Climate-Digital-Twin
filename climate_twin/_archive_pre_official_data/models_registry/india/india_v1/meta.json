@@ -1,0 +1,29 @@
+{
+  "name": "india_v1",
+  "region": "india",
+  "arch": {
+    "seq_length": 5,
+    "hidden": 32,
+    "channels": 2,
+    "residual_scale": 0.1,
+    "grid": [
+      129,
+      135
+    ]
+  },
+  "metrics": {
+    "rmse": 0.06187048926949501,
+    "mae": 0.051900407299399376,
+    "bias": 0.043260052683763206,
+    "pearson_r": 0.9352951115878461,
+    "pod": 0.9953521999586863,
+    "far": 0.011409942950285249,
+    "csi": 0.9841510195840905,
+    "ensemble_calibration": 0.2264302981466559
+  },
+  "epochs_trained": 0,
+  "rounds_trained": 0,
+  "created_at": "2026-08-02T12:26:55.940579+05:30",
+  "updated_at": "2026-08-02T12:26:55.940579+05:30",
+  "notes": "migrated from legacy checkpoint"
+}

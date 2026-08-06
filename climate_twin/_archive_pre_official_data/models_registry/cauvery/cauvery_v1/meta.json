@@ -1,0 +1,29 @@
+{
+  "name": "cauvery_v1",
+  "region": "cauvery",
+  "arch": {
+    "seq_length": 5,
+    "hidden": 32,
+    "channels": 2,
+    "residual_scale": 0.1,
+    "grid": [
+      19,
+      17
+    ]
+  },
+  "metrics": {
+    "rmse": 0.0529487170279026,
+    "mae": 0.031406533904373646,
+    "bias": -0.018328982405364513,
+    "pearson_r": 0.8702693503583898,
+    "pod": 1.0,
+    "far": 0.0,
+    "csi": 1.0,
+    "ensemble_calibration": 0.28440366972477066
+  },
+  "epochs_trained": 12741,
+  "rounds_trained": 1000,
+  "created_at": "2026-08-02T18:38:17.524160+05:30",
+  "updated_at": "2026-08-02T22:15:51.761521+05:30",
+  "notes": "resumed \u00b7 warm_start"
+}

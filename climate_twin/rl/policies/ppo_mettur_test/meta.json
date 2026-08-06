@@ -1,0 +1,9 @@
+{
+  "agent_name": "ppo_mettur_test",
+  "env_name": "mettur",
+  "parent_name": "",
+  "total_timesteps": 10000,
+  "total_reward": 37.1593099491886,
+  "demand_met_pct": 100.0,
+  "flood_events": 0
+}

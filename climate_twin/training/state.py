@@ -34,9 +34,14 @@ def _get_db() -> sqlite3.Connection:
             metrics_json TEXT,
             checkpoint_path TEXT,
             created_at TEXT NOT NULL,
-            status TEXT DEFAULT 'running'
+            status TEXT DEFAULT 'running',
+            parent_id INTEGER DEFAULT NULL
         )
     """)
+    try:
+        conn.execute("ALTER TABLE rounds ADD COLUMN parent_id INTEGER DEFAULT NULL")
+    except Exception:
+        pass
     conn.commit()
     return conn
 
@@ -51,14 +56,15 @@ def insert_round(
     metrics: dict[str, Any] | None = None,
     checkpoint_path: str | None = None,
     status: str = "running",
+    parent_id: int | None = None,
 ) -> int:
     """Insert a new round record. Returns the row id."""
     conn = _get_db()
     cursor = conn.execute(
         """INSERT INTO rounds
            (round_num, train_start, train_end, val_start, val_end,
-            config_json, metrics_json, checkpoint_path, created_at, status)
-           VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)""",
+            config_json, metrics_json, checkpoint_path, created_at, status, parent_id)
+           VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)""",
         (
             round_num, train_start, train_end, val_start, val_end,
             json.dumps(config),
@@ -66,6 +72,7 @@ def insert_round(
             checkpoint_path,
             datetime.now(IST).isoformat(),
             status,
+            parent_id,
         ),
     )
     conn.commit()
@@ -87,7 +94,7 @@ def get_all_rounds() -> list[dict[str, Any]]:
     conn = _get_db()
     cursor = conn.execute(
         "SELECT id, round_num, train_start, train_end, val_start, val_end, "
-        "config_json, metrics_json, checkpoint_path, created_at, status "
+        "config_json, metrics_json, checkpoint_path, created_at, status, parent_id "
         "FROM rounds ORDER BY id DESC"
     )
     rows = cursor.fetchall()
@@ -105,6 +112,7 @@ def get_all_rounds() -> list[dict[str, Any]]:
             "checkpoint_path": row[8],
             "created_at": row[9],
             "status": row[10],
+            "parent_id": row[11] if len(row) > 11 else None,
         }
         results.append(entry)
     return results

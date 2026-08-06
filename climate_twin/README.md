@@ -10,6 +10,22 @@ pinned: false
 python_version: 3.10.13
 ---
 
+> # 🌦️ MausamSetu · **ClimateTwin Lab** (this fork)
+> This folder (`climate_twin/`) is an enhanced fork of the HF Space
+> [`Sujith2005/ISRO-Climate-Digital-Twin`](https://huggingface.co/spaces/Sujith2005/ISRO-Climate-Digital-Twin),
+> rebranded **ClimateTwin Lab** under the **MausamSetu · मौसम सेतु** project.
+>
+> **Added on top of the clone:** local-IMD data pipeline (`data_source.py`, no cloud), India/Cauvery
+> **region toggle**, GPU **walk-forward Training + Validation** with a **named model registry**,
+> W&B-style training/validation dashboards, matplotlib **animations (single month or full year)**,
+> the **Cauvery spotlight-on-India** map, smoothed hi-res maps, and a full performance pass.
+>
+> **Run:** `cd climate_twin && MSYS_NO_PATHCONV=1 ../venv/Scripts/streamlit run app_v2.py --server.port 8502`
+> **Full in-depth record:** see [`PROJECT_MEMORY.md`](./PROJECT_MEMORY.md).
+
+---
+
+
 # 🛰️ ISRO Climate Digital Twin — V2
 > **Internship Project | Indian Space Research Organisation (ISRO)**  
 > *High-Fidelity Spatiotemporal Climate Modelling for India using Deep Learning Ensembles & Digital Twin Architecture*
