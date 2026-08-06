@@ -1,0 +1,70 @@
+# india_full.yaml — THE REAL RUN.
+# 72 years of IMD gauge + selected INSAT satellite window (auto-dropped
+# by the coverage rule for years without sat). Batch size auto-tuned to
+# fill ~85% VRAM; precision auto-selected (bf16 on Ampere+).
+
+extends: base.yaml
+
+name: india_full
+notes: >-
+  Full historical training run. train 1951-2022, val 2023,
+  test 2024-2025. Early-stopping worst_zone patience=8 usually
+  cuts the 80-epoch cap short after ~30-50 epochs.
+
+seed: 42
+deterministic: true
+
+data:
+  region: india
+  train_years: [1951, 2022]
+  val_years:   [2023, 2023]
+  test_years:  [2024, 2025]
+  variables:   [rain, tmax, tmin]
+  include_satellite: false
+
+model:
+  hidden: 48
+  seq_length: 14
+  dropout: 0.2
+  film_conditioning: true
+  zone_conditioned_heads: true
+
+optim:
+  epochs: 80
+  batch_size: 16              # ignored when batch_size_auto=true
+  batch_size_auto: true
+  lr: 1.0e-3
+  weight_decay: 1.0e-4
+  scheduler: cosine
+  warmup_epochs: 3
+  min_lr: 1.0e-6
+  grad_clip: 1.0
+  mixed_precision: bf16       # ignored when mixed_precision_auto=true
+  mixed_precision_auto: true
+  gradient_accum: 1
+  sampler_mode: inverse_frequency
+  num_workers: 4
+  pin_memory: true
+  prefetch_factor: 4
+  persistent_workers: true
+  intent: full
+
+loss:
+  physics_spatial_smooth: 0.02
+  physics_temporal_smooth: 0.02
+  physics_tmax_ge_tmin: 0.02
+  physics_bounds_penalty: 0.01
+
+validation:
+  tier1_every_n_batches: 200
+  tier2_every_n_epochs: 1
+  tier3_every_n_epochs: 5
+  tier4_end_of_round: true
+  bootstrap_samples: 500
+  min_cells_for_metric: 5
+
+early_stopping:
+  policy: worst_zone
+  monitor: zone_weighted_rmse
+  patience: 8
+  min_delta: 1.0e-4

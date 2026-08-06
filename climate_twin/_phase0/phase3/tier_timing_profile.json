@@ -1,0 +1,11 @@
+{
+  "generated_at_ist": "2026-08-06T14:40:44.848943+05:30",
+  "n_val_days": 365,
+  "n_land_cells": 4647,
+  "runtimes_s": {
+    "tier1": 0.0542,
+    "tier2": 0.9335,
+    "tier3": 17.9625,
+    "tier4": 5.8172
+  }
+}

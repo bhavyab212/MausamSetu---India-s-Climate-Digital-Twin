@@ -1,0 +1,64 @@
+# finetune.yaml — continue from a parent checkpoint.
+# The UI's Setup tab lets the user pick the parent; this yaml provides
+# only the hyperparameters (LR/10, few epochs, warm-start).
+
+extends: base.yaml
+
+name: finetune
+notes: >-
+  Continue training from a chosen parent checkpoint. Learning rate
+  is reduced 10× vs a fresh run. Pick the parent in the Setup tab.
+
+seed: 42
+deterministic: true
+
+data:
+  region: india
+  train_years: [2010, 2022]        # recent-window fine-tune
+  val_years:   [2023, 2023]
+  test_years:  [2024, 2025]
+  variables:   [rain, tmax, tmin]
+
+model:
+  hidden: 48
+  seq_length: 14
+  dropout: 0.2
+  film_conditioning: true
+  zone_conditioned_heads: true
+
+optim:
+  epochs: 10
+  batch_size: 16
+  batch_size_auto: true
+  lr: 1.0e-4                        # 10× smaller than base
+  weight_decay: 1.0e-4
+  scheduler: cosine
+  warmup_epochs: 1
+  min_lr: 1.0e-7
+  grad_clip: 1.0
+  mixed_precision: bf16
+  mixed_precision_auto: true
+  sampler_mode: inverse_frequency
+  num_workers: 4
+  pin_memory: true
+  prefetch_factor: 4
+  persistent_workers: true
+  intent: finetune
+
+loss:
+  physics_spatial_smooth: 0.02
+  physics_temporal_smooth: 0.02
+  physics_tmax_ge_tmin: 0.02
+  physics_bounds_penalty: 0.005
+
+validation:
+  tier1_every_n_batches: 100
+  tier2_every_n_epochs: 1
+  tier3_every_n_epochs: 3
+  bootstrap_samples: 300
+
+early_stopping:
+  policy: worst_zone
+  monitor: zone_weighted_rmse
+  patience: 5
+  min_delta: 1.0e-4

@@ -1,0 +1,173 @@
+{
+  "name": "ph2_smoke",
+  "region": "india",
+  "parent_name": "",
+  "config": {
+    "name": "ph2_smoke",
+    "notes": "Phase 2b determinism verification. Two identical short runs must produce identical weight tensors and identical training-loss traces.",
+    "seed": 42,
+    "deterministic": true,
+    "data": {
+      "region": "india",
+      "train_years": [
+        2018,
+        2022
+      ],
+      "val_years": [
+        2023,
+        2023
+      ],
+      "test_years": [
+        2024,
+        2025
+      ],
+      "variables": [
+        "rain",
+        "tmax",
+        "tmin"
+      ],
+      "include_satellite": false,
+      "manifest_sig_expected": null
+    },
+    "zones": {
+      "membership": "soft",
+      "zone_mask_sig_expected": "242f813af71b",
+      "excluded_zone_keys": []
+    },
+    "model": {
+      "backbone": "convlstm",
+      "hidden": 16,
+      "seq_length": 7,
+      "kernel_size": 3,
+      "dropout": 0.1,
+      "residual_scale": 0.1,
+      "film_conditioning": true,
+      "zone_conditioned_heads": true,
+      "satellite_null_dropout": 0.5,
+      "satellite_channels": [
+        "insat_lst"
+      ]
+    },
+    "loss": {
+      "objective": "hurdle",
+      "rain_occurrence_threshold_mm": 0.1,
+      "zone_weighting": "inverse_variance",
+      "physics_tmax_ge_tmin": 0.02,
+      "physics_spatial_smooth": 0.0,
+      "physics_temporal_smooth": 0.0,
+      "physics_bounds_penalty": 0.01
+    },
+    "optim": {
+      "optimizer": "adamw",
+      "lr": 0.001,
+      "weight_decay": 0.0001,
+      "scheduler": "none",
+      "warmup_epochs": 0,
+      "min_lr": 1e-06,
+      "grad_clip": 1.0,
+      "epochs": 2,
+      "batch_size": 2,
+      "gradient_accum": 1,
+      "mixed_precision": "fp32",
+      "sampler_mode": "inverse_frequency"
+    },
+    "validation": {
+      "tier1_every_n_batches": 5,
+      "tier2_every_n_epochs": 1,
+      "tier3_every_n_epochs": 999,
+      "tier4_end_of_round": true,
+      "thresholds_source": "both",
+      "mc_samples": 20,
+      "bootstrap_samples": 200,
+      "min_cells_for_metric": 5
+    },
+    "early_stopping": {
+      "policy": "worst_zone",
+      "monitor": "zone_weighted_rmse",
+      "patience": 999,
+      "min_delta": 0.0001
+    }
+  },
+  "zone_mask_sig": "242f813af71b",
+  "zone_stats_sig": "242f813af71b",
+  "manifest_sig": "ab0999487887",
+  "variables": [
+    "rain",
+    "tmax",
+    "tmin"
+  ],
+  "epochs_trained": 2,
+  "best_epoch": 2,
+  "best_zone_weighted_rmse": 6.195780796129663,
+  "final_tier4_summary": {
+    "northwest": {
+      "rmse_ci": {
+        "point": 4.920793947522015,
+        "ci95_lower": 4.719786119689682,
+        "ci95_upper": 5.109576112122694
+      },
+      "vs_pers_winner": "baseline",
+      "vs_clim_winner": "ours"
+    },
+    "west_central": {
+      "rmse_ci": {
+        "point": 7.341438297244336,
+        "ci95_lower": 7.101771175189083,
+        "ci95_upper": 7.5323375018073175
+      },
+      "vs_pers_winner": "baseline",
+      "vs_clim_winner": "ours"
+    },
+    "central_northeast": {
+      "rmse_ci": {
+        "point": 6.3452960336438196,
+        "ci95_lower": 6.1044940676977895,
+        "ci95_upper": 6.55393334229776
+      },
+      "vs_pers_winner": "baseline",
+      "vs_clim_winner": "ours"
+    },
+    "northeast": {
+      "rmse_ci": "insufficient data",
+      "vs_pers_winner": "insufficient data",
+      "vs_clim_winner": "insufficient data"
+    },
+    "south_peninsular": {
+      "rmse_ci": {
+        "point": 5.310668116781618,
+        "ci95_lower": 5.011637038648417,
+        "ci95_upper": 5.618432846537782
+      },
+      "vs_pers_winner": "baseline",
+      "vs_clim_winner": "ours"
+    },
+    "western_ghats": {
+      "rmse_ci": {
+        "point": 3.891125385363936,
+        "ci95_lower": 3.7688202322318296,
+        "ci95_upper": 4.031189507404851
+      },
+      "vs_pers_winner": "baseline",
+      "vs_clim_winner": "ours"
+    },
+    "thar_arid": {
+      "rmse_ci": {
+        "point": 6.142622227640509,
+        "ci95_lower": 4.84421987729965,
+        "ci95_upper": 7.242756835072866
+      },
+      "vs_pers_winner": "baseline",
+      "vs_clim_winner": "ours"
+    },
+    "himalayan": {
+      "rmse_ci": "insufficient data",
+      "vs_pers_winner": "insufficient data",
+      "vs_clim_winner": "insufficient data"
+    },
+    "tamilnadu_ne": {
+      "rmse_ci": "insufficient data",
+      "vs_pers_winner": "insufficient data",
+      "vs_clim_winner": "insufficient data"
+    }
+  }
+}

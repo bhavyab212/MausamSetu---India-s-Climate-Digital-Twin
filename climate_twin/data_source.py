@@ -331,14 +331,15 @@ def _annual_aggregates(region: str, sig: str | None = None):
 
     rain = np.zeros((len(uniq), H, W), dtype=np.float32)
     tmax = np.full((len(uniq), H, W), np.nan, dtype=np.float64)
+    import warnings
     for k, y in enumerate(uniq):
-        sel = years == y
-        r = ds["rain"].values[sel]
-        t = ds["tmax"].values[sel]
+        # Lazy per-year slice — never materialise the full 27k-day tensor.
+        idx = np.flatnonzero(years == y)
+        r = ds["rain"].isel(time=idx).values
+        t = ds["tmax"].isel(time=idx).values
         # rain: annual sum, treating NaN outside basin/land as 0 for the sum
         rain[k] = np.nansum(r, axis=0).astype(np.float32)
         # tmax: annual max ignoring NaNs; keep NaN if the whole column is NaN
-        import warnings
         with warnings.catch_warnings():
             warnings.filterwarnings("ignore", "All-NaN slice encountered", RuntimeWarning)
             with np.errstate(invalid="ignore"):
@@ -363,14 +364,21 @@ def load_aggregates(region: str):
 
 @cache_data(show_spinner=False)
 def _daily_slice(region: str, year: int, var: str, sig: str | None = None) -> np.ndarray | None:
+    """Return ``(days, H, W)`` for ONE year without loading the full cube.
+
+    Uses xarray's ``.isel`` on the selected time indices so netCDF4 only
+    reads the ~365 days requested — critical when the cube spans 75 years
+    (27 394 days × 129 × 135 × float32 ≈ 1.78 GB per variable).
+    """
     ds = load_region(region)
     if var not in ds.data_vars:
         return None
     years = np.asarray(ds["time.year"].values)
-    m = years == int(year)
-    if not m.any():
+    idx = np.flatnonzero(years == int(year))
+    if idx.size == 0:
         return None
-    return np.asarray(ds[var].values[m])  # (days, H, W)
+    # Lazy read: only the selected time indices are pulled from disk.
+    return np.asarray(ds[var].isel(time=idx).values)
 
 
 def daily_rain(region: str, year: int) -> np.ndarray | None:

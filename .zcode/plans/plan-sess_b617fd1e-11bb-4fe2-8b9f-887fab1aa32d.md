@@ -1,11 +1,26 @@
-Build a Train/Validate workflow with a named, resumable model registry in the 🔥 Training tab.
+## Phase 0 diagnosis — approval to proceed to Phase 1
 
-1. New `training/registry.py`: persistent named-model registry (runs.db table + weights at training/checkpoints/model_<region>_<name>.pt). save/load/list/get/delete; accumulates epochs & rounds across re-training.
+Phase 0 is READ-ONLY diagnosis; no code was written. Findings above show three broken layers:
 
-2. Rewrite `_render_tab9` into two modes (toggle at top):
-   - 🏋️ Train: choose "New model" (name it) or "Continue existing" (pick from registry → resume weights); region/shape-guarded. Keep schedule + hyperparameters. Add a scientific live console (monospace scrolling log narrating data build → sequence windowing → model build → per-epoch loss/val/grad/LR/GPU-mem/throughput → validation → checkpoint), plus the existing live progress panel + loss curve. On finish, save under the model name and show a summary vs persistence/climatology baselines.
-   - 🔬 Validate: select a saved model (region-filtered), pick a year, run no-grad MC-dropout inference, and show a full report — metric table (ours vs persistence vs climatology), reliability diagram, metric bars, skill-by-lead-time, sample predictions, error map, and model provenance.
+1. **`_render_tab9`** in `app_v2.py` — early-return description page, tells user to launch a terminal (`streamlit run …`, `python -m …`). ~860 lines of dead code below the return. Zero buttons in the reachable body.
+2. **`train/ui/app.py`** — closer to a dashboard (does spawn a real background thread), but missing auto-refresh, Pause/Stop, GPU meter, live tier-3/4 heatmap.
+3. **`train/loop/trainer.py`** — silently falls back to CPU (line 134), `num_workers=0` on every DataLoader, no per-batch event surface, no pause primitive.
 
-3. Wire resume (registry.load_into before training) and save (registry.save_model after); validation reuses the same region-aware data prep. GPU-only guard stays.
+**Phase 1 preview** (per your rebuild plan text — NOT part of this Phase 0 output, provided so you can approve the direction):
 
-Files: new training/registry.py; edit app_v2.py (_render_tab9); minor loops.py log hook if needed. No other tabs or the map/animation affected.
+- Create `climate_twin/runtime/` with `executor.py`, `event_queue.py`, `run_state.py`, `device.py`
+- Add `Trainer.pause() / resume() / stop()` primitives (batch-boundary check, not just epoch)
+- Convert trainer to emit through a thread-safe `queue.Queue` (batch/tier1/tier2/tier3/tier4/checkpoint/done/error events), not just `LiveState` mutation
+- GPU refusal policy — hard fail at startup when `torch.cuda.is_available() == False`; disable the Start button and show a red banner
+- DataLoader: `num_workers=4, pin_memory=True` (kept configurable in the schema)
+- Then prove it works with a minimal Python test (no Streamlit yet) — the plan's "prove no subprocess is spawned" STOP gate
+
+**What I will NOT do in Phase 1:**
+- Not touch `web/`, FastAPI, or `mausamsetu/` core (per your rule)
+- Not touch existing checkpoints (all 5 stay compatible with `242f813af71b`)
+- Not build the Streamlit UI yet — that's Phase 2
+- Not touch the Validation dashboard — that's Phase 3
+
+Approving this ExitPlanMode means: acknowledge the diagnosis and clear me to start Phase 1 (execution spine). I will STOP again at the end of Phase 1 with the required proof of the minimal `Trainer.start()` invocation from a Python test.
+
+If you want me to adjust the diagnosis or the Phase 1 approach before I begin, say so now.

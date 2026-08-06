@@ -1,0 +1,175 @@
+{
+  "name": "ph5_hold_tnne",
+  "region": "india",
+  "parent_name": "",
+  "config": {
+    "name": "ph5_hold_tnne",
+    "notes": "Held-out zone: tamilnadu_ne (INVERTED seasonality \u2014 peaks Oct-Dec). If the model learned this regime only through gradient on TN-NE cells, excluding those cells should degrade skill sharply. If FiLM + climatology carry the signal via soft-membership neighbours, the degradation will be smaller.",
+    "seed": 42,
+    "deterministic": true,
+    "data": {
+      "region": "india",
+      "train_years": [
+        2018,
+        2022
+      ],
+      "val_years": [
+        2023,
+        2023
+      ],
+      "test_years": [
+        2024,
+        2025
+      ],
+      "variables": [
+        "rain",
+        "tmax",
+        "tmin"
+      ],
+      "include_satellite": false,
+      "manifest_sig_expected": null
+    },
+    "zones": {
+      "membership": "soft",
+      "zone_mask_sig_expected": "242f813af71b",
+      "excluded_zone_keys": [
+        "tamilnadu_ne"
+      ]
+    },
+    "model": {
+      "backbone": "convlstm",
+      "hidden": 16,
+      "seq_length": 7,
+      "kernel_size": 3,
+      "dropout": 0.1,
+      "residual_scale": 0.1,
+      "film_conditioning": true,
+      "zone_conditioned_heads": true,
+      "satellite_null_dropout": 0.5,
+      "satellite_channels": [
+        "insat_lst"
+      ]
+    },
+    "loss": {
+      "objective": "hurdle",
+      "rain_occurrence_threshold_mm": 0.1,
+      "zone_weighting": "inverse_variance",
+      "physics_tmax_ge_tmin": 0.02,
+      "physics_spatial_smooth": 0.01,
+      "physics_temporal_smooth": 0.0,
+      "physics_bounds_penalty": 0.005
+    },
+    "optim": {
+      "optimizer": "adamw",
+      "lr": 0.001,
+      "weight_decay": 0.0001,
+      "scheduler": "cosine",
+      "warmup_epochs": 0,
+      "min_lr": 1e-06,
+      "grad_clip": 1.0,
+      "epochs": 3,
+      "batch_size": 4,
+      "gradient_accum": 1,
+      "mixed_precision": "fp32",
+      "sampler_mode": "inverse_frequency"
+    },
+    "validation": {
+      "tier1_every_n_batches": 100,
+      "tier2_every_n_epochs": 1,
+      "tier3_every_n_epochs": 1,
+      "tier4_end_of_round": true,
+      "thresholds_source": "both",
+      "mc_samples": 20,
+      "bootstrap_samples": 100,
+      "min_cells_for_metric": 5
+    },
+    "early_stopping": {
+      "policy": "worst_zone",
+      "monitor": "zone_weighted_rmse",
+      "patience": 5,
+      "min_delta": 0.001
+    }
+  },
+  "zone_mask_sig": "242f813af71b",
+  "zone_stats_sig": "242f813af71b",
+  "manifest_sig": "ab0999487887",
+  "variables": [
+    "rain",
+    "tmax",
+    "tmin"
+  ],
+  "epochs_trained": 3,
+  "best_epoch": 3,
+  "best_zone_weighted_rmse": 6.79058374457888,
+  "final_tier4_summary": {
+    "northwest": {
+      "rmse_ci": {
+        "point": 4.888032437942668,
+        "ci95_lower": 4.684480691907029,
+        "ci95_upper": 5.063705875164492
+      },
+      "vs_pers_winner": "baseline",
+      "vs_clim_winner": "ours"
+    },
+    "west_central": {
+      "rmse_ci": {
+        "point": 7.376547354821719,
+        "ci95_lower": 7.178055706305707,
+        "ci95_upper": 7.5363378670801
+      },
+      "vs_pers_winner": "baseline",
+      "vs_clim_winner": "ours"
+    },
+    "central_northeast": {
+      "rmse_ci": {
+        "point": 6.289791333768189,
+        "ci95_lower": 6.054913298158751,
+        "ci95_upper": 6.480264960859171
+      },
+      "vs_pers_winner": "baseline",
+      "vs_clim_winner": "ours"
+    },
+    "northeast": {
+      "rmse_ci": "insufficient data",
+      "vs_pers_winner": "insufficient data",
+      "vs_clim_winner": "insufficient data"
+    },
+    "south_peninsular": {
+      "rmse_ci": {
+        "point": 5.396904467627524,
+        "ci95_lower": 5.090852414438076,
+        "ci95_upper": 5.6852190942693435
+      },
+      "vs_pers_winner": "baseline",
+      "vs_clim_winner": "ours"
+    },
+    "western_ghats": {
+      "rmse_ci": {
+        "point": 3.9137775449289602,
+        "ci95_lower": 3.782032032306313,
+        "ci95_upper": 4.027934032770036
+      },
+      "vs_pers_winner": "baseline",
+      "vs_clim_winner": "ours"
+    },
+    "thar_arid": {
+      "rmse_ci": {
+        "point": 6.055378095810054,
+        "ci95_lower": 4.685420480883948,
+        "ci95_upper": 7.136315848134274
+      },
+      "vs_pers_winner": "baseline",
+      "vs_clim_winner": "ours"
+    },
+    "himalayan": {
+      "rmse_ci": "insufficient data",
+      "vs_pers_winner": "insufficient data",
+      "vs_clim_winner": "insufficient data"
+    },
+    "tamilnadu_ne": {
+      "rmse_ci": "insufficient data",
+      "vs_pers_winner": "insufficient data",
+      "vs_clim_winner": "insufficient data"
+    }
+  }
+}

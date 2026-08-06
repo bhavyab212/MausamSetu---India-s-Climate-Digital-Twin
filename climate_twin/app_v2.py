@@ -1,5 +1,14 @@
 import os
 os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'
+
+# Ensure `climate_twin.*` package imports resolve when Streamlit runs this
+# file directly (sys.path[0] would otherwise be climate_twin/ itself).
+import sys
+from pathlib import Path as _Path
+_PROJECT_ROOT = str(_Path(__file__).resolve().parent.parent)
+if _PROJECT_ROOT not in sys.path:
+    sys.path.insert(0, _PROJECT_ROOT)
+
 import calendar
 import numpy as np
 import streamlit as st
@@ -1302,7 +1311,7 @@ _TAB_LABELS = [
     "Daily Explorer", "Historical Twin", "±1°C What-If",
     "Model Comparison", "Zone Projections",
     "2D Dual Animation", "Climate Spirals", "Deep Analytics",
-    "🔥 Training", "🤖 RL Agent",
+    "🔥 Training", "🔍 Validation", "🤖 RL Agent",
 ]
 try:
     _active_tab = st.segmented_control(
@@ -3061,6 +3070,18 @@ def _render_validate_mode(region, full_data, mask, start_year, n_years, scalers,
 
 @st.fragment
 def _render_tab9():
+    """🔥 Training tab — interactive dashboard (Phase 2 rewrite)."""
+    from climate_twin.train.ui.dashboards import render_training_dashboard
+    render_training_dashboard()
+    return
+
+
+def _render_tab_validation():
+    """🔍 Validation tab — visual + statistical inspection (Phase 3)."""
+    from climate_twin.train.ui.dashboards import render_validation_dashboard
+    render_validation_dashboard()
+    return
+
     import threading, time as _time, json as _json
     import torch
     import sys as _sys
@@ -4037,8 +4058,9 @@ _TAB_RENDERERS = {
     _TAB_LABELS[5]: _render_tab6,
     _TAB_LABELS[6]: _render_tab7,
     _TAB_LABELS[7]: _render_tab8,
-    _TAB_LABELS[8]: _render_tab9,
-    _TAB_LABELS[9]: _render_tab10,
+    _TAB_LABELS[8]: _render_tab9,               # 🔥 Training
+    _TAB_LABELS[9]: _render_tab_validation,     # 🔍 Validation
+    _TAB_LABELS[10]: _render_tab10,              # 🤖 RL Agent
 }
 _TAB_RENDERERS.get(_active_tab, _render_tab1)()
 

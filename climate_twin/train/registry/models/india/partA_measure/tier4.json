@@ -1,0 +1,130 @@
+{
+  "tier": "tier4",
+  "per_zone": {
+    "northwest": {
+      "n_samples": 54385,
+      "rmse_ci": {
+        "point": 4.424509920456226,
+        "ci95_lower": 4.145807718518497,
+        "ci95_upper": 4.708505650229437
+      },
+      "vs_persistence": {
+        "statistic": 965975930.5,
+        "p_value": 0.0,
+        "n_pairs": 54385,
+        "winner": "baseline"
+      },
+      "vs_climatology": {
+        "statistic": 440080595.5,
+        "p_value": 0.0,
+        "n_pairs": 54385,
+        "winner": "ours"
+      }
+    },
+    "west_central": {
+      "n_samples": 179580,
+      "rmse_ci": {
+        "point": 8.571841588946345,
+        "ci95_lower": 8.316100077093216,
+        "ci95_upper": 8.795606216349091
+      },
+      "vs_persistence": {
+        "statistic": 10253235299.5,
+        "p_value": 0.0,
+        "n_pairs": 179580,
+        "winner": "baseline"
+      },
+      "vs_climatology": {
+        "statistic": 4047761727.0,
+        "p_value": 0.0,
+        "n_pairs": 179580,
+        "winner": "ours"
+      }
+    },
+    "central_northeast": {
+      "n_samples": 20075,
+      "rmse_ci": {
+        "point": 4.147933994965433,
+        "ci95_lower": 3.8407135750368444,
+        "ci95_upper": 4.383416050177831
+      },
+      "vs_persistence": {
+        "statistic": 127780152.0,
+        "p_value": 7.740940912642177e-238,
+        "n_pairs": 20075,
+        "winner": "baseline"
+      },
+      "vs_climatology": {
+        "statistic": 44902958.5,
+        "p_value": 0.0,
+        "n_pairs": 20075,
+        "winner": "ours"
+      }
+    },
+    "northeast": {
+      "n_samples": 0,
+      "rmse_ci": "insufficient data",
+      "vs_persistence": "insufficient data",
+      "vs_climatology": "insufficient data"
+    },
+    "south_peninsular": {
+      "n_samples": 11680,
+      "rmse_ci": {
+        "point": 4.006542686549739,
+        "ci95_lower": 3.6613447118788227,
+        "ci95_upper": 4.3595555164476725
+      },
+      "vs_persistence": {
+        "statistic": 43493724.0,
+        "p_value": 1.4593062981046896e-146,
+        "n_pairs": 11680,
+        "winner": "baseline"
+      },
+      "vs_climatology": {
+        "statistic": 18061413.0,
+        "p_value": 0.0,
+        "n_pairs": 11680,
+        "winner": "ours"
+      }
+    },
+    "western_ghats": {
+      "n_samples": 22630,
+      "rmse_ci": {
+        "point": 3.9472505410599124,
+        "ci95_lower": 3.706434658297786,
+        "ci95_upper": 4.185978463925939
+      },
+      "vs_persistence": {
+        "statistic": 165612150.0,
+        "p_value": 0.0,
+        "n_pairs": 22630,
+        "winner": "baseline"
+      },
+      "vs_climatology": {
+        "statistic": 69883383.0,
+        "p_value": 0.0,
+        "n_pairs": 22630,
+        "winner": "ours"
+      }
+    },
+    "thar_arid": {
+      "n_samples": 0,
+      "rmse_ci": "insufficient data",
+      "vs_persistence": "insufficient data",
+      "vs_climatology": "insufficient data"
+    },
+    "himalayan": {
+      "n_samples": 0,
+      "rmse_ci": "insufficient data",
+      "vs_persistence": "insufficient data",
+      "vs_climatology": "insufficient data"
+    },
+    "tamilnadu_ne": {
+      "n_samples": 0,
+      "rmse_ci": "insufficient data",
+      "vs_persistence": "insufficient data",
+      "vs_climatology": "insufficient data"
+    }
+  },
+  "runtime_s": 1.8831
+}

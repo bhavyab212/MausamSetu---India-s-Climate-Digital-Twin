@@ -1,0 +1,2454 @@
+{
+  "tier": "tier3",
+  "per_zone_season": {
+    "northwest": {
+      "ALL": {
+        "n_days": 365,
+        "rmse": 8.173084166086152,
+        "mae": 2.8650949001312256,
+        "bias": -0.09085340052843094,
+        "thresholded": {
+          "absolute": {
+            "moderate": {
+              "pod": 0.01770959973803537,
+              "far": 0.7205477338939082,
+              "csi": 0.016936241179338053,
+              "acc": 0.9606911305807647
+            },
+            "heavy": {
+              "pod": 0.0,
+              "far": "insufficient data",
+              "csi": 0.0,
+              "acc": 0.9966916559139882
+            },
+            "very_heavy": {
+              "pod": 0.0,
+              "far": "insufficient data",
+              "csi": 0.0,
+              "acc": 0.999344138651821
+            },
+            "extremely_heavy": {
+              "pod": 0.0,
+              "far": "insufficient data",
+              "csi": 0.0,
+              "acc": 0.9999039993397643
+            }
+          },
+          "zone_percentile": {
+            "p90": {
+              "pod": 0.5021672207412035,
+              "far": 0.7067674750326588,
+              "csi": 0.2271884906168207,
+              "acc": 0.8279081408780937
+            },
+            "p95": {
+              "pod": 0.04468630571709651,
+              "far": 0.7657679780854874,
+              "csi": 0.0389901678586068,
+              "acc": 0.948203646873615
+            },
+            "p99": {
+              "pod": 0.0,
+              "far": "insufficient data",
+              "csi": 0.0,
+              "acc": 0.9916000982870155
+            }
+          }
+        }
+      },
+      "DJF": {
+        "n_days": 90,
+        "rmse": 2.0443156790406296,
+        "mae": 0.5668472647666931,
+        "bias": 0.12361040711402893,
+        "thresholded": {
+          "absolute": {
+            "moderate": {
+              "pod": 0.0,
+              "far": "insufficient data",
+              "csi": 0.0,
+              "acc": 0.9958128296444999
+            },
+            "heavy": {
+              "pod": 0.0,
+              "far": "insufficient data",
+              "csi": 0.0,
+              "acc": 0.9999683098586014
+            },
+            "very_heavy": {
+              "pod": "insufficient data",
+              "far": "insufficient data",
+              "csi": "insufficient data",
+              "acc": 1.0
+            },
+            "extremely_heavy": {
+              "pod": "insufficient data",
+              "far": "insufficient data",
+              "csi": "insufficient data",
+              "acc": 1.0
+            }
+          },
+          "zone_percentile": {
+            "p90": {
+              "pod": 0.004002009681819606,
+              "far": 0.9151138747833341,
+              "csi": 0.0038364896372296217,
+              "acc": 0.9839348308792316
+            },
+            "p95": {
+              "pod": 0.0,
+              "far": "insufficient data",
+              "csi": 0.0,
+              "acc": 0.9944787900534011
+            },
+            "p99": {
+              "pod": 0.0,
+              "far": "insufficient data",
+              "csi": 0.0,
+              "acc": 0.9997072434619175
+            }
+          }
+        }
+      },
+      "MAM": {
+        "n_days": 92,
+        "rmse": 4.427136538899985,
+        "mae": 1.3558588027954102,
+        "bias": -0.7818799018859863,
+        "thresholded": {
+          "absolute": {
+            "moderate": {
+              "pod": 0.0,
+              "far": "insufficient data",
+              "csi": 0.0,
+              "acc": 0.980947360202513
+            },
+            "heavy": {
+              "pod": 0.0,
+              "far": "insufficient data",
+              "csi": 0.0,
+              "acc": 0.9997874201546895
+            },
+            "very_heavy": {
+              "pod": "insufficient data",
+              "far": "insufficient data",
+              "csi": "insufficient data",
+              "acc": 1.0
+            },
+            "extremely_heavy": {
+              "pod": "insufficient data",
+              "far": "insufficient data",
+              "csi": "insufficient data",
+              "acc": 1.0
+            }
+          },
+          "zone_percentile": {
+            "p90": {
+              "pod": 0.0009295221593182192,
+              "far": 0.8008657876404306,
+              "csi": 0.0009260602725254662,
+              "acc": 0.9267385060030588
+            },
+            "p95": {
+              "pod": 0.0,
+              "far": "insufficient data",
+              "csi": 0.0,
+              "acc": 0.9752420103728967
+            },
+            "p99": {
+              "pod": 0.0,
+              "far": "insufficient data",
+              "csi": 0.0,
+              "acc": 0.998356935007469
+            }
+          }
+        }
+      },
+      "JJAS": {
+        "n_days": 122,
+        "rmse": 13.40362212842403,
+        "mae": 6.7833051681518555,
+        "bias": 0.13568304479122162,
+        "thresholded": {
+          "absolute": {
+            "moderate": {
+              "pod": 0.021364712755192524,
+              "far": 0.7205477469885593,
+              "csi": 0.02024923520954094,
+              "acc": 0.9019684389356709
+            },
+            "heavy": {
+              "pod": 0.0,
+              "far": "insufficient data",
+              "csi": 0.0,
+              "acc": 0.9902917067836309
+            },
+            "very_heavy": {
+              "pod": 0.0,
+              "far": "insufficient data",
+              "csi": 0.0,
+              "acc": 0.9980377916417665
+            },
+            "extremely_heavy": {
+              "pod": 0.0,
+              "far": "insufficient data",
+              "csi": 0.0,
+              "acc": 0.9997127848793593
+            }
+          },
+          "zone_percentile": {
+            "p90": {
+              "pod": 0.6709677587521674,
+              "far": 0.7049664710555102,
+              "csi": 0.2577432615465129,
+              "acc": 0.5648111336200918
+            },
+            "p95": {
+              "pod": 0.05474299685783291,
+              "far": 0.7657679587011235,
+              "csi": 0.0464329133221775,
+              "acc": 0.870882570414998
+            },
+            "p99": {
+              "pod": 0.0,
+              "far": "insufficient data",
+              "csi": 0.0,
+              "acc": 0.9764261958104369
+            }
+          }
+        }
+      },
+      "OND": {
+        "n_days": 61,
+        "rmse": 2.158851062276099,
+        "mae": 0.695759117603302,
+        "bias": 0.18185527622699738,
+        "thresholded": {
+          "absolute": {
+            "moderate": {
+              "pod": 0.0,
+              "far": "insufficient data",
+              "csi": 0.0,
+              "acc": 0.9957672142022904
+            },
+            "heavy": {
+              "pod": 0.0,
+              "far": "insufficient data",
+              "csi": 0.0,
+              "acc": 0.9999881254730935
+            },
+            "very_heavy": {
+              "pod": "insufficient data",
+              "far": "insufficient data",
+              "csi": "insufficient data",
+              "acc": 1.0
+            },
+            "extremely_heavy": {
+              "pod": "insufficient data",
+              "far": "insufficient data",
+              "csi": "insufficient data",
+              "acc": 1.0
+            }
+          },
+          "zone_percentile": {
+            "p90": {
+              "pod": 0.014983477964210453,
+              "far": 0.9542828494664957,
+              "csi": 0.011413726001692341,
+              "acc": 0.9748432603799513
+            },
+            "p95": {
+              "pod": 0.0,
+              "far": "insufficient data",
+              "csi": 0.0,
+              "acc": 0.993791789470572
+            },
+            "p99": {
+              "pod": 0.0,
+              "far": "insufficient data",
+              "csi": 0.0,
+              "acc": 0.9997959065959566
+            }
+          }
+        }
+      }
+    },
+    "west_central": {
+      "ALL": {
+        "n_days": 365,
+        "rmse": 10.658248306713416,
+        "mae": 3.6727399826049805,
+        "bias": -0.18770749866962433,
+        "thresholded": {
+          "absolute": {
+            "moderate": {
+              "pod": 0.05470257404259083,
+              "far": 0.7076965206328205,
+              "csi": 0.048305031171622416,
+              "acc": 0.9418097043472357
+            },
+            "heavy": {
+              "pod": 0.0,
+              "far": "insufficient data",
+              "csi": 0.0,
+              "acc": 0.9933197779638817
+            },
+            "very_heavy": {
+              "pod": 0.0,
+              "far": "insufficient data",
+              "csi": 0.0,
+              "acc": 0.9983941073758772
+            },
+            "extremely_heavy": {
+              "pod": 0.0,
+              "far": "insufficient data",
+              "csi": 0.0,
+              "acc": 0.9998119621162334
+            }
+          },
+          "zone_percentile": {
+            "p90": {
+              "pod": 0.6131431766250639,
+              "far": 0.6670235461075934,
+              "csi": 0.2751670695347081,
+              "acc": 0.8388093617592487
+            },
+            "p95": {
+              "pod": 0.046030653749595245,
+              "far": 0.6999429636693051,
+              "csi": 0.041567332606276534,
+              "acc": 0.9445547620647524
+            },
+            "p99": {
+              "pod": 0.0,
+              "far": "insufficient data",
+              "csi": 0.0,
+              "acc": 0.9880928091769238
+            }
+          }
+        }
+      },
+      "DJF": {
+        "n_days": 90,
+        "rmse": 1.5329455932667349,
+        "mae": 0.37451720237731934,
+        "bias": 0.06346248090267181,
+        "thresholded": {
+          "absolute": {
+            "moderate": {
+              "pod": 0.0,
+              "far": "insufficient data",
+              "csi": 0.0,
+              "acc": 0.9973288256623646
+            },
+            "heavy": {
+              "pod": 0.0,
+              "far": "insufficient data",
+              "csi": 0.0,
+              "acc": 0.9999991830300713
+            },
+            "very_heavy": {
+              "pod": "insufficient data",
+              "far": "insufficient data",
+              "csi": "insufficient data",
+              "acc": 1.0
+            },
+            "extremely_heavy": {
+              "pod": "insufficient data",
+              "far": "insufficient data",
+              "csi": "insufficient data",
+              "acc": 1.0
+            }
+          },
+          "zone_percentile": {
+            "p90": {
+              "pod": 0.0,
+              "far": "insufficient data",
+              "csi": 0.0,
+              "acc": 0.9914951221145789
+            },
+            "p95": {
+              "pod": 0.0,
+              "far": "insufficient data",
+              "csi": 0.0,
+              "acc": 0.9975244220938322
+            },
+            "p99": {
+              "pod": 0.0,
+              "far": "insufficient data",
+              "csi": 0.0,
+              "acc": 0.9999495316879958
+            }
+          }
+        }
+      },
+      "MAM": {
+        "n_days": 92,
+        "rmse": 3.4343039723576227,
+        "mae": 0.9260439872741699,
+        "bias": -0.5877017378807068,
+        "thresholded": {
+          "absolute": {
+            "moderate": {
+              "pod": 0.0,
+              "far": "insufficient data",
+              "csi": 0.0,
+              "acc": 0.9887899754884096
+            },
+            "heavy": {
+              "pod": 0.0,
+              "far": "insufficient data",
+              "csi": 0.0,
+              "acc": 0.9999264932015467
+            },
+            "very_heavy": {
+              "pod": "insufficient data",
+              "far": "insufficient data",
+              "csi": "insufficient data",
+              "acc": 1.0
+            },
+            "extremely_heavy": {
+              "pod": "insufficient data",
+              "far": "insufficient data",
+              "csi": "insufficient data",
+              "acc": 1.0
+            }
+          },
+          "zone_percentile": {
+            "p90": {
+              "pod": 0.0,
+              "far": "insufficient data",
+              "csi": 0.0,
+              "acc": 0.9626458964358666
+            },
+            "p95": {
+              "pod": 0.0,
+              "far": "insufficient data",
+              "csi": 0.0,
+              "acc": 0.9895750068831525
+            },
+            "p99": {
+              "pod": 0.0,
+              "far": "insufficient data",
+              "csi": 0.0,
+              "acc": 0.999469459773185
+            }
+          }
+        }
+      },
+      "JJAS": {
+        "n_days": 122,
+        "rmse": 17.9102389137395,
+        "mae": 9.436784744262695,
+        "bias": -0.2796883285045624,
+        "thresholded": {
+          "absolute": {
+            "moderate": {
+              "pod": 0.0604600070729685,
+              "far": 0.7076965352744359,
+              "csi": 0.052739942206402,
+              "acc": 0.8413137465024403
+            },
+            "heavy": {
+              "pod": 0.0,
+              "far": "insufficient data",
+              "csi": 0.0,
+              "acc": 0.9804211807340417
+            },
+            "very_heavy": {
+              "pod": 0.0,
+              "far": "insufficient data",
+              "csi": 0.0,
+              "acc": 0.99522697793905
+            },
+            "extremely_heavy": {
+              "pod": 0.0,
+              "far": "insufficient data",
+              "csi": 0.0,
+              "acc": 0.9994375162863346
+            }
+          },
+          "zone_percentile": {
+            "p90": {
+              "pod": 0.7196240785767194,
+              "far": 0.666866614898649,
+              "csi": 0.29486217066237,
+              "acc": 0.5622808088129663
+            },
+            "p95": {
+              "pod": 0.0507215833872305,
+              "far": 0.6999429636693051,
+              "csi": 0.045355232826288075,
+              "acc": 0.8485972389688408
+            },
+            "p99": {
+              "pod": 0.0,
+              "far": "insufficient data",
+              "csi": 0.0,
+              "acc": 0.9656698352204359
+            }
+          }
+        }
+      },
+      "OND": {
+        "n_days": 61,
+        "rmse": 4.10211381333402,
+        "mae": 1.1510637998580933,
+        "bias": 0.22933894395828247,
+        "thresholded": {
+          "absolute": {
+            "moderate": {
+              "pod": 0.0,
+              "far": "insufficient data",
+              "csi": 0.0,
+              "acc": 0.9900781918689177
+            },
+            "heavy": {
+              "pod": 0.0,
+              "far": "insufficient data",
+              "csi": 0.0,
+              "acc": 0.9993035205387393
+            },
+            "very_heavy": {
+              "pod": 0.0,
+              "far": "insufficient data",
+              "csi": 0.0,
+              "acc": 0.9999384683670923
+            },
+            "extremely_heavy": {
+              "pod": "insufficient data",
+              "far": "insufficient data",
+              "csi": "insufficient data",
+              "acc": 1.0
+            }
+          },
+          "zone_percentile": {
+            "p90": {
+              "pod": 0.0009652647108904615,
+              "far": 0.967253970551167,
+              "csi": 0.0009385059899136308,
+              "acc": 0.9799555502963337
+            },
+            "p95": {
+              "pod": 0.0,
+              "far": "insufficient data",
+              "csi": 0.0,
+              "acc": 0.9904617385254398
+            },
+            "p99": {
+              "pod": 0.0,
+              "far": "insufficient data",
+              "csi": 0.0,
+              "acc": 0.9982966104534764
+            }
+          }
+        }
+      }
+    },
+    "central_northeast": {
+      "ALL": {
+        "n_days": 365,
+        "rmse": 9.778576001962781,
+        "mae": 4.2406721115112305,
+        "bias": 0.33800962567329407,
+        "thresholded": {
+          "absolute": {
+            "moderate": {
+              "pod": 0.036825871012417674,
+              "far": 0.7524832116906949,
+              "csi": 0.03311811773648589,
+              "acc": 0.9315166016905017
+            },
+            "heavy": {
+              "pod": 0.0,
+              "far": "insufficient data",
+              "csi": 0.0,
+              "acc": 0.9947615009628445
+            },
+            "very_heavy": {
+              "pod": 0.0,
+              "far": "insufficient data",
+              "csi": 0.0,
+              "acc": 0.9991134077953426
+            },
+            "extremely_heavy": {
+              "pod": 0.0,
+              "far": "insufficient data",
+              "csi": 0.0,
+              "acc": 0.9999205176965715
+            }
+          },
+          "zone_percentile": {
+            "p90": {
+              "pod": 0.2948389965217236,
+              "far": 0.7242901233283526,
+              "csi": 0.16614931625289306,
+              "acc": 0.8651668444241783
+            },
+            "p95": {
+              "pod": 0.004478749242301941,
+              "far": 0.7062956442065332,
+              "csi": 0.004431025212372793,
+              "acc": 0.9539991462612796
+            },
+            "p99": {
+              "pod": 0.0,
+              "far": "insufficient data",
+              "csi": 0.0,
+              "acc": 0.990972245942294
+            }
+          }
+        }
+      },
+      "DJF": {
+        "n_days": 90,
+        "rmse": 3.191172140434972,
+        "mae": 0.6599547266960144,
+        "bias": 0.03837878257036209,
+        "thresholded": {
+          "absolute": {
+            "moderate": {
+              "pod": 0.0,
+              "far": "insufficient data",
+              "csi": 0.0,
+              "acc": 0.993699317315933
+            },
+            "heavy": {
+              "pod": 0.0,
+              "far": "insufficient data",
+              "csi": 0.0,
+              "acc": 0.9997348796381641
+            },
+            "very_heavy": {
+              "pod": 0.0,
+              "far": "insufficient data",
+              "csi": 0.0,
+              "acc": 0.9999089339492203
+            },
+            "extremely_heavy": {
+              "pod": 0.0,
+              "far": "insufficient data",
+              "csi": 0.0,
+              "acc": 0.9999956635213504
+            }
+          },
+          "zone_percentile": {
+            "p90": {
+              "pod": 0.0,
+              "far": "insufficient data",
+              "csi": 0.0,
+              "acc": 0.9899457898444098
+            },
+            "p95": {
+              "pod": 0.0,
+              "far": "insufficient data",
+              "csi": 0.0,
+              "acc": 0.9956786789150393
+            },
+            "p99": {
+              "pod": 0.0,
+              "far": "insufficient data",
+              "csi": 0.0,
+              "acc": 0.9995262468034529
+            }
+          }
+        }
+      },
+      "MAM": {
+        "n_days": 92,
+        "rmse": 4.697722456097667,
+        "mae": 1.9187281131744385,
+        "bias": -0.38260623812675476,
+        "thresholded": {
+          "absolute": {
+            "moderate": {
+              "pod": 0.00026074306686800676,
+              "far": 0.6000000059604643,
+              "csi": 0.00026064112631553387,
+              "acc": 0.9783042601167924
+            },
+            "heavy": {
+              "pod": 0.0,
+              "far": "insufficient data",
+              "csi": 0.0,
+              "acc": 0.9996856052794794
+            },
+            "very_heavy": {
+              "pod": 0.0,
+              "far": "insufficient data",
+              "csi": 0.0,
+              "acc": 0.999991515584451
+            },
+            "extremely_heavy": {
+              "pod": "insufficient data",
+              "far": "insufficient data",
+              "csi": "insufficient data",
+              "acc": 1.0
+            }
+          },
+          "zone_percentile": {
+            "p90": {
+              "pod": 0.0010457290292097785,
+              "far": 0.7945205533139855,
+              "csi": 0.0010415176674022353,
+              "acc": 0.9593114026419896
+            },
+            "p95": {
+              "pod": 0.0,
+              "far": "insufficient data",
+              "csi": 0.0,
+              "acc": 0.9872466969554673
+            },
+            "p99": {
+              "pod": 0.0,
+              "far": "insufficient data",
+              "csi": 0.0,
+              "acc": 0.9992316890196711
+            }
+          }
+        }
+      },
+      "JJAS": {
+        "n_days": 122,
+        "rmse": 15.452143694676932,
+        "mae": 9.564464569091797,
+        "bias": 1.1986759901046753,
+        "thresholded": {
+          "absolute": {
+            "moderate": {
+              "pod": 0.04556837413547613,
+              "far": 0.7524474299728282,
+              "csi": 0.04002467030436388,
+              "acc": 0.8317795338255096
+            },
+            "heavy": {
+              "pod": 0.0,
+              "far": "insufficient data",
+              "csi": 0.0,
+              "acc": 0.9859796515927242
+            },
+            "very_heavy": {
+              "pod": 0.0,
+              "far": "insufficient data",
+              "csi": 0.0,
+              "acc": 0.997552229210663
+            },
+            "extremely_heavy": {
+              "pod": 0.0,
+              "far": "insufficient data",
+              "csi": 0.0,
+              "acc": 0.9997654036145005
+            }
+          },
+          "zone_percentile": {
+            "p90": {
+              "pod": 0.3751631358205899,
+              "far": 0.723831520639697,
+              "csi": 0.18916160246492641,
+              "acc": 0.6561580039587829
+            },
+            "p95": {
+              "pod": 0.005463016727075021,
+              "far": 0.7062956671208901,
+              "csi": 0.005392177647361273,
+              "acc": 0.8870153443218457
+            },
+            "p99": {
+              "pod": 0.0,
+              "far": "insufficient data",
+              "csi": 0.0,
+              "acc": 0.9763417268938961
+            }
+          }
+        }
+      },
+      "OND": {
+        "n_days": 61,
+        "rmse": 6.805108163222427,
+        "mae": 2.378063917160034,
+        "bias": 0.1455858051776886,
+        "thresholded": {
+          "absolute": {
+            "moderate": {
+              "pod": 0.0,
+              "far": 1.0,
+              "csi": 0.0,
+              "acc": 0.9686807387654663
+            },
+            "heavy": {
+              "pod": 0.0,
+              "far": "insufficient data",
+              "csi": 0.0,
+              "acc": 0.9975609084185662
+            },
+            "very_heavy": {
+              "pod": 0.0,
+              "far": "insufficient data",
+              "csi": 0.0,
+              "acc": 0.9997376785786858
+            },
+            "extremely_heavy": {
+              "pod": "insufficient data",
+              "far": "insufficient data",
+              "csi": "insufficient data",
+              "acc": 1.0
+            }
+          },
+          "zone_percentile": {
+            "p90": {
+              "pod": 0.0063072645608452755,
+              "far": 0.857308585315675,
+              "csi": 0.0060769782823395044,
+              "acc": 0.9570958954785173
+            },
+            "p95": {
+              "pod": 0.0,
+              "far": "insufficient data",
+              "csi": 0.0,
+              "acc": 0.9763285133345911
+            },
+            "p99": {
+              "pod": 0.0,
+              "far": "insufficient data",
+              "csi": 0.0,
+              "acc": 0.9951557625579462
+            }
+          }
+        }
+      }
+    },
+    "northeast": {
+      "ALL": {
+        "n_days": 365,
+        "rmse": 12.138548487307782,
+        "mae": 6.295760631561279,
+        "bias": 0.8730229139328003,
+        "thresholded": {
+          "absolute": {
+            "moderate": {
+              "pod": 0.2673399949991607,
+              "far": 0.6367113165645983,
+              "csi": 0.18204368375686053,
+              "acc": 0.8705339193605679
+            },
+            "heavy": {
+              "pod": 0.017510776725840244,
+              "far": 0.2972972972972973,
+              "csi": 0.017382003792683502,
+              "acc": 0.9911361447947605
+            },
+            "very_heavy": {
+              "pod": 0.0,
+              "far": "insufficient data",
+              "csi": 0.0,
+              "acc": 0.9981648721526685
+            },
+            "extremely_heavy": {
+              "pod": 0.0,
+              "far": "insufficient data",
+              "csi": 0.0,
+              "acc": 0.9997780719484518
+            }
+          },
+          "zone_percentile": {
+            "p90": {
+              "pod": 0.18189294815239757,
+              "far": 0.6253828232870684,
+              "csi": 0.13952584383034466,
+              "acc": 0.9012854323841992
+            },
+            "p95": {
+              "pod": 0.06052283420944446,
+              "far": 0.5407938257993384,
+              "csi": 0.056496024112967676,
+              "acc": 0.958052583304274
+            },
+            "p99": {
+              "pod": 0.012573673870333988,
+              "far": 0.2727272727272727,
+              "csi": 0.012514665623777864,
+              "acc": 0.9923862995606668
+            }
+          }
+        }
+      },
+      "DJF": {
+        "n_days": 90,
+        "rmse": 3.8057264428645112,
+        "mae": 1.2301909923553467,
+        "bias": 0.022098872810602188,
+        "thresholded": {
+          "absolute": {
+            "moderate": {
+              "pod": 0.0,
+              "far": "insufficient data",
+              "csi": 0.0,
+              "acc": 0.9865287255489068
+            },
+            "heavy": {
+              "pod": 0.0,
+              "far": "insufficient data",
+              "csi": 0.0,
+              "acc": 0.9999877711742119
+            },
+            "very_heavy": {
+              "pod": "insufficient data",
+              "far": "insufficient data",
+              "csi": "insufficient data",
+              "acc": 1.0
+            },
+            "extremely_heavy": {
+              "pod": "insufficient data",
+              "far": "insufficient data",
+              "csi": "insufficient data",
+              "acc": 1.0
+            }
+          },
+          "zone_percentile": {
+            "p90": {
+              "pod": 0.0,
+              "far": "insufficient data",
+              "csi": 0.0,
+              "acc": 0.9894807642458713
+            },
+            "p95": {
+              "pod": 0.0,
+              "far": "insufficient data",
+              "csi": 0.0,
+              "acc": 0.9952038545654459
+            },
+            "p99": {
+              "pod": "insufficient data",
+              "far": "insufficient data",
+              "csi": "insufficient data",
+              "acc": 1.0
+            }
+          }
+        }
+      },
+      "MAM": {
+        "n_days": 92,
+        "rmse": 8.394060742453725,
+        "mae": 5.726141929626465,
+        "bias": 1.6731208562850952,
+        "thresholded": {
+          "absolute": {
+            "moderate": {
+              "pod": 0.03766204317752337,
+              "far": 0.8304467993894885,
+              "csi": 0.03179671913090229,
+              "acc": 0.9151250349641952
+            },
+            "heavy": {
+              "pod": 0.0,
+              "far": "insufficient data",
+              "csi": 0.0,
+              "acc": 0.9988611241739356
+            },
+            "very_heavy": {
+              "pod": 0.0,
+              "far": "insufficient data",
+              "csi": 0.0,
+              "acc": 0.9999521480703195
+            },
+            "extremely_heavy": {
+              "pod": "insufficient data",
+              "far": "insufficient data",
+              "csi": "insufficient data",
+              "acc": 1.0
+            }
+          },
+          "zone_percentile": {
+            "p90": {
+              "pod": 0.021680687303194567,
+              "far": 0.8161764705882353,
+              "csi": 0.019776916765156936,
+              "acc": 0.9407066761402426
+            },
+            "p95": {
+              "pod": 0.0,
+              "far": 1.0,
+              "csi": 0.0,
+              "acc": 0.9821057724254688
+            },
+            "p99": {
+              "pod": 0.0,
+              "far": "insufficient data",
+              "csi": 0.0,
+              "acc": 0.9991841246811778
+            }
+          }
+        }
+      },
+      "JJAS": {
+        "n_days": 122,
+        "rmse": 18.491849864570142,
+        "mae": 11.86784839630127,
+        "bias": 1.2860347032546997,
+        "thresholded": {
+          "absolute": {
+            "moderate": {
+              "pod": 0.36189013765680805,
+              "far": 0.6272263288191453,
+              "csi": 0.22492823655284602,
+              "acc": 0.712553637761548
+            },
+            "heavy": {
+              "pod": 0.019677589524846894,
+              "far": 0.2972972972972973,
+              "csi": 0.019515123506052022,
+              "acc": 0.9764310427271636
+            },
+            "very_heavy": {
+              "pod": 0.0,
+              "far": "insufficient data",
+              "csi": 0.0,
+              "acc": 0.9948614874277207
+            },
+            "extremely_heavy": {
+              "pod": 0.0,
+              "far": "insufficient data",
+              "csi": 0.0,
+              "acc": 0.9993540774086586
+            }
+          },
+          "zone_percentile": {
+            "p90": {
+              "pod": 0.24251272268366592,
+              "far": 0.6182169104481837,
+              "csi": 0.1741315905618952,
+              "acc": 0.7782663229453038
+            },
+            "p95": {
+              "pod": 0.07657151557329564,
+              "far": 0.5362723214285714,
+              "csi": 0.07034265824791773,
+              "acc": 0.900923053415741
+            },
+            "p99": {
+              "pod": 0.014059753954305799,
+              "far": 0.2727272727272727,
+              "csi": 0.013986013986013986,
+              "acc": 0.9796480269014113
+            }
+          }
+        }
+      },
+      "OND": {
+        "n_days": 61,
+        "rmse": 8.373557341626414,
+        "mae": 3.4844741821289062,
+        "bias": 0.09575598686933517,
+        "thresholded": {
+          "absolute": {
+            "moderate": {
+              "pod": 0.026167195481128697,
+              "far": 0.3870967741935484,
+              "csi": 0.025741770259397355,
+              "acc": 0.9481024680745226
+            },
+            "heavy": {
+              "pod": 0.0,
+              "far": "insufficient data",
+              "csi": 0.0,
+              "acc": 0.995835784388331
+            },
+            "very_heavy": {
+              "pod": 0.0,
+              "far": "insufficient data",
+              "csi": 0.0,
+              "acc": 0.9993685114730048
+            },
+            "extremely_heavy": {
+              "pod": 0.0,
+              "far": "insufficient data",
+              "csi": 0.0,
+              "acc": 0.9999639149413145
+            }
+          },
+          "zone_percentile": {
+            "p90": {
+              "pod": 0.011101622544833475,
+              "far": 0.5,
+              "csi": 0.01097972972972973,
+              "acc": 0.9577443933012313
+            },
+            "p95": {
+              "pod": 0.0019179132205138986,
+              "far": 0.0,
+              "csi": 0.0019179132205138986,
+              "acc": 0.9812213330074636
+            },
+            "p99": {
+              "pod": 0.0,
+              "far": "insufficient data",
+              "csi": 0.0,
+              "acc": 0.9963770600020518
+            }
+          }
+        }
+      }
+    },
+    "south_peninsular": {
+      "ALL": {
+        "n_days": 365,
+        "rmse": 9.881628384683466,
+        "mae": 3.7911434173583984,
+        "bias": -0.09485571831464767,
+        "thresholded": {
+          "absolute": {
+            "moderate": {
+              "pod": 0.018851473476188294,
+              "far": 0.76531122717614,
+              "csi": 0.017759713835846895,
+              "acc": 0.9467472364337094
+            },
+            "heavy": {
+              "pod": 0.0,
+              "far": "insufficient data",
+              "csi": 0.0,
+              "acc": 0.9953037839741958
+            },
+            "very_heavy": {
+              "pod": 0.0,
+              "far": "insufficient data",
+              "csi": 0.0,
+              "acc": 0.9988666859767705
+            },
+            "extremely_heavy": {
+              "pod": 0.0,
+              "far": "insufficient data",
+              "csi": 0.0,
+              "acc": 0.999842651673342
+            }
+          },
+          "zone_percentile": {
+            "p90": {
+              "pod": 0.21180075811145727,
+              "far": 0.6977702669294201,
+              "csi": 0.14224427897266595,
+              "acc": 0.8854188448613184
+            },
+            "p95": {
+              "pod": 0.013866792157516723,
+              "far": 0.7661755897877399,
+              "csi": 0.013264104357854021,
+              "acc": 0.9516965261512722
+            },
+            "p99": {
+              "pod": 0.0,
+              "far": "insufficient data",
+              "csi": 0.0,
+              "acc": 0.9891224094885609
+            }
+          }
+        }
+      },
+      "DJF": {
+        "n_days": 90,
+        "rmse": 9.8382706747786,
+        "mae": 1.248427152633667,
+        "bias": -0.5861046314239502,
+        "thresholded": {
+          "absolute": {
+            "moderate": {
+              "pod": 0.0,
+              "far": "insufficient data",
+              "csi": 0.0,
+              "acc": 0.9883238192056576
+            },
+            "heavy": {
+              "pod": 0.0,
+              "far": "insufficient data",
+              "csi": 0.0,
+              "acc": 0.995225960867437
+            },
+            "very_heavy": {
+              "pod": 0.0,
+              "far": "insufficient data",
+              "csi": 0.0,
+              "acc": 0.9973108052858343
+            },
+            "extremely_heavy": {
+              "pod": 0.0,
+              "far": "insufficient data",
+              "csi": 0.0,
+              "acc": 0.9996850811357049
+            }
+          },
+          "zone_percentile": {
+            "p90": {
+              "pod": 0.029635381686053994,
+              "far": 0.5734811299316103,
+              "csi": 0.02849976268366909,
+              "acc": 0.9837393687651733
+            },
+            "p95": {
+              "pod": 0.0,
+              "far": "insufficient data",
+              "csi": 0.0,
+              "acc": 0.988723513645285
+            },
+            "p99": {
+              "pod": 0.0,
+              "far": "insufficient data",
+              "csi": 0.0,
+              "acc": 0.993376002428904
+            }
+          }
+        }
+      },
+      "MAM": {
+        "n_days": 92,
+        "rmse": 6.8355546910760445,
+        "mae": 2.4046366214752197,
+        "bias": -0.9729342460632324,
+        "thresholded": {
+          "absolute": {
+            "moderate": {
+              "pod": 0.0,
+              "far": 1.0,
+              "csi": 0.0,
+              "acc": 0.9621103081555318
+            },
+            "heavy": {
+              "pod": 0.0,
+              "far": "insufficient data",
+              "csi": 0.0,
+              "acc": 0.9987605456540362
+            },
+            "very_heavy": {
+              "pod": 0.0,
+              "far": "insufficient data",
+              "csi": 0.0,
+              "acc": 0.9999604763008915
+            },
+            "extremely_heavy": {
+              "pod": "insufficient data",
+              "far": "insufficient data",
+              "csi": "insufficient data",
+              "acc": 1.0
+            }
+          },
+          "zone_percentile": {
+            "p90": {
+              "pod": 0.0024290939516914954,
+              "far": 0.8384508025550375,
+              "csi": 0.0023988512619952745,
+              "acc": 0.9290777812564939
+            },
+            "p95": {
+              "pod": 0.0,
+              "far": "insufficient data",
+              "csi": 0.0,
+              "acc": 0.9659066126119106
+            },
+            "p99": {
+              "pod": 0.0,
+              "far": "insufficient data",
+              "csi": 0.0,
+              "acc": 0.99449532446737
+            }
+          }
+        }
+      },
+      "JJAS": {
+        "n_days": 122,
+        "rmse": 12.848276404246343,
+        "mae": 6.700077056884766,
+        "bias": -0.1089656725525856,
+        "thresholded": {
+          "absolute": {
+            "moderate": {
+              "pod": 0.027235123426514105,
+              "far": 0.7520032842282919,
+              "csi": 0.02515748319301941,
+              "acc": 0.8922119725790502
+            },
+            "heavy": {
+              "pod": 0.0,
+              "far": "insufficient data",
+              "csi": 0.0,
+              "acc": 0.9910891752818446
+            },
+            "very_heavy": {
+              "pod": 0.0,
+              "far": "insufficient data",
+              "csi": 0.0,
+              "acc": 0.9986418453681668
+            },
+            "extremely_heavy": {
+              "pod": 0.0,
+              "far": "insufficient data",
+              "csi": 0.0,
+              "acc": 0.9997615619426659
+            }
+          },
+          "zone_percentile": {
+            "p90": {
+              "pod": 0.2890719771148522,
+              "far": 0.6581197457643648,
+              "csi": 0.1857235498721953,
+              "acc": 0.7759716860635208
+            },
+            "p95": {
+              "pod": 0.020362536252178768,
+              "far": 0.7556346131947521,
+              "csi": 0.019156343695752285,
+              "acc": 0.9019644742043362
+            },
+            "p99": {
+              "pod": 0.0,
+              "far": "insufficient data",
+              "csi": 0.0,
+              "acc": 0.9783571424991625
+            }
+          }
+        }
+      },
+      "OND": {
+        "n_days": 61,
+        "rmse": 6.390997769584404,
+        "mae": 3.815948963165283,
+        "bias": 1.9824730157852173,
+        "thresholded": {
+          "absolute": {
+            "moderate": {
+              "pod": 0.007338053511815244,
+              "far": 0.9059095812972321,
+              "csi": 0.006853821896520028,
+              "acc": 0.9713047102267985
+            },
+            "heavy": {
+              "pod": 0.0,
+              "far": "insufficient data",
+              "csi": 0.0,
+              "acc": 0.998634348291417
+            },
+            "very_heavy": {
+              "pod": 0.0,
+              "far": "insufficient data",
+              "csi": 0.0,
+              "acc": 0.9999622783518984
+            },
+            "extremely_heavy": {
+              "pod": "insufficient data",
+              "far": "insufficient data",
+              "csi": "insufficient data",
+              "acc": 1.0
+            }
+          },
+          "zone_percentile": {
+            "p90": {
+              "pod": 0.19648721487242424,
+              "far": 0.8576140639066878,
+              "csi": 0.0899883043732885,
+              "acc": 0.8934037892753484
+            },
+            "p95": {
+              "pod": 0.0023219875669357134,
+              "far": 0.9408911780516168,
+              "csi": 0.0022392230216836807,
+              "acc": 0.9750990497586288
+            },
+            "p99": {
+              "pod": 0.0,
+              "far": "insufficient data",
+              "csi": 0.0,
+              "acc": 0.996273737547878
+            }
+          }
+        }
+      }
+    },
+    "western_ghats": {
+      "ALL": {
+        "n_days": 365,
+        "rmse": 9.465170628525753,
+        "mae": 3.787475824356079,
+        "bias": 0.5258350372314453,
+        "thresholded": {
+          "absolute": {
+            "moderate": {
+              "pod": 0.36187399623502203,
+              "far": 0.5806703265869868,
+              "csi": 0.24107124512242245,
+              "acc": 0.9376986522479648
+            },
+            "heavy": {
+              "pod": 0.011427273146544542,
+              "far": 0.15789473684210525,
+              "csi": 0.011402841262465876,
+              "acc": 0.9927836441742695
+            },
+            "very_heavy": {
+              "pod": 0.0,
+              "far": "insufficient data",
+              "csi": 0.0,
+              "acc": 0.9983816932286309
+            },
+            "extremely_heavy": {
+              "pod": 0.0,
+              "far": "insufficient data",
+              "csi": 0.0,
+              "acc": 0.9998597105297145
+            }
+          },
+          "zone_percentile": {
+            "p90": {
+              "pod": 0.4273306534924132,
+              "far": 0.5544516109793736,
+              "csi": 0.2789763371025978,
+              "acc": 0.9038694406051134
+            },
+            "p95": {
+              "pod": 0.35536726916613126,
+              "far": 0.586625329263412,
+              "csi": 0.23623332199997632,
+              "acc": 0.9503508523960804
+            },
+            "p99": {
+              "pod": 0.03670685357692927,
+              "far": 0.45081967213114754,
+              "csi": 0.03563313833043675,
+              "acc": 0.9905668940706549
+            }
+          }
+        }
+      },
+      "DJF": {
+        "n_days": 90,
+        "rmse": 3.2740148272104532,
+        "mae": 0.32448914647102356,
+        "bias": -0.002009619027376175,
+        "thresholded": {
+          "absolute": {
+            "moderate": {
+              "pod": 0.0,
+              "far": "insufficient data",
+              "csi": 0.0,
+              "acc": 0.9968280030990226
+            },
+            "heavy": {
+              "pod": 0.0,
+              "far": "insufficient data",
+              "csi": 0.0,
+              "acc": 0.999712855218183
+            },
+            "very_heavy": {
+              "pod": 0.0,
+              "far": "insufficient data",
+              "csi": 0.0,
+              "acc": 0.9998916483297448
+            },
+            "extremely_heavy": {
+              "pod": 0.0,
+              "far": "insufficient data",
+              "csi": 0.0,
+              "acc": 0.9999352913610405
+            }
+          },
+          "zone_percentile": {
+            "p90": {
+              "pod": 0.0036172791566200417,
+              "far": 0.4588500617698701,
+              "csi": 0.0036062183391669467,
+              "acc": 0.9947005799761095
+            },
+            "p95": {
+              "pod": 0.0,
+              "far": "insufficient data",
+              "csi": 0.0,
+              "acc": 0.9977228880214107
+            },
+            "p99": {
+              "pod": 0.0,
+              "far": "insufficient data",
+              "csi": 0.0,
+              "acc": 0.9996748787887828
+            }
+          }
+        }
+      },
+      "MAM": {
+        "n_days": 92,
+        "rmse": 4.260679482932466,
+        "mae": 1.5755351781845093,
+        "bias": -0.02095382660627365,
+        "thresholded": {
+          "absolute": {
+            "moderate": {
+              "pod": 0.0,
+              "far": 1.0,
+              "csi": 0.0,
+              "acc": 0.981772142457197
+            },
+            "heavy": {
+              "pod": 0.0,
+              "far": "insufficient data",
+              "csi": 0.0,
+              "acc": 0.9996997498674496
+            },
+            "very_heavy": {
+              "pod": "insufficient data",
+              "far": "insufficient data",
+              "csi": "insufficient data",
+              "acc": 1.0
+            },
+            "extremely_heavy": {
+              "pod": "insufficient data",
+              "far": "insufficient data",
+              "csi": "insufficient data",
+              "acc": 1.0
+            }
+          },
+          "zone_percentile": {
+            "p90": {
+              "pod": 0.01994311723960758,
+              "far": 0.8685055623724602,
+              "csi": 0.017621922623763307,
+              "acc": 0.9612249816392102
+            },
+            "p95": {
+              "pod": 0.0,
+              "far": "insufficient data",
+              "csi": 0.0,
+              "acc": 0.9877769651313668
+            },
+            "p99": {
+              "pod": 0.0,
+              "far": "insufficient data",
+              "csi": 0.0,
+              "acc": 0.999418050886818
+            }
+          }
+        }
+      },
+      "JJAS": {
+        "n_days": 122,
+        "rmse": 14.791338708363087,
+        "mae": 8.187081336975098,
+        "bias": 1.279731273651123,
+        "thresholded": {
+          "absolute": {
+            "moderate": {
+              "pod": 0.464130944511977,
+              "far": 0.5803079140216998,
+              "csi": 0.28270440585819784,
+              "acc": 0.8499888381736264
+            },
+            "heavy": {
+              "pod": 0.012399688645513381,
+              "far": 0.15789473684210525,
+              "csi": 0.012370926962527432,
+              "acc": 0.9801190863855113
+            },
+            "very_heavy": {
+              "pod": 0.0,
+              "far": "insufficient data",
+              "csi": 0.0,
+              "acc": 0.9953376920586712
+            },
+            "extremely_heavy": {
+              "pod": 0.0,
+              "far": "insufficient data",
+              "csi": 0.0,
+              "acc": 0.999628017381378
+            }
+          },
+          "zone_percentile": {
+            "p90": {
+              "pod": 0.5282925642745512,
+              "far": 0.5424221275887346,
+              "csi": 0.3248534764190295,
+              "acc": 0.7820641306590143
+            },
+            "p95": {
+              "pod": 0.44862492804106396,
+              "far": 0.5865964316538832,
+              "csi": 0.2741245114352962,
+              "acc": 0.8783423252829298
+            },
+            "p99": {
+              "pod": 0.04057884052830033,
+              "far": 0.45081967213114754,
+              "csi": 0.039270694863572785,
+              "acc": 0.9744887361035914
+            }
+          }
+        }
+      },
+      "OND": {
+        "n_days": 61,
+        "rmse": 7.436839629017417,
+        "mae": 3.4336302280426025,
+        "bias": 0.6214942932128906,
+        "thresholded": {
+          "absolute": {
+            "moderate": {
+              "pod": 0.0041584379395865016,
+              "far": 0.6687116447760865,
+              "csi": 0.004123823049142896,
+              "acc": 0.9594067529636817
+            },
+            "heavy": {
+              "pod": 0.0,
+              "far": "insufficient data",
+              "csi": 0.0,
+              "acc": 0.9974584815514723
+            },
+            "very_heavy": {
+              "pod": 0.0,
+              "far": "insufficient data",
+              "csi": 0.0,
+              "acc": 0.9998011683051153
+            },
+            "extremely_heavy": {
+              "pod": "insufficient data",
+              "far": "insufficient data",
+              "csi": "insufficient data",
+              "acc": 1.0
+            }
+          },
+          "zone_percentile": {
+            "p90": {
+              "pod": 0.18542821654636685,
+              "far": 0.6453487107494986,
+              "csi": 0.13864638058795237,
+              "acc": 0.9269634731746081
+            },
+            "p95": {
+              "pod": 0.0,
+              "far": 1.0,
+              "csi": 0.0,
+              "acc": 0.9680287784327427
+            },
+            "p99": {
+              "pod": 0.0,
+              "far": "insufficient data",
+              "csi": 0.0,
+              "acc": 0.9959359231909498
+            }
+          }
+        }
+      }
+    },
+    "thar_arid": {
+      "ALL": {
+        "n_days": 365,
+        "rmse": 9.057222602258962,
+        "mae": 2.0784199237823486,
+        "bias": -0.5794150233268738,
+        "thresholded": {
+          "absolute": {
+            "moderate": {
+              "pod": 0.0018532638947566906,
+              "far": 0.7993311043189725,
+              "csi": 0.0018396830456732362,
+              "acc": 0.9714340403773668
+            },
+            "heavy": {
+              "pod": 0.0,
+              "far": "insufficient data",
+              "csi": 0.0,
+              "acc": 0.9971764234049595
+            },
+            "very_heavy": {
+              "pod": 0.0,
+              "far": "insufficient data",
+              "csi": 0.0,
+              "acc": 0.9989588626943502
+            },
+            "extremely_heavy": {
+              "pod": 0.0,
+              "far": "insufficient data",
+              "csi": 0.0,
+              "acc": 0.999657780405666
+            }
+          },
+          "zone_percentile": {
+            "p90": {
+              "pod": 0.7199067976023403,
+              "far": 0.7697978843761771,
+              "csi": 0.21127902819523967,
+              "acc": 0.651490863918916
+            },
+            "p95": {
+              "pod": 0.17018562791855465,
+              "far": 0.8122033121378609,
+              "csi": 0.09803110044031724,
+              "acc": 0.8963118678202048
+            },
+            "p99": {
+              "pod": 0.0,
+              "far": "insufficient data",
+              "csi": 0.0,
+              "acc": 0.9842258898985463
+            }
+          }
+        }
+      },
+      "DJF": {
+        "n_days": 90,
+        "rmse": 0.8142098927037444,
+        "mae": 0.11144565045833588,
+        "bias": 0.01756211370229721,
+        "thresholded": {
+          "absolute": {
+            "moderate": {
+              "pod": 0.0,
+              "far": "insufficient data",
+              "csi": 0.0,
+              "acc": 0.9992420997885422
+            },
+            "heavy": {
+              "pod": "insufficient data",
+              "far": "insufficient data",
+              "csi": "insufficient data",
+              "acc": 1.0
+            },
+            "very_heavy": {
+              "pod": "insufficient data",
+              "far": "insufficient data",
+              "csi": "insufficient data",
+              "acc": 1.0
+            },
+            "extremely_heavy": {
+              "pod": "insufficient data",
+              "far": "insufficient data",
+              "csi": "insufficient data",
+              "acc": 1.0
+            }
+          },
+          "zone_percentile": {
+            "p90": {
+              "pod": 0.05703726389317736,
+              "far": 0.9891470279044356,
+              "csi": 0.009201912877843244,
+              "acc": 0.948276084061475
+            },
+            "p95": {
+              "pod": 0.0,
+              "far": "insufficient data",
+              "csi": 0.0,
+              "acc": 0.9961938584019234
+            },
+            "p99": {
+              "pod": 0.0,
+              "far": "insufficient data",
+              "csi": 0.0,
+              "acc": 0.9998665612778759
+            }
+          }
+        }
+      },
+      "MAM": {
+        "n_days": 92,
+        "rmse": 3.6526912094491624,
+        "mae": 0.8447468280792236,
+        "bias": -0.5800424814224243,
+        "thresholded": {
+          "absolute": {
+            "moderate": {
+              "pod": 0.0,
+              "far": "insufficient data",
+              "csi": 0.0,
+              "acc": 0.9876199682331784
+            },
+            "heavy": {
+              "pod": "insufficient data",
+              "far": "insufficient data",
+              "csi": "insufficient data",
+              "acc": 1.0
+            },
+            "very_heavy": {
+              "pod": "insufficient data",
+              "far": "insufficient data",
+              "csi": "insufficient data",
+              "acc": 1.0
+            },
+            "extremely_heavy": {
+              "pod": "insufficient data",
+              "far": "insufficient data",
+              "csi": "insufficient data",
+              "acc": 1.0
+            }
+          },
+          "zone_percentile": {
+            "p90": {
+              "pod": 0.24399974460185156,
+              "far": 0.8180056789856108,
+              "csi": 0.1163732252918154,
+              "acc": 0.7566059815107373
+            },
+            "p95": {
+              "pod": 0.0,
+              "far": 1.0,
+              "csi": 0.0,
+              "acc": 0.9549205261390642
+            },
+            "p99": {
+              "pod": 0.0,
+              "far": "insufficient data",
+              "csi": 0.0,
+              "acc": 0.9942061093448883
+            }
+          }
+        }
+      },
+      "JJAS": {
+        "n_days": 122,
+        "rmse": 15.112202871408668,
+        "mae": 5.195483207702637,
+        "bias": -1.1768330335617065,
+        "thresholded": {
+          "absolute": {
+            "moderate": {
+              "pod": 0.002241743218056322,
+              "far": 0.7993311043189725,
+              "csi": 0.0022219024941680095,
+              "acc": 0.929271659440588
+            },
+            "heavy": {
+              "pod": 0.0,
+              "far": "insufficient data",
+              "csi": 0.0,
+              "acc": 0.9916713180173977
+            },
+            "very_heavy": {
+              "pod": 0.0,
+              "far": "insufficient data",
+              "csi": 0.0,
+              "acc": 0.9968854089597972
+            },
+            "extremely_heavy": {
+              "pod": 0.0,
+              "far": "insufficient data",
+              "csi": 0.0,
+              "acc": 0.9989762405834629
+            }
+          },
+          "zone_percentile": {
+            "p90": {
+              "pod": 0.959549358521477,
+              "far": 0.7348444159475875,
+              "csi": 0.26222447420459355,
+              "acc": 0.29802790957682623
+            },
+            "p95": {
+              "pod": 0.22324314777446197,
+              "far": 0.8119640959590461,
+              "csi": 0.11366795704432711,
+              "acc": 0.7371229205664208
+            },
+            "p99": {
+              "pod": 0.0,
+              "far": "insufficient data",
+              "csi": 0.0,
+              "acc": 0.959938708250599
+            }
+          }
+        }
+      },
+      "OND": {
+        "n_days": 61,
+        "rmse": 3.5998373004045203,
+        "mae": 0.6061971187591553,
+        "bias": -0.2642446756362915,
+        "thresholded": {
+          "absolute": {
+            "moderate": {
+              "pod": 0.0,
+              "far": "insufficient data",
+              "csi": 0.0,
+              "acc": 0.9903294014634555
+            },
+            "heavy": {
+              "pod": 0.0,
+              "far": "insufficient data",
+              "csi": 0.0,
+              "acc": 0.9997636175199123
+            },
+            "very_heavy": {
+              "pod": "insufficient data",
+              "far": "insufficient data",
+              "csi": "insufficient data",
+              "acc": 1.0
+            },
+            "extremely_heavy": {
+              "pod": "insufficient data",
+              "far": "insufficient data",
+              "csi": "insufficient data",
+              "acc": 1.0
+            }
+          },
+          "zone_percentile": {
+            "p90": {
+              "pod": 0.2320644746830507,
+              "far": 0.950788323880057,
+              "csi": 0.042319931035206634,
+              "acc": 0.7620635569304334
+            },
+            "p95": {
+              "pod": 0.0,
+              "far": 1.0,
+              "csi": 0.0,
+              "acc": 0.9789751626835629
+            },
+            "p99": {
+              "pod": 0.0,
+              "far": "insufficient data",
+              "csi": 0.0,
+              "acc": 0.9946774776528859
+            }
+          }
+        }
+      }
+    },
+    "himalayan": {
+      "ALL": {
+        "n_days": 365,
+        "rmse": 7.300777653333761,
+        "mae": 3.251461982727051,
+        "bias": 0.5174933075904846,
+        "thresholded": {
+          "absolute": {
+            "moderate": {
+              "pod": 0.10982499809489692,
+              "far": 0.6123459151735674,
+              "csi": 0.09358901656424005,
+              "acc": 0.9584048964690197
+            },
+            "heavy": {
+              "pod": 0.0,
+              "far": "insufficient data",
+              "csi": 0.0,
+              "acc": 0.9971738813482468
+            },
+            "very_heavy": {
+              "pod": 0.0,
+              "far": "insufficient data",
+              "csi": 0.0,
+              "acc": 0.9994397426538043
+            },
+            "extremely_heavy": {
+              "pod": 0.0,
+              "far": "insufficient data",
+              "csi": 0.0,
+              "acc": 0.9999493026526493
+            }
+          },
+          "zone_percentile": {
+            "p90": {
+              "pod": 0.318059643461174,
+              "far": 0.557241543942721,
+              "csi": 0.22713684722475821,
+              "acc": 0.918539188822694
+            },
+            "p95": {
+              "pod": 0.08966434542182544,
+              "far": 0.6266313697709811,
+              "csi": 0.07793610675309898,
+              "acc": 0.9620044053541528
+            },
+            "p99": {
+              "pod": 0.0,
+              "far": "insufficient data",
+              "csi": 0.0,
+              "acc": 0.9932308688840169
+            }
+          }
+        }
+      },
+      "DJF": {
+        "n_days": 90,
+        "rmse": 3.975798579055771,
+        "mae": 2.389465093612671,
+        "bias": 1.0777231454849243,
+        "thresholded": {
+          "absolute": {
+            "moderate": {
+              "pod": 0.0,
+              "far": "insufficient data",
+              "csi": 0.0,
+              "acc": 0.9846634776770729
+            },
+            "heavy": {
+              "pod": 0.0,
+              "far": "insufficient data",
+              "csi": 0.0,
+              "acc": 0.9999601376261164
+            },
+            "very_heavy": {
+              "pod": "insufficient data",
+              "far": "insufficient data",
+              "csi": "insufficient data",
+              "acc": 1.0
+            },
+            "extremely_heavy": {
+              "pod": "insufficient data",
+              "far": "insufficient data",
+              "csi": "insufficient data",
+              "acc": 1.0
+            }
+          },
+          "zone_percentile": {
+            "p90": {
+              "pod": 0.0,
+              "far": 1.0,
+              "csi": 0.0,
+              "acc": 0.9634273217296963
+            },
+            "p95": {
+              "pod": 0.0,
+              "far": "insufficient data",
+              "csi": 0.0,
+              "acc": 0.9858740336695558
+            },
+            "p99": {
+              "pod": 0.0,
+              "far": "insufficient data",
+              "csi": 0.0,
+              "acc": 0.999301359383927
+            }
+          }
+        }
+      },
+      "MAM": {
+        "n_days": 92,
+        "rmse": 5.349869741637861,
+        "mae": 3.234977960586548,
+        "bias": 0.6331607103347778,
+        "thresholded": {
+          "absolute": {
+            "moderate": {
+              "pod": 6.157256881116131e-05,
+              "far": 0.9887640438150868,
+              "csi": 6.124074285775275e-05,
+              "acc": 0.9664882440806989
+            },
+            "heavy": {
+              "pod": 0.0,
+              "far": "insufficient data",
+              "csi": 0.0,
+              "acc": 0.9998173354748985
+            },
+            "very_heavy": {
+              "pod": "insufficient data",
+              "far": "insufficient data",
+              "csi": "insufficient data",
+              "acc": 1.0
+            },
+            "extremely_heavy": {
+              "pod": "insufficient data",
+              "far": "insufficient data",
+              "csi": "insufficient data",
+              "acc": 1.0
+            }
+          },
+          "zone_percentile": {
+            "p90": {
+              "pod": 0.05994276101996985,
+              "far": 0.6908569243441656,
+              "csi": 0.05286158319707869,
+              "acc": 0.9168178648215258
+            },
+            "p95": {
+              "pod": 0.0,
+              "far": 1.0,
+              "csi": 0.0,
+              "acc": 0.9709666045963713
+            },
+            "p99": {
+              "pod": 0.0,
+              "far": "insufficient data",
+              "csi": 0.0,
+              "acc": 0.9985345790406855
+            }
+          }
+        }
+      },
+      "JJAS": {
+        "n_days": 122,
+        "rmse": 10.990091818690194,
+        "mae": 4.861547946929932,
+        "bias": 0.14130465686321259,
+        "thresholded": {
+          "absolute": {
+            "moderate": {
+              "pod": 0.17203074341204738,
+              "far": 0.6107750763862424,
+              "csi": 0.1354623860935744,
+              "acc": 0.9180049215132661
+            },
+            "heavy": {
+              "pod": 0.0,
+              "far": "insufficient data",
+              "csi": 0.0,
+              "acc": 0.991818756453951
+            },
+            "very_heavy": {
+              "pod": 0.0,
+              "far": "insufficient data",
+              "csi": 0.0,
+              "acc": 0.9983238200490152
+            },
+            "extremely_heavy": {
+              "pod": 0.0,
+              "far": "insufficient data",
+              "csi": 0.0,
+              "acc": 0.9998483235038553
+            }
+          },
+          "zone_percentile": {
+            "p90": {
+              "pod": 0.5267624572472711,
+              "far": 0.5471694042161483,
+              "csi": 0.32188286078557954,
+              "acc": 0.8583264273224328
+            },
+            "p95": {
+              "pod": 0.1379096040203181,
+              "far": 0.6260691353809117,
+              "csi": 0.1120395736155129,
+              "acc": 0.9238506684802994
+            },
+            "p99": {
+              "pod": 0.0,
+              "far": "insufficient data",
+              "csi": 0.0,
+              "acc": 0.9818529901152725
+            }
+          }
+        }
+      },
+      "OND": {
+        "n_days": 61,
+        "rmse": 3.2988015674372364,
+        "mae": 1.3279528617858887,
+        "bias": 0.26885297894477844,
+        "thresholded": {
+          "absolute": {
+            "moderate": {
+              "pod": 0.0,
+              "far": "insufficient data",
+              "csi": 0.0,
+              "acc": 0.9882713822590913
+            },
+            "heavy": {
+              "pod": 0.0,
+              "far": "insufficient data",
+              "csi": 0.0,
+              "acc": 0.9997864147311237
+            },
+            "very_heavy": {
+              "pod": "insufficient data",
+              "far": "insufficient data",
+              "csi": "insufficient data",
+              "acc": 1.0
+            },
+            "extremely_heavy": {
+              "pod": "insufficient data",
+              "far": "insufficient data",
+              "csi": "insufficient data",
+              "acc": 1.0
+            }
+          },
+          "zone_percentile": {
+            "p90": {
+              "pod": 0.06888996394173456,
+              "far": 0.3604519670756698,
+              "csi": 0.06631516658410876,
+              "acc": 0.9753324480284963
+            },
+            "p95": {
+              "pod": 0.0,
+              "far": "insufficient data",
+              "csi": 0.0,
+              "acc": 0.9895776581147362
+            },
+            "p99": {
+              "pod": 0.0,
+              "far": "insufficient data",
+              "csi": 0.0,
+              "acc": 0.9990311276596411
+            }
+          }
+        }
+      }
+    },
+    "tamilnadu_ne": {
+      "ALL": {
+        "n_days": 365,
+        "rmse": 10.384076761860628,
+        "mae": 4.009060859680176,
+        "bias": -0.14522232115268707,
+        "thresholded": {
+          "absolute": {
+            "moderate": {
+              "pod": 0.034037764844836865,
+              "far": 0.7052328069658365,
+              "csi": 0.031474610496944645,
+              "acc": 0.9421237846362857
+            },
+            "heavy": {
+              "pod": 0.0,
+              "far": "insufficient data",
+              "csi": 0.0,
+              "acc": 0.9958253432720637
+            },
+            "very_heavy": {
+              "pod": 0.0,
+              "far": "insufficient data",
+              "csi": 0.0,
+              "acc": 0.9992128888657099
+            },
+            "extremely_heavy": {
+              "pod": 0.0,
+              "far": "insufficient data",
+              "csi": 0.0,
+              "acc": 0.9997934006480046
+            }
+          },
+          "zone_percentile": {
+            "p90": {
+              "pod": 0.16071082661423108,
+              "far": 0.6727866700573004,
+              "csi": 0.12079532080234745,
+              "acc": 0.8873367995690591
+            },
+            "p95": {
+              "pod": 0.023618139584644503,
+              "far": 0.7226851619404668,
+              "csi": 0.022248749076296582,
+              "acc": 0.951080866645321
+            },
+            "p99": {
+              "pod": 0.0,
+              "far": "insufficient data",
+              "csi": 0.0,
+              "acc": 0.99039747444403
+            }
+          }
+        }
+      },
+      "DJF": {
+        "n_days": 90,
+        "rmse": 13.602526374448658,
+        "mae": 2.5132336616516113,
+        "bias": -0.2091410756111145,
+        "thresholded": {
+          "absolute": {
+            "moderate": {
+              "pod": 0.003119441341260771,
+              "far": 0.9473684210526315,
+              "csi": 0.0029535970328464184,
+              "acc": 0.9767429342137995
+            },
+            "heavy": {
+              "pod": 0.0,
+              "far": "insufficient data",
+              "csi": 0.0,
+              "acc": 0.9950100041906133
+            },
+            "very_heavy": {
+              "pod": 0.0,
+              "far": "insufficient data",
+              "csi": 0.0,
+              "acc": 0.9977218404512621
+            },
+            "extremely_heavy": {
+              "pod": 0.0,
+              "far": "insufficient data",
+              "csi": 0.0,
+              "acc": 0.9991621248439297
+            }
+          },
+          "zone_percentile": {
+            "p90": {
+              "pod": 0.12178672577414203,
+              "far": 0.760175283883155,
+              "csi": 0.08786738166865257,
+              "acc": 0.9569455934965737
+            },
+            "p95": {
+              "pod": 0.0,
+              "far": 1.0,
+              "csi": 0.0,
+              "acc": 0.9798980485952001
+            },
+            "p99": {
+              "pod": 0.0,
+              "far": "insufficient data",
+              "csi": 0.0,
+              "acc": 0.9924021516313558
+            }
+          }
+        }
+      },
+      "MAM": {
+        "n_days": 92,
+        "rmse": 7.264659456933999,
+        "mae": 2.826007843017578,
+        "bias": -0.6987741589546204,
+        "thresholded": {
+          "absolute": {
+            "moderate": {
+              "pod": 0.0,
+              "far": 1.0,
+              "csi": 0.0,
+              "acc": 0.9589734944060555
+            },
+            "heavy": {
+              "pod": 0.0,
+              "far": "insufficient data",
+              "csi": 0.0,
+              "acc": 0.9980634375062031
+            },
+            "very_heavy": {
+              "pod": 0.0,
+              "far": "insufficient data",
+              "csi": 0.0,
+              "acc": 0.999946081790907
+            },
+            "extremely_heavy": {
+              "pod": "insufficient data",
+              "far": "insufficient data",
+              "csi": "insufficient data",
+              "acc": 1.0
+            }
+          },
+          "zone_percentile": {
+            "p90": {
+              "pod": 0.007636137179580801,
+              "far": 0.8066115819538767,
+              "csi": 0.0074004342823391685,
+              "acc": 0.9237260689796364
+            },
+            "p95": {
+              "pod": 0.0,
+              "far": "insufficient data",
+              "csi": 0.0,
+              "acc": 0.9649499986040386
+            },
+            "p99": {
+              "pod": 0.0,
+              "far": "insufficient data",
+              "csi": 0.0,
+              "acc": 0.994812315893968
+            }
+          }
+        }
+      },
+      "JJAS": {
+        "n_days": 122,
+        "rmse": 8.53083592453913,
+        "mae": 4.359899044036865,
+        "bias": 0.010100123472511768,
+        "thresholded": {
+          "absolute": {
+            "moderate": {
+              "pod": 0.04543985355391595,
+              "far": 0.7681640670900833,
+              "csi": 0.039493677815018995,
+              "acc": 0.9314828715219988
+            },
+            "heavy": {
+              "pod": 0.0,
+              "far": "insufficient data",
+              "csi": 0.0,
+              "acc": 0.9972025921685991
+            },
+            "very_heavy": {
+              "pod": 0.0,
+              "far": "insufficient data",
+              "csi": 0.0,
+              "acc": 0.999762818811304
+            },
+            "extremely_heavy": {
+              "pod": "insufficient data",
+              "far": "insufficient data",
+              "csi": "insufficient data",
+              "acc": 1.0
+            }
+          },
+          "zone_percentile": {
+            "p90": {
+              "pod": 0.09157178316509534,
+              "far": 0.7029427814129598,
+              "csi": 0.07526295360441462,
+              "acc": 0.8771154176439311
+            },
+            "p95": {
+              "pod": 0.038005622993728345,
+              "far": 0.7825413902319193,
+              "csi": 0.033433106339542655,
+              "acc": 0.9426562782851293
+            },
+            "p99": {
+              "pod": 0.0,
+              "far": "insufficient data",
+              "csi": 0.0,
+              "acc": 0.9912567702748839
+            }
+          }
+        }
+      },
+      "OND": {
+        "n_days": 61,
+        "rmse": 12.127139475691054,
+        "mae": 7.298616409301758,
+        "bias": 0.4733039140701294,
+        "thresholded": {
+          "absolute": {
+            "moderate": {
+              "pod": 0.049177064027553945,
+              "far": 0.536851088775622,
+              "csi": 0.04652501060327888,
+              "acc": 0.8869155069301494
+            },
+            "heavy": {
+              "pod": 0.0,
+              "far": "insufficient data",
+              "csi": 0.0,
+              "acc": 0.9908983167371457
+            },
+            "very_heavy": {
+              "pod": 0.0,
+              "far": "insufficient data",
+              "csi": 0.0,
+              "acc": 0.9992071371123514
+            },
+            "extremely_heavy": {
+              "pod": "insufficient data",
+              "far": "insufficient data",
+              "csi": "insufficient data",
+              "acc": 1.0
+            }
+          },
+          "zone_percentile": {
+            "p90": {
+              "pod": 0.3360750329672927,
+              "far": 0.6466582127729495,
+              "csi": 0.20808852716170884,
+              "acc": 0.7501958748908671
+            },
+            "p95": {
+              "pod": 0.028050399184671566,
+              "far": 0.4458742080395835,
+              "csi": 0.02743125930626024,
+              "acc": 0.904495484995181
+            },
+            "p99": {
+              "pod": 0.0,
+              "far": "insufficient data",
+              "csi": 0.0,
+              "acc": 0.9790627103779908
+            }
+          }
+        }
+      }
+    }
+  },
+  "runtime_s": 17.9625
+}

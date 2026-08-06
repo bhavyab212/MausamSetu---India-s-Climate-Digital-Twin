@@ -1,0 +1,225 @@
+{
+  "_generated_by": "Phase 0a audit — climate_twin training-area rebuild",
+  "_scope": "climate_twin/**/*.py, excluding _archive*, __pycache__, and .tmp.* scratch files",
+  "_summary": {
+    "total_findings": 180,
+    "files_scanned": 20,
+    "top_offenders_by_count": [
+      {"file": "climate_twin/app_v2.py", "count": 55},
+      {"file": "climate_twin/training/loops.py", "count": 33},
+      {"file": "climate_twin/data/rounds_builder.py", "count": 13},
+      {"file": "climate_twin/training/ensemble.py", "count": 11},
+      {"file": "climate_twin/training/reward_calibration.py", "count": 10},
+      {"file": "climate_twin/training/model.py", "count": 10},
+      {"file": "climate_twin/_demo_partb.py", "count": 10},
+      {"file": "climate_twin/training/schedule.py", "count": 9},
+      {"file": "climate_twin/src/model.py", "count": 8},
+      {"file": "climate_twin/bench_baseline.py", "count": 8}
+    ],
+    "duplication_hazards": [
+      "Huber δ = 0.08 duplicated at climate_twin/training/loops.py:137 AND climate_twin/src/model.py:31",
+      "seq_length divergence: RoundConfig=30 (loops.py:54), DEFAULT_HYPERPARAMS=10 (rounds_builder.py:80), fallback=5 (app_v2.py:2801, 3592, 3639)",
+      "epochs divergence: RoundConfig=25 (loops.py:29), DEFAULT_HYPERPARAMS=30 (rounds_builder.py:76), src/model.py=50",
+      "patience divergence: RoundConfig=5 (loops.py:43), DEFAULT_HYPERPARAMS=8 (rounds_builder.py:77), inline ReduceLROnPlateau patience=3 (loops.py:111)",
+      "India bbox divergence: src/zones.py:8-9 = (7.5, 37.5, 67.5, 97.5) vs bench_baseline.py:32 = (6.5, 38.5, 66.5, 100.0) vs data_source.py MASTER = (6.5, 38.5, 66.5, 100.0)",
+      "channels=2 hardcoded in constructor defaults (training/model.py:67, app_v2.py:2620, 2694, src/ensemble.py:21) despite the cube now carrying 4 channels"
+    ],
+    "config_load_mechanism": {
+      "hydra": false,
+      "pydantic": false,
+      "omegaconf": false,
+      "yaml_reads_that_touch_training_config": [],
+      "yaml_reads_that_touch_data_provenance_only": [
+        "climate_twin/data_source.py:143 — manifest.yaml",
+        "climate_twin/data/rounds_builder.py:256 — rounds_<region>.yaml (summary-only, not consumed by training)"
+      ],
+      "in_memory_dataclass_configs": [
+        "climate_twin/training/loops.py:24 — RoundConfig (34 fields, defaults ARE the training hyperparams)",
+        "climate_twin/training/schedule.py:35 — ScheduleConfig",
+        "climate_twin/rl/envs/base_env.py:15 — ReservoirConfig (this one IS hydrated from yaml at base_env.py:44-49)"
+      ],
+      "note": "No training-config yaml is currently READ into any training code path. config/rounds_<region>.yaml is written but never consumed. Every training run is parametrised by Streamlit widget defaults (app_v2.py:3371-3499) that get poured into a RoundConfig(...) constructor at app_v2.py:3502-3511. 'MAX MODE' at app_v2.py:3491-3499 silently overrides 6 fields."
+    }
+  },
+  "categories": {
+    "learning_rates": [
+      {"file": "climate_twin/training/loops.py", "line": 27, "name": "RoundConfig.lr", "literal": "1e-3", "category": "learning_rate", "note": "dataclass default"},
+      {"file": "climate_twin/app_v2.py", "line": 3371, "name": "hp_lr (widget default)", "literal": "1e-3", "category": "learning_rate", "note": "Streamlit slider default"},
+      {"file": "climate_twin/app_v2.py", "line": 3492, "name": "MAX_MODE lr override", "literal": "1e-4", "category": "learning_rate", "note": "silent override in MAX MODE block"},
+      {"file": "climate_twin/app_v2.py", "line": 3515, "name": "fine-tune lr divisor", "literal": "hp_lr / 10.0", "category": "learning_rate", "note": "heuristic divide-by-10 for fine-tune"},
+      {"file": "climate_twin/training/reward_calibration.py", "line": 97, "name": "calibration_finetune.lr", "literal": "1e-4", "category": "learning_rate"},
+      {"file": "climate_twin/training/reward_calibration.py", "line": 114, "name": "AdamW inside calibration", "literal": "weight_decay=1e-5", "category": "learning_rate", "note": "bypasses cfg.weight_decay"},
+      {"file": "climate_twin/src/model.py", "line": 67, "name": "TF Adam lr", "literal": "learning_rate=1e-3", "category": "learning_rate", "note": "legacy TF path"},
+      {"file": "climate_twin/rl/agent.py", "line": 77, "name": "PPOConfig.lr", "literal": "3e-4", "category": "learning_rate"},
+      {"file": "climate_twin/app_v2.py", "line": 3987, "name": "RL panel lr widget default", "literal": "3e-4", "category": "learning_rate"}
+    ],
+    "epoch_counts": [
+      {"file": "climate_twin/training/loops.py", "line": 29, "name": "RoundConfig.epochs", "literal": 25, "category": "epochs"},
+      {"file": "climate_twin/data/rounds_builder.py", "line": 76, "name": "DEFAULT_HYPERPARAMS.epochs_per_round", "literal": 30, "category": "epochs", "note": "diverges from RoundConfig=25"},
+      {"file": "climate_twin/app_v2.py", "line": 3377, "name": "hp_epochs widget default", "literal": 25, "category": "epochs"},
+      {"file": "climate_twin/app_v2.py", "line": 3491, "name": "MAX_MODE epochs override", "literal": 99999, "category": "epochs", "note": "silent"},
+      {"file": "climate_twin/app_v2.py", "line": 2655, "name": "calibration epochs widget default", "literal": 6, "category": "epochs"},
+      {"file": "climate_twin/training/reward_calibration.py", "line": 96, "name": "calibration_finetune.n_epochs", "literal": 10, "category": "epochs"},
+      {"file": "climate_twin/src/model.py", "line": 77, "name": "TF fit epochs", "literal": 50, "category": "epochs", "note": "legacy TF path"},
+      {"file": "climate_twin/_demo_partb.py", "line": 29, "name": "cfg.epochs (demo v1)", "literal": 4, "category": "epochs"},
+      {"file": "climate_twin/_demo_partb.py", "line": 37, "name": "cfg.epochs (demo v2)", "literal": 4, "category": "epochs"},
+      {"file": "climate_twin/_demo_partb.py", "line": 47, "name": "cfg.epochs (demo ft)", "literal": 4, "category": "epochs"}
+    ],
+    "batch_sizes": [
+      {"file": "climate_twin/training/loops.py", "line": 28, "name": "RoundConfig.batch_size", "literal": 8, "category": "batch_size"},
+      {"file": "climate_twin/app_v2.py", "line": 3374, "name": "hp_batch widget default", "literal": 8, "category": "batch_size"},
+      {"file": "climate_twin/src/model.py", "line": 78, "name": "TF fit batch_size", "literal": 2, "category": "batch_size", "note": "legacy TF path"},
+      {"file": "climate_twin/rl/agent.py", "line": 92, "name": "PPO batch_size", "literal": 64, "category": "batch_size"},
+      {"file": "climate_twin/_demo_partb.py", "line": 29, "name": "cfg.batch_size (demo)", "literal": 8, "category": "batch_size"}
+    ],
+    "seq_length_windows": [
+      {"file": "climate_twin/training/loops.py", "line": 54, "name": "RoundConfig.seq_length", "literal": 30, "category": "seq_length"},
+      {"file": "climate_twin/training/model.py", "line": 64, "name": "ClimateTwinModel.seq_length ctor default", "literal": 30, "category": "seq_length"},
+      {"file": "climate_twin/data/rounds_builder.py", "line": 80, "name": "DEFAULT_HYPERPARAMS.seq_length", "literal": 10, "category": "seq_length", "note": "diverges from RoundConfig=30"},
+      {"file": "climate_twin/app_v2.py", "line": 2801, "name": "seq_len fallback (Deep Think)", "literal": 5, "category": "seq_length", "note": "diverges from both above"},
+      {"file": "climate_twin/app_v2.py", "line": 3592, "name": "seq_length fallback (resume)", "literal": 5, "category": "seq_length"},
+      {"file": "climate_twin/app_v2.py", "line": 3639, "name": "seq_len heuristic", "literal": "max(2, min(5, train_win - 2))", "category": "seq_length"},
+      {"file": "climate_twin/src/data_preprocessing.py", "line": 10, "name": "DataPreprocessor.seq_length ctor", "literal": 30, "category": "seq_length"},
+      {"file": "climate_twin/bench_baseline.py", "line": 46, "name": "bench seq", "literal": "min(30, len(rain)-1)", "category": "seq_length"},
+      {"file": "climate_twin/_demo_partb.py", "line": 13, "name": "demo seq", "literal": 5, "category": "seq_length"}
+    ],
+    "hidden_dims_channels": [
+      {"file": "climate_twin/training/loops.py", "line": 55, "name": "RoundConfig.hidden", "literal": 32, "category": "hidden"},
+      {"file": "climate_twin/training/model.py", "line": 65, "name": "ClimateTwinModel.lat_dim ctor default", "literal": 129, "category": "grid_geometry", "note": "India-specific baked into a supposedly region-agnostic class"},
+      {"file": "climate_twin/training/model.py", "line": 65, "name": "ClimateTwinModel.lon_dim ctor default", "literal": 135, "category": "grid_geometry"},
+      {"file": "climate_twin/training/model.py", "line": 67, "name": "ClimateTwinModel.channels ctor default", "literal": 2, "category": "channels", "note": "cube has 4; default is stale"},
+      {"file": "climate_twin/training/model.py", "line": 68, "name": "ClimateTwinModel.hidden", "literal": 32, "category": "hidden"},
+      {"file": "climate_twin/training/model.py", "line": 20, "name": "ConvLSTMCell.kernel_size", "literal": 3, "category": "kernel"},
+      {"file": "climate_twin/src/ensemble.py", "line": 21, "name": "TF ensemble input channels", "literal": 2, "category": "channels"},
+      {"file": "climate_twin/src/ensemble.py", "line": 24, "name": "TF ConvLSTM filters", "literal": 32, "category": "hidden"},
+      {"file": "climate_twin/src/ensemble.py", "line": 29, "name": "TF head filters", "literal": 2, "category": "channels"},
+      {"file": "climate_twin/src/unet_model.py", "line": 6, "name": "unet channels default", "literal": 2, "category": "channels"},
+      {"file": "climate_twin/app_v2.py", "line": 2613, "name": "hidden fallback (Deep Think)", "literal": 32, "category": "hidden"},
+      {"file": "climate_twin/app_v2.py", "line": 2620, "name": "ClimateTwinModel(channels=2, ...)", "literal": 2, "category": "channels"},
+      {"file": "climate_twin/app_v2.py", "line": 2694, "name": "ClimateTwinModel(channels=2, ...) [calib]", "literal": 2, "category": "channels"},
+      {"file": "climate_twin/_demo_partb.py", "line": 14, "name": "arch dict inline", "literal": "{seq_length,hidden=32,channels=2,residual_scale=0.1}", "category": "channels"}
+    ],
+    "dropout": [
+      {"file": "climate_twin/training/loops.py", "line": 31, "name": "RoundConfig.dropout", "literal": 0.1, "category": "dropout"},
+      {"file": "climate_twin/training/model.py", "line": 69, "name": "ClimateTwinModel.dropout ctor default", "literal": 0.1, "category": "dropout"},
+      {"file": "climate_twin/app_v2.py", "line": 3386, "name": "hp_dropout widget default", "literal": 0.1, "category": "dropout"},
+      {"file": "climate_twin/app_v2.py", "line": 2697, "name": "ClimateTwinModel dropout (calib)", "literal": 0.1, "category": "dropout"},
+      {"file": "climate_twin/app_v2.py", "line": 2863, "name": "ClimateTwinModel dropout (Deep Think)", "literal": 0.1, "category": "dropout"},
+      {"file": "climate_twin/app_v2.py", "line": 3594, "name": "ClimateTwinModel dropout (resume)", "literal": "hp_dropout", "category": "dropout", "note": "config-driven"},
+      {"file": "climate_twin/_demo_partb.py", "line": 23, "name": "demo dropout", "literal": 0.1, "category": "dropout"}
+    ],
+    "optimizer_scheduler_precision_strings": [
+      {"file": "climate_twin/training/loops.py", "line": 32, "name": "RoundConfig.optimizer_name", "literal": "AdamW", "category": "optimizer"},
+      {"file": "climate_twin/training/loops.py", "line": 33, "name": "RoundConfig.scheduler_name", "literal": "cosine", "category": "scheduler"},
+      {"file": "climate_twin/training/loops.py", "line": 38, "name": "RoundConfig.mixed_precision", "literal": "bf16", "category": "precision"},
+      {"file": "climate_twin/data/rounds_builder.py", "line": 70, "name": "DEFAULT_HYPERPARAMS.optimizer", "literal": "AdamW", "category": "optimizer"},
+      {"file": "climate_twin/data/rounds_builder.py", "line": 71, "name": "DEFAULT_HYPERPARAMS.scheduler", "literal": "cosine", "category": "scheduler"},
+      {"file": "climate_twin/data/rounds_builder.py", "line": 72, "name": "DEFAULT_HYPERPARAMS.precision", "literal": "bf16", "category": "precision"},
+      {"file": "climate_twin/app_v2.py", "line": 3380, "name": "hp_optimizer options", "literal": "['AdamW','SGD']", "category": "optimizer"},
+      {"file": "climate_twin/app_v2.py", "line": 3391, "name": "hp_sched options", "literal": "['cosine','plateau','step','none']", "category": "scheduler"},
+      {"file": "climate_twin/app_v2.py", "line": 3406, "name": "hp_mp options", "literal": "['bf16','fp16','fp32']", "category": "precision"},
+      {"file": "climate_twin/training/loops.py", "lines": [286, 287, 288], "name": "amp_dtype literals in step", "literal": "'bf16','fp16'", "category": "precision", "note": "duplicated from cfg as inline string comparisons"},
+      {"file": "climate_twin/src/model.py", "line": 67, "name": "TF Adam optimizer literal", "literal": "Adam", "category": "optimizer", "note": "legacy TF path"},
+      {"file": "climate_twin/training/loops.py", "line": 92, "name": "SGD momentum", "literal": 0.9, "category": "optimizer", "note": "buried; not in config"}
+    ],
+    "loss_weights_physics": [
+      {"file": "climate_twin/training/loops.py", "line": 46, "name": "RoundConfig.physics_water_balance", "literal": 0.10, "category": "physics_weight"},
+      {"file": "climate_twin/training/loops.py", "line": 47, "name": "RoundConfig.physics_spatial_smooth", "literal": 0.05, "category": "physics_weight"},
+      {"file": "climate_twin/training/loops.py", "line": 48, "name": "RoundConfig.physics_temporal_smooth", "literal": 0.05, "category": "physics_weight"},
+      {"file": "climate_twin/training/loops.py", "line": 49, "name": "RoundConfig.physics_tmax_tmin", "literal": 0.02, "category": "physics_weight"},
+      {"file": "climate_twin/app_v2.py", "line": 3428, "name": "hp_phys_spatial widget default", "literal": 0.05, "category": "physics_weight"},
+      {"file": "climate_twin/app_v2.py", "line": 3431, "name": "hp_phys_temporal widget default", "literal": 0.05, "category": "physics_weight"},
+      {"file": "climate_twin/app_v2.py", "line": 3495, "name": "MAX_MODE phys_spatial", "literal": 0.15, "category": "physics_weight", "note": "silent override"},
+      {"file": "climate_twin/app_v2.py", "line": 3496, "name": "MAX_MODE phys_temporal", "literal": 0.15, "category": "physics_weight"},
+      {"file": "climate_twin/training/reward_calibration.py", "line": 98, "name": "calibration_finetune.lambda_crps", "literal": 1.0, "category": "physics_weight"},
+      {"file": "climate_twin/training/loops.py", "line": 137, "name": "Huber loss delta", "literal": 0.08, "category": "loss_threshold", "note": "DUPLICATED at src/model.py:31"},
+      {"file": "climate_twin/src/model.py", "line": 31, "name": "TF Huber loss delta", "literal": 0.08, "category": "loss_threshold", "note": "DUPLICATE"}
+    ],
+    "split_years_thresholds": [
+      {"file": "climate_twin/data_source.py", "line": 87, "name": "DEFAULT_START_YEAR", "literal": 2018, "category": "split_year"},
+      {"file": "climate_twin/data_source.py", "line": 88, "name": "DEFAULT_END_YEAR", "literal": 2025, "category": "split_year"},
+      {"file": "climate_twin/data/build_cube.py", "line": 415, "name": "build_all.years default", "literal": "(2018, 2025)", "category": "split_year"},
+      {"file": "climate_twin/data/build_cube.py", "line": 416, "name": "build_all.train_years default", "literal": "(2018, 2023)", "category": "split_year"},
+      {"file": "climate_twin/training/schedule.py", "line": 38, "name": "ScheduleConfig.start_year", "literal": 1975, "category": "split_year", "note": "1975 predates new cube by 43 years"},
+      {"file": "climate_twin/training/schedule.py", "line": 39, "name": "ScheduleConfig.end_year", "literal": 2024, "category": "split_year"},
+      {"file": "climate_twin/data/rounds_builder.py", "line": 88, "name": "DEFAULT_INITIAL_WINDOW_YEARS", "literal": 6, "category": "split_year"},
+      {"file": "climate_twin/data/rounds_builder.py", "line": 90, "name": "DEFAULT_ROLLING_WINDOW_YEARS", "literal": 6, "category": "split_year"},
+      {"file": "climate_twin/app_v2.py", "lines": [253, 257], "name": "START_YEAR/END_YEAR fallbacks", "literal": "2018 / 2025", "category": "split_year"},
+      {"file": "climate_twin/app_v2.py", "line": 3115, "name": "_data_end_year", "literal": 2025, "category": "split_year"},
+      {"file": "climate_twin/app_v2.py", "line": 3248, "name": "validation-split-year widget default", "literal": 2024, "category": "split_year"},
+      {"file": "climate_twin/data/build_cube.py", "line": 135, "name": "train_years auto-derive fraction", "literal": 0.8, "category": "split_year", "note": "if None, uses 0.8*span"}
+    ],
+    "early_stopping": [
+      {"file": "climate_twin/training/loops.py", "line": 42, "name": "RoundConfig.early_stopping", "literal": true, "category": "early_stopping"},
+      {"file": "climate_twin/training/loops.py", "line": 43, "name": "RoundConfig.patience", "literal": 5, "category": "early_stopping"},
+      {"file": "climate_twin/training/loops.py", "line": 44, "name": "RoundConfig.min_delta", "literal": "1e-4", "category": "early_stopping"},
+      {"file": "climate_twin/training/loops.py", "line": 45, "name": "RoundConfig.monitor", "literal": "val_rmse", "category": "early_stopping"},
+      {"file": "climate_twin/training/loops.py", "line": 111, "name": "ReduceLROnPlateau inline factor+patience", "literal": "factor=0.5, patience=3", "category": "early_stopping", "note": "SHADOW: not in config; conflates plateau-detector patience with early-stopping patience"},
+      {"file": "climate_twin/training/loops.py", "line": 114, "name": "StepLR gamma+step_size", "literal": "step_size=epochs//3, gamma=0.5", "category": "early_stopping"},
+      {"file": "climate_twin/data/rounds_builder.py", "line": 77, "name": "DEFAULT_HYPERPARAMS.patience", "literal": 8, "category": "early_stopping", "note": "diverges from RoundConfig=5"},
+      {"file": "climate_twin/data/rounds_builder.py", "line": 78, "name": "DEFAULT_HYPERPARAMS.min_delta", "literal": "0.0001", "category": "early_stopping"},
+      {"file": "climate_twin/data/rounds_builder.py", "line": 79, "name": "DEFAULT_HYPERPARAMS.monitor", "literal": "val_rmse", "category": "early_stopping"},
+      {"file": "climate_twin/app_v2.py", "line": 3417, "name": "hp_patience widget default", "literal": 5, "category": "early_stopping"},
+      {"file": "climate_twin/app_v2.py", "line": 3420, "name": "hp_min_delta widget default", "literal": "1e-4", "category": "early_stopping"},
+      {"file": "climate_twin/app_v2.py", "line": 3423, "name": "hp_monitor widget default", "literal": "val_rmse", "category": "early_stopping"},
+      {"file": "climate_twin/src/model.py", "line": 89, "name": "TF EarlyStopping patience", "literal": 20, "category": "early_stopping", "note": "legacy TF path"},
+      {"file": "climate_twin/src/model.py", "line": 90, "name": "TF ReduceLROnPlateau factor+patience+min_lr", "literal": "factor=0.5, patience=6, min_lr=1e-5", "category": "early_stopping"}
+    ],
+    "mc_samples_ensemble": [
+      {"file": "climate_twin/training/loops.py", "line": 57, "name": "RoundConfig.mc_samples", "literal": 20, "category": "mc_samples"},
+      {"file": "climate_twin/training/model.py", "line": 123, "name": "predict_ensemble n_samples", "literal": 20, "category": "mc_samples"},
+      {"file": "climate_twin/training/model.py", "line": 136, "name": "MC sample chunk", "literal": "min(n_samples, 8)", "category": "mc_samples"},
+      {"file": "climate_twin/training/ensemble.py", "line": 25, "name": "apply_tta_single mc_samples", "literal": 10, "category": "mc_samples"},
+      {"file": "climate_twin/training/ensemble.py", "line": 121, "name": "DeepEnsemble.predict_ensemble mc_samples_per_model", "literal": 10, "category": "mc_samples"},
+      {"file": "climate_twin/training/ensemble.py", "line": 123, "name": "DeepEnsemble.refine_passes", "literal": 1, "category": "mc_samples"},
+      {"file": "climate_twin/training/ensemble.py", "line": 198, "name": "train_deep_ensemble k_models", "literal": 5, "category": "mc_samples"},
+      {"file": "climate_twin/training/ensemble.py", "line": 217, "name": "seed decorrelation stride", "literal": "i * 100", "category": "mc_samples"},
+      {"file": "climate_twin/training/ensemble.py", "line": 248, "name": "min(len(p50), 50) metrics cap", "literal": 50, "category": "mc_samples"},
+      {"file": "climate_twin/training/ensemble.py", "line": 49, "name": "TTA noise magnitude", "literal": 0.005, "category": "mc_samples"},
+      {"file": "climate_twin/training/ensemble.py", "line": 62, "name": "iterative refinement max_passes", "literal": 3, "category": "mc_samples"},
+      {"file": "climate_twin/training/ensemble.py", "line": 175, "name": "Gaussian z-score for p10/p90", "literal": 1.28, "category": "mc_samples", "note": "assumes Gaussian, not derived"},
+      {"file": "climate_twin/training/reward_calibration.py", "line": 99, "name": "calibration_finetune.mc_samples", "literal": 8, "category": "mc_samples"},
+      {"file": "climate_twin/training/reward_calibration.py", "line": 160, "name": "evaluate_calibration.mc_samples", "literal": 20, "category": "mc_samples"},
+      {"file": "climate_twin/app_v2.py", "line": 2726, "name": "calibration mc_samples inline", "literal": 8, "category": "mc_samples"},
+      {"file": "climate_twin/app_v2.py", "line": 2841, "name": "k_models Deep Think", "literal": 5, "category": "mc_samples"},
+      {"file": "climate_twin/app_v2.py", "line": 2895, "name": "mc_samples_per_model, refine_passes", "literal": "10, 3", "category": "mc_samples"}
+    ],
+    "physics_thresholds_constants": [
+      {"file": "climate_twin/training/loops.py", "line": 137, "name": "Huber delta", "literal": 0.08, "category": "loss_threshold"},
+      {"file": "climate_twin/src/model.py", "line": 31, "name": "TF Huber delta", "literal": 0.08, "category": "loss_threshold", "note": "DUPLICATE"},
+      {"file": "climate_twin/training/loops.py", "line": 143, "name": "loss denominator eps", "literal": "1e-8", "category": "eps"},
+      {"file": "climate_twin/training/reward_calibration.py", "line": 42, "name": "sigma floor", "literal": "1e-4", "category": "eps"},
+      {"file": "climate_twin/training/reward_calibration.py", "line": 81, "name": "gauss-fit p90/p10 divisor", "literal": 2.5631, "category": "eps", "note": "2*erfinv(0.8)"},
+      {"file": "climate_twin/training/reward_calibration.py", "line": 143, "name": "grad_clip inside calibration", "literal": 1.0, "category": "eps", "note": "bypasses cfg.grad_clip"},
+      {"file": "climate_twin/training/model.py", "line": 152, "name": "quantile p10", "literal": 0.10, "category": "quantile"},
+      {"file": "climate_twin/training/model.py", "line": 153, "name": "quantile p50", "literal": 0.50, "category": "quantile"},
+      {"file": "climate_twin/training/model.py", "line": 154, "name": "quantile p90", "literal": 0.90, "category": "quantile"},
+      {"file": "climate_twin/app_v2.py", "lines": [400, 401], "name": "rain/temp clipping", "literal": "0.0-600.0 mm; 5.0-55.0 °C", "category": "physics_bound"},
+      {"file": "climate_twin/app_v2.py", "line": 412, "name": "climatology anomaly clip", "literal": "-7.0 to 7.0", "category": "physics_bound"},
+      {"file": "climate_twin/app_v2.py", "line": 545, "name": "annual rain clip", "literal": "0.0-12000.0", "category": "physics_bound"},
+      {"file": "climate_twin/app_v2.py", "lines": [689, 1537], "name": "pred_rain_ann/denom clip", "literal": "0.45-2.35", "category": "physics_bound"},
+      {"file": "climate_twin/app_v2.py", "line": 691, "name": "temp anomaly clip", "literal": "-6.0 to 6.0", "category": "physics_bound"},
+      {"file": "climate_twin/app_v2.py", "line": 698, "name": "daily rain cap", "literal": "0.0-350.0", "category": "physics_bound"},
+      {"file": "climate_twin/app_v2.py", "line": 1369, "name": "distance decay", "literal": "exp(-dist/45.0), 0.72-1.0", "category": "physics_bound"},
+      {"file": "climate_twin/data/readers/imd_temperature.py", "line": 28, "name": "TEMP_FILL_GE", "literal": 90.0, "category": "sentinel"},
+      {"file": "climate_twin/data/readers/imd_temperature.py", "line": 79, "name": "sentinel_masked", "literal": 99.9, "category": "sentinel"},
+      {"file": "climate_twin/data/readers/insat_lst.py", "line": "~", "name": "INSAT_FILL", "literal": "-999.0", "category": "sentinel"},
+      {"file": "climate_twin/data/harmonize.py", "line": 200, "name": "sentinel check", "literal": "-998.0", "category": "sentinel"}
+    ],
+    "grid_geometry_scattered": [
+      {"file": "climate_twin/data_source.py", "line": "63-70", "name": "MASTER_NLAT/NLON/LAT0/LAT1/LON0/LON1", "literal": "129, 135, 6.5, 38.5, 66.5, 100.0", "category": "grid_geometry", "note": "canonical source"},
+      {"file": "climate_twin/training/model.py", "line": 65, "name": "ClimateTwinModel lat/lon ctor defaults", "literal": "lat_dim=129, lon_dim=135", "category": "grid_geometry", "note": "India-specific baked into model"},
+      {"file": "climate_twin/src/zones.py", "lines": [8, 9], "name": "zones LAT_MIN/MAX/LON_MIN/MAX", "literal": "7.5, 37.5, 67.5, 97.5", "category": "grid_geometry", "note": "DIFFERS from data_source master grid"},
+      {"file": "climate_twin/bench_baseline.py", "line": 32, "name": "bench India bbox inline", "literal": "6.5, 38.5, 66.5, 100.0", "category": "grid_geometry", "note": "matches data_source but duplicated"},
+      {"file": "climate_twin/src/data_preprocessing.py", "line": 44, "name": "ROWS, COLS", "literal": "31, 31", "category": "grid_geometry", "note": "IMD temp 1° grid"}
+    ],
+    "misc_hardcoded_that_shadow_config": [
+      {"file": "climate_twin/training/reward_calibration.py", "line": 114, "name": "AdamW weight_decay bypass", "literal": "1e-5", "category": "bypass", "note": "ignores cfg.weight_decay"},
+      {"file": "climate_twin/training/reward_calibration.py", "line": 143, "name": "grad_clip bypass", "literal": 1.0, "category": "bypass", "note": "ignores cfg.grad_clip"},
+      {"file": "climate_twin/training/loops.py", "line": 111, "name": "ReduceLROnPlateau patience shadow", "literal": 3, "category": "bypass", "note": "shadows cfg.patience"},
+      {"file": "climate_twin/app_v2.py", "lines": [3491, 3492, 3493, 3494, 3495, 3496, 3498], "name": "MAX_MODE silent override block", "literal": "epochs=99999, lr=1e-4, min_lr=1e-7, gradient_accum=8, phys_spatial=0.15, phys_temporal=0.15, halflife=15", "category": "bypass", "note": "6-field silent override"},
+      {"file": "climate_twin/app_v2.py", "line": 3515, "name": "fine-tune lr divide-by-10", "literal": "hp_lr/10.0", "category": "bypass"},
+      {"file": "climate_twin/app_v2.py", "line": 3522, "name": "B3 seed offset", "literal": "hp_seed+1000", "category": "bypass"}
+    ]
+  }
+}

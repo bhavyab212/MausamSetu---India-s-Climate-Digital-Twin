@@ -1,0 +1,7694 @@
+[
+  {
+    "kind": "started",
+    "ts": 1786018033.5495594,
+    "payload": {
+      "model_name": "partA_measure",
+      "region": "india",
+      "epochs": 30,
+      "device": "cuda:0  NVIDIA GeForce RTX 3060 Laptop GPU  6.0 GB  driver 555.97  torch 2.5.1+cu121 (cuda 12.1)",
+      "config_hash": "6209c2d41b44"
+    }
+  },
+  {
+    "kind": "log",
+    "ts": 1786018036.5377712,
+    "payload": {
+      "level": "info",
+      "message": "precision \u2192 bf16  (CUDA SM 8.6 \u2265 8.0 \u2192 bf16 (Ampere+ tensor cores))"
+    }
+  },
+  {
+    "kind": "log",
+    "ts": 1786018036.5377712,
+    "payload": {
+      "level": "info",
+      "message": "tuning batch size to saturate VRAM\u2026"
+    }
+  },
+  {
+    "kind": "batch_tuning",
+    "ts": 1786018039.812467,
+    "payload": {
+      "bs": 8,
+      "ok": true,
+      "peak_mb": 1932.49560546875,
+      "seconds": 3.16,
+      "error": null
+    }
+  },
+  {
+    "kind": "batch_tuning",
+    "ts": 1786018040.4714298,
+    "payload": {
+      "bs": 16,
+      "ok": true,
+      "peak_mb": 3820.2646484375,
+      "seconds": 0.52,
+      "error": null
+    }
+  },
+  {
+    "kind": "batch_tuning",
+    "ts": 1786018056.3795812,
+    "payload": {
+      "bs": 32,
+      "ok": false,
+      "peak_mb": 7608.4970703125,
+      "seconds": 15.74,
+      "error": "peak 7608 MB > 5836 MB VRAM cap (shared-memory spill would OOM in real run)"
+    }
+  },
+  {
+    "kind": "batch_tuned",
+    "ts": 1786018056.5299358,
+    "payload": {
+      "picked_bs": 13,
+      "peak_vram_mb": 3820.2646484375,
+      "total_vram_mb": 6143.5,
+      "tried": [
+        {
+          "bs": 8,
+          "ok": true,
+          "peak_mb": 1932.49560546875,
+          "seconds": 3.16,
+          "error": null
+        },
+        {
+          "bs": 16,
+          "ok": true,
+          "peak_mb": 3820.2646484375,
+          "seconds": 0.52,
+          "error": null
+        },
+        {
+          "bs": 32,
+          "ok": false,
+          "peak_mb": 7608.4970703125,
+          "seconds": 15.74,
+          "error": "peak 7608 MB > 5836 MB VRAM cap (shared-memory spill would OOM in real run)"
+        }
+      ],
+      "reason": "largest OK bs=16 (peak 3820/6144 MB) \u00d7 safety 0.85 \u2192 13"
+    }
+  },
+  {
+    "kind": "log",
+    "ts": 1786018056.5299358,
+    "payload": {
+      "level": "info",
+      "message": "batch size \u2192 13  (largest OK bs=16 (peak 3820/6144 MB) \u00d7 safety 0.85 \u2192 13)"
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786018081.016569,
+    "payload": {
+      "epoch": 1,
+      "batch": 1,
+      "total_batches": 27840,
+      "train_loss": 99.0293960571289,
+      "lr": 0.001,
+      "grad_norm": 31.30763053894043,
+      "elapsed": 47.34398470004089,
+      "samples_per_s": 0.7667142090425414,
+      "batch_size": 13,
+      "precision": "bf16",
+      "gpu_util_percent": 57.0,
+      "vram_used_mb": 41.2,
+      "vram_total_mb": 6143.5
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786018081.4420745,
+    "payload": {
+      "epoch": 1,
+      "batch": 2,
+      "total_batches": 27840,
+      "train_loss": 107.20511627197266,
+      "lr": 0.001,
+      "grad_norm": 29.799513816833496,
+      "elapsed": 47.882027100014966,
+      "samples_per_s": NaN,
+      "batch_size": 13,
+      "precision": "bf16",
+      "gpu_util_percent": null,
+      "vram_used_mb": null,
+      "vram_total_mb": null
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786018081.8729453,
+    "payload": {
+      "epoch": 1,
+      "batch": 3,
+      "total_batches": 27840,
+      "train_loss": 99.95838928222656,
+      "lr": 0.001,
+      "grad_norm": 28.38014793395996,
+      "elapsed": 48.31120990001364,
+      "samples_per_s": NaN,
+      "batch_size": 13,
+      "precision": "bf16",
+      "gpu_util_percent": null,
+      "vram_used_mb": null,
+      "vram_total_mb": null
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786018082.3839114,
+    "payload": {
+      "epoch": 1,
+      "batch": 4,
+      "total_batches": 27840,
+      "train_loss": 96.61502838134766,
+      "lr": 0.001,
+      "grad_norm": 29.61620569229126,
+      "elapsed": 48.72114980005426,
+      "samples_per_s": 28.319061131481433,
+      "batch_size": 13,
+      "precision": "bf16",
+      "gpu_util_percent": 100.0,
+      "vram_used_mb": 41.2,
+      "vram_total_mb": 6143.5
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786018082.787506,
+    "payload": {
+      "epoch": 1,
+      "batch": 5,
+      "total_batches": 27840,
+      "train_loss": 107.08723449707031,
+      "lr": 0.001,
+      "grad_norm": 28.891840744018555,
+      "elapsed": 49.226087200047914,
+      "samples_per_s": NaN,
+      "batch_size": 13,
+      "precision": "bf16",
+      "gpu_util_percent": null,
+      "vram_used_mb": null,
+      "vram_total_mb": null
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786018083.1995084,
+    "payload": {
+      "epoch": 1,
+      "batch": 6,
+      "total_batches": 27840,
+      "train_loss": 96.47601318359375,
+      "lr": 0.001,
+      "grad_norm": 28.678366978963215,
+      "elapsed": 49.63809720001882,
+      "samples_per_s": NaN,
+      "batch_size": 13,
+      "precision": "bf16",
+      "gpu_util_percent": null,
+      "vram_used_mb": null,
+      "vram_total_mb": null
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786018083.676752,
+    "payload": {
+      "epoch": 1,
+      "batch": 7,
+      "total_batches": 27840,
+      "train_loss": 94.78095245361328,
+      "lr": 0.001,
+      "grad_norm": 28.24667876107352,
+      "elapsed": 50.0467661000439,
+      "samples_per_s": 29.420273510672345,
+      "batch_size": 13,
+      "precision": "bf16",
+      "gpu_util_percent": 72.0,
+      "vram_used_mb": 41.2,
+      "vram_total_mb": 6143.5
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786018084.075097,
+    "payload": {
+      "epoch": 1,
+      "batch": 8,
+      "total_batches": 27840,
+      "train_loss": 92.33838653564453,
+      "lr": 0.001,
+      "grad_norm": 27.611197471618652,
+      "elapsed": 50.51796920003835,
+      "samples_per_s": NaN,
+      "batch_size": 13,
+      "precision": "bf16",
+      "gpu_util_percent": null,
+      "vram_used_mb": null,
+      "vram_total_mb": null
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786018084.4891746,
+    "payload": {
+      "epoch": 1,
+      "batch": 9,
+      "total_batches": 27840,
+      "train_loss": 100.78678894042969,
+      "lr": 0.001,
+      "grad_norm": 27.44424925910102,
+      "elapsed": 50.930296100035775,
+      "samples_per_s": NaN,
+      "batch_size": 13,
+      "precision": "bf16",
+      "gpu_util_percent": null,
+      "vram_used_mb": null,
+      "vram_total_mb": null
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786018084.989373,
+    "payload": {
+      "epoch": 1,
+      "batch": 10,
+      "total_batches": 27840,
+      "train_loss": 88.69298553466797,
+      "lr": 0.001,
+      "grad_norm": 26.984874725341797,
+      "elapsed": 51.3551324,
+      "samples_per_s": 29.808161550703073,
+      "batch_size": 13,
+      "precision": "bf16",
+      "gpu_util_percent": 91.0,
+      "vram_used_mb": 41.2,
+      "vram_total_mb": 6143.5
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786018085.3929858,
+    "payload": {
+      "epoch": 1,
+      "batch": 11,
+      "total_batches": 27840,
+      "train_loss": 100.43577575683594,
+      "lr": 0.001,
+      "grad_norm": 27.306161533702504,
+      "elapsed": 51.833677700022236,
+      "samples_per_s": NaN,
+      "batch_size": 13,
+      "precision": "bf16",
+      "gpu_util_percent": null,
+      "vram_used_mb": null,
+      "vram_total_mb": null
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786018085.8061175,
+    "payload": {
+      "epoch": 1,
+      "batch": 12,
+      "total_batches": 27840,
+      "train_loss": 94.30294799804688,
+      "lr": 0.001,
+      "grad_norm": 26.954894224802654,
+      "elapsed": 52.24923200003104,
+      "samples_per_s": NaN,
+      "batch_size": 13,
+      "precision": "bf16",
+      "gpu_util_percent": null,
+      "vram_used_mb": null,
+      "vram_total_mb": null
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786018086.3166702,
+    "payload": {
+      "epoch": 1,
+      "batch": 13,
+      "total_batches": 27840,
+      "train_loss": 89.7349853515625,
+      "lr": 0.001,
+      "grad_norm": 26.659492345956657,
+      "elapsed": 52.66520460002357,
+      "samples_per_s": 29.76936982173621,
+      "batch_size": 13,
+      "precision": "bf16",
+      "gpu_util_percent": 81.0,
+      "vram_used_mb": 41.2,
+      "vram_total_mb": 6143.5
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786018086.7199273,
+    "payload": {
+      "epoch": 1,
+      "batch": 14,
+      "total_batches": 27840,
+      "train_loss": 99.89698028564453,
+      "lr": 0.001,
+      "grad_norm": 26.610874039786204,
+      "elapsed": 53.1597146000131,
+      "samples_per_s": NaN,
+      "batch_size": 13,
+      "precision": "bf16",
+      "gpu_util_percent": null,
+      "vram_used_mb": null,
+      "vram_total_mb": null
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786018087.1261537,
+    "payload": {
+      "epoch": 1,
+      "batch": 15,
+      "total_batches": 27840,
+      "train_loss": 87.33963012695312,
+      "lr": 0.001,
+      "grad_norm": 26.545685704549154,
+      "elapsed": 53.56514210003661,
+      "samples_per_s": NaN,
+      "batch_size": 13,
+      "precision": "bf16",
+      "gpu_util_percent": null,
+      "vram_used_mb": null,
+      "vram_total_mb": null
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786018087.6006725,
+    "payload": {
+      "epoch": 1,
+      "batch": 16,
+      "total_batches": 27840,
+      "train_loss": 95.40885925292969,
+      "lr": 0.001,
+      "grad_norm": 26.36602473258972,
+      "elapsed": 53.969315900001675,
+      "samples_per_s": 29.905416070669496,
+      "batch_size": 13,
+      "precision": "bf16",
+      "gpu_util_percent": 84.0,
+      "vram_used_mb": 41.2,
+      "vram_total_mb": 6143.5
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786018088.0080464,
+    "payload": {
+      "epoch": 1,
+      "batch": 17,
+      "total_batches": 27840,
+      "train_loss": 77.98101043701172,
+      "lr": 0.001,
+      "grad_norm": 26.268630420460422,
+      "elapsed": 54.447739400027785,
+      "samples_per_s": NaN,
+      "batch_size": 13,
+      "precision": "bf16",
+      "gpu_util_percent": null,
+      "vram_used_mb": null,
+      "vram_total_mb": null
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786018088.4261348,
+    "payload": {
+      "epoch": 1,
+      "batch": 18,
+      "total_batches": 27840,
+      "train_loss": 87.43309783935547,
+      "lr": 0.001,
+      "grad_norm": 26.209900432162815,
+      "elapsed": 54.86436390003655,
+      "samples_per_s": NaN,
+      "batch_size": 13,
+      "precision": "bf16",
+      "gpu_util_percent": null,
+      "vram_used_mb": null,
+      "vram_total_mb": null
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786018088.9058642,
+    "payload": {
+      "epoch": 1,
+      "batch": 19,
+      "total_batches": 27840,
+      "train_loss": 90.75316619873047,
+      "lr": 0.001,
+      "grad_norm": 26.23844417772795,
+      "elapsed": 55.27084240003023,
+      "samples_per_s": 29.964821299189147,
+      "batch_size": 13,
+      "precision": "bf16",
+      "gpu_util_percent": 84.0,
+      "vram_used_mb": 41.2,
+      "vram_total_mb": 6143.5
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786018089.3192065,
+    "payload": {
+      "epoch": 1,
+      "batch": 20,
+      "total_batches": 27840,
+      "train_loss": 86.7142562866211,
+      "lr": 0.001,
+      "grad_norm": 26.232701206207274,
+      "elapsed": 55.75770310004009,
+      "samples_per_s": NaN,
+      "batch_size": 13,
+      "precision": "bf16",
+      "gpu_util_percent": null,
+      "vram_used_mb": null,
+      "vram_total_mb": null
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786018089.7303064,
+    "payload": {
+      "epoch": 1,
+      "batch": 21,
+      "total_batches": 27840,
+      "train_loss": 91.64511108398438,
+      "lr": 0.001,
+      "grad_norm": 26.315626598539808,
+      "elapsed": 56.16897690005135,
+      "samples_per_s": NaN,
+      "batch_size": 13,
+      "precision": "bf16",
+      "gpu_util_percent": null,
+      "vram_used_mb": null,
+      "vram_total_mb": null
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786018090.2190619,
+    "payload": {
+      "epoch": 1,
+      "batch": 22,
+      "total_batches": 27840,
+      "train_loss": 88.70067596435547,
+      "lr": 0.001,
+      "grad_norm": 26.470623363148082,
+      "elapsed": 56.581528200011235,
+      "samples_per_s": 29.755419606815405,
+      "batch_size": 13,
+      "precision": "bf16",
+      "gpu_util_percent": 79.0,
+      "vram_used_mb": 41.2,
+      "vram_total_mb": 6143.5
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786018090.6271846,
+    "payload": {
+      "epoch": 1,
+      "batch": 23,
+      "total_batches": 27840,
+      "train_loss": 85.32125091552734,
+      "lr": 0.001,
+      "grad_norm": 26.55417898426885,
+      "elapsed": 57.06697450001957,
+      "samples_per_s": NaN,
+      "batch_size": 13,
+      "precision": "bf16",
+      "gpu_util_percent": null,
+      "vram_used_mb": null,
+      "vram_total_mb": null
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786018091.0389647,
+    "payload": {
+      "epoch": 1,
+      "batch": 24,
+      "total_batches": 27840,
+      "train_loss": 86.3604736328125,
+      "lr": 0.001,
+      "grad_norm": 26.67301122347514,
+      "elapsed": 57.477397400012705,
+      "samples_per_s": NaN,
+      "batch_size": 13,
+      "precision": "bf16",
+      "gpu_util_percent": null,
+      "vram_used_mb": null,
+      "vram_total_mb": null
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786018091.6108725,
+    "payload": {
+      "epoch": 1,
+      "batch": 25,
+      "total_batches": 27840,
+      "train_loss": 82.42527770996094,
+      "lr": 0.001,
+      "grad_norm": 27.591225204467772,
+      "elapsed": 57.8962637000368,
+      "samples_per_s": 29.66373644651959,
+      "batch_size": 13,
+      "precision": "bf16",
+      "gpu_util_percent": 97.0,
+      "vram_used_mb": 41.2,
+      "vram_total_mb": 6143.5
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786018092.0353432,
+    "payload": {
+      "epoch": 1,
+      "batch": 26,
+      "total_batches": 27840,
+      "train_loss": 79.01907348632812,
+      "lr": 0.001,
+      "grad_norm": 28.02819640819843,
+      "elapsed": 58.47367580002174,
+      "samples_per_s": NaN,
+      "batch_size": 13,
+      "precision": "bf16",
+      "gpu_util_percent": null,
+      "vram_used_mb": null,
+      "vram_total_mb": null
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786018092.5564802,
+    "payload": {
+      "epoch": 1,
+      "batch": 27,
+      "total_batches": 27840,
+      "train_loss": 87.45039367675781,
+      "lr": 0.001,
+      "grad_norm": 28.19746603789153,
+      "elapsed": 58.90549070003908,
+      "samples_per_s": 25.76233728636014,
+      "batch_size": 13,
+      "precision": "bf16",
+      "gpu_util_percent": 100.0,
+      "vram_used_mb": 41.2,
+      "vram_total_mb": 6143.5
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786018092.9664752,
+    "payload": {
+      "epoch": 1,
+      "batch": 28,
+      "total_batches": 27840,
+      "train_loss": 81.4606704711914,
+      "lr": 0.001,
+      "grad_norm": 28.2757727759225,
+      "elapsed": 59.40521420002915,
+      "samples_per_s": NaN,
+      "batch_size": 13,
+      "precision": "bf16",
+      "gpu_util_percent": null,
+      "vram_used_mb": null,
+      "vram_total_mb": null
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786018093.3894432,
+    "payload": {
+      "epoch": 1,
+      "batch": 29,
+      "total_batches": 27840,
+      "train_loss": 78.00296783447266,
+      "lr": 0.001,
+      "grad_norm": 28.42390178811961,
+      "elapsed": 59.82805890002055,
+      "samples_per_s": NaN,
+      "batch_size": 13,
+      "precision": "bf16",
+      "gpu_util_percent": null,
+      "vram_used_mb": null,
+      "vram_total_mb": null
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786018093.8605967,
+    "payload": {
+      "epoch": 1,
+      "batch": 30,
+      "total_batches": 27840,
+      "train_loss": 86.69904327392578,
+      "lr": 0.001,
+      "grad_norm": 28.54571050008138,
+      "elapsed": 60.23176819999935,
+      "samples_per_s": 29.40561081762172,
+      "batch_size": 13,
+      "precision": "bf16",
+      "gpu_util_percent": 83.0,
+      "vram_used_mb": 41.2,
+      "vram_total_mb": 6143.5
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786018094.258254,
+    "payload": {
+      "epoch": 1,
+      "batch": 31,
+      "total_batches": 27840,
+      "train_loss": 84.33226013183594,
+      "lr": 0.001,
+      "grad_norm": 28.622652115360385,
+      "elapsed": 60.70073030004278,
+      "samples_per_s": NaN,
+      "batch_size": 13,
+      "precision": "bf16",
+      "gpu_util_percent": null,
+      "vram_used_mb": null,
+      "vram_total_mb": null
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786018094.6662538,
+    "payload": {
+      "epoch": 1,
+      "batch": 32,
+      "total_batches": 27840,
+      "train_loss": 81.99452209472656,
+      "lr": 0.001,
+      "grad_norm": 28.738295912742615,
+      "elapsed": 61.10548770002788,
+      "samples_per_s": NaN,
+      "batch_size": 13,
+      "precision": "bf16",
+      "gpu_util_percent": null,
+      "vram_used_mb": null,
+      "vram_total_mb": null
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786018095.136539,
+    "payload": {
+      "epoch": 1,
+      "batch": 33,
+      "total_batches": 27840,
+      "train_loss": 76.85084533691406,
+      "lr": 0.001,
+      "grad_norm": 28.881980086817887,
+      "elapsed": 61.51619590003975,
+      "samples_per_s": 30.363719993868504,
+      "batch_size": 13,
+      "precision": "bf16",
+      "gpu_util_percent": 100.0,
+      "vram_used_mb": 41.2,
+      "vram_total_mb": 6143.5
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786018095.5332887,
+    "payload": {
+      "epoch": 1,
+      "batch": 34,
+      "total_batches": 27840,
+      "train_loss": 88.25202178955078,
+      "lr": 0.001,
+      "grad_norm": 29.04991823084214,
+      "elapsed": 61.9736697000335,
+      "samples_per_s": NaN,
+      "batch_size": 13,
+      "precision": "bf16",
+      "gpu_util_percent": null,
+      "vram_used_mb": null,
+      "vram_total_mb": null
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786018095.9316022,
+    "payload": {
+      "epoch": 1,
+      "batch": 35,
+      "total_batches": 27840,
+      "train_loss": 74.3899917602539,
+      "lr": 0.001,
+      "grad_norm": 29.159717450823102,
+      "elapsed": 62.36998610000592,
+      "samples_per_s": NaN,
+      "batch_size": 13,
+      "precision": "bf16",
+      "gpu_util_percent": null,
+      "vram_used_mb": null,
+      "vram_total_mb": null
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786018096.414241,
+    "payload": {
+      "epoch": 1,
+      "batch": 36,
+      "total_batches": 27840,
+      "train_loss": 70.29888153076172,
+      "lr": 0.001,
+      "grad_norm": 29.283066855536568,
+      "elapsed": 62.78331190004246,
+      "samples_per_s": 30.77854568043052,
+      "batch_size": 13,
+      "precision": "bf16",
+      "gpu_util_percent": 80.0,
+      "vram_used_mb": 41.2,
+      "vram_total_mb": 6143.5
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786018096.8072956,
+    "payload": {
+      "epoch": 1,
+      "batch": 37,
+      "total_batches": 27840,
+      "train_loss": 81.67790222167969,
+      "lr": 0.001,
+      "grad_norm": 29.385313704207135,
+      "elapsed": 63.24728150002193,
+      "samples_per_s": NaN,
+      "batch_size": 13,
+      "precision": "bf16",
+      "gpu_util_percent": null,
+      "vram_used_mb": null,
+      "vram_total_mb": null
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786018097.2143,
+    "payload": {
+      "epoch": 1,
+      "batch": 38,
+      "total_batches": 27840,
+      "train_loss": 76.61498260498047,
+      "lr": 0.001,
+      "grad_norm": 29.516055960404245,
+      "elapsed": 63.65506810002262,
+      "samples_per_s": NaN,
+      "batch_size": 13,
+      "precision": "bf16",
+      "gpu_util_percent": null,
+      "vram_used_mb": null,
+      "vram_total_mb": null
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786018097.689319,
+    "payload": {
+      "epoch": 1,
+      "batch": 39,
+      "total_batches": 27840,
+      "train_loss": 70.29801940917969,
+      "lr": 0.001,
+      "grad_norm": 29.622423612154446,
+      "elapsed": 64.06068780005444,
+      "samples_per_s": 30.5313416367191,
+      "batch_size": 13,
+      "precision": "bf16",
+      "gpu_util_percent": 81.0,
+      "vram_used_mb": 41.2,
+      "vram_total_mb": 6143.5
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786018098.081822,
+    "payload": {
+      "epoch": 1,
+      "batch": 40,
+      "total_batches": 27840,
+      "train_loss": 78.09894561767578,
+      "lr": 0.001,
+      "grad_norm": 29.72659902572632,
+      "elapsed": 64.52294010005426,
+      "samples_per_s": NaN,
+      "batch_size": 13,
+      "precision": "bf16",
+      "gpu_util_percent": null,
+      "vram_used_mb": null,
+      "vram_total_mb": null
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786018098.483459,
+    "payload": {
+      "epoch": 1,
+      "batch": 41,
+      "total_batches": 27840,
+      "train_loss": 74.17643737792969,
+      "lr": 0.001,
+      "grad_norm": 29.78900230221632,
+      "elapsed": 64.92219730000943,
+      "samples_per_s": NaN,
+      "batch_size": 13,
+      "precision": "bf16",
+      "gpu_util_percent": null,
+      "vram_used_mb": null,
+      "vram_total_mb": null
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786018098.9478178,
+    "payload": {
+      "epoch": 1,
+      "batch": 42,
+      "total_batches": 27840,
+      "train_loss": 66.15330505371094,
+      "lr": 0.001,
+      "grad_norm": 29.9259516398112,
+      "elapsed": 65.32591320003849,
+      "samples_per_s": 30.824561768658306,
+      "batch_size": 13,
+      "precision": "bf16",
+      "gpu_util_percent": 100.0,
+      "vram_used_mb": 41.2,
+      "vram_total_mb": 6143.5
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786018099.3428454,
+    "payload": {
+      "epoch": 1,
+      "batch": 43,
+      "total_batches": 27840,
+      "train_loss": 74.41328430175781,
+      "lr": 0.001,
+      "grad_norm": 30.065405113752497,
+      "elapsed": 65.78186650003772,
+      "samples_per_s": NaN,
+      "batch_size": 13,
+      "precision": "bf16",
+      "gpu_util_percent": null,
+      "vram_used_mb": null,
+      "vram_total_mb": null
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786018099.7344773,
+    "payload": {
+      "epoch": 1,
+      "batch": 44,
+      "total_batches": 27840,
+      "train_loss": 81.43367004394531,
+      "lr": 0.001,
+      "grad_norm": 30.239234230735086,
+      "elapsed": 66.1743003000156,
+      "samples_per_s": NaN,
+      "batch_size": 13,
+      "precision": "bf16",
+      "gpu_util_percent": null,
+      "vram_used_mb": null,
+      "vram_total_mb": null
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786018100.1892672,
+    "payload": {
+      "epoch": 1,
+      "batch": 45,
+      "total_batches": 27840,
+      "train_loss": 72.5803451538086,
+      "lr": 0.001,
+      "grad_norm": 30.374530029296874,
+      "elapsed": 66.57447730004787,
+      "samples_per_s": 31.235876277784932,
+      "batch_size": 13,
+      "precision": "bf16",
+      "gpu_util_percent": 87.0,
+      "vram_used_mb": 41.2,
+      "vram_total_mb": 6143.5
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786018100.5813365,
+    "payload": {
+      "epoch": 1,
+      "batch": 46,
+      "total_batches": 27840,
+      "train_loss": 72.38238525390625,
+      "lr": 0.001,
+      "grad_norm": 30.514846387116805,
+      "elapsed": 67.02132140001049,
+      "samples_per_s": NaN,
+      "batch_size": 13,
+      "precision": "bf16",
+      "gpu_util_percent": null,
+      "vram_used_mb": null,
+      "vram_total_mb": null
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786018100.9806309,
+    "payload": {
+      "epoch": 1,
+      "batch": 47,
+      "total_batches": 27840,
+      "train_loss": 78.58114624023438,
+      "lr": 0.001,
+      "grad_norm": 30.655859845749877,
+      "elapsed": 67.41888090001885,
+      "samples_per_s": NaN,
+      "batch_size": 13,
+      "precision": "bf16",
+      "gpu_util_percent": null,
+      "vram_used_mb": null,
+      "vram_total_mb": null
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786018101.4529705,
+    "payload": {
+      "epoch": 1,
+      "batch": 48,
+      "total_batches": 27840,
+      "train_loss": 68.4450912475586,
+      "lr": 0.001,
+      "grad_norm": 30.808262586593628,
+      "elapsed": 67.8325311000226,
+      "samples_per_s": 31.000266523445635,
+      "batch_size": 13,
+      "precision": "bf16",
+      "gpu_util_percent": 80.0,
+      "vram_used_mb": 41.2,
+      "vram_total_mb": 6143.5
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786018101.848783,
+    "payload": {
+      "epoch": 1,
+      "batch": 49,
+      "total_batches": 27840,
+      "train_loss": 69.84703826904297,
+      "lr": 0.001,
+      "grad_norm": 30.953212348782287,
+      "elapsed": 68.28730930003803,
+      "samples_per_s": NaN,
+      "batch_size": 13,
+      "precision": "bf16",
+      "gpu_util_percent": null,
+      "vram_used_mb": null,
+      "vram_total_mb": null
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786018102.2502325,
+    "payload": {
+      "epoch": 1,
+      "batch": 50,
+      "total_batches": 27840,
+      "train_loss": 71.41683197021484,
+      "lr": 0.001,
+      "grad_norm": 31.086392822265626,
+      "elapsed": 68.6887693000026,
+      "samples_per_s": NaN,
+      "batch_size": 13,
+      "precision": "bf16",
+      "gpu_util_percent": null,
+      "vram_used_mb": null,
+      "vram_total_mb": null
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786018102.747666,
+    "payload": {
+      "epoch": 1,
+      "batch": 51,
+      "total_batches": 27840,
+      "train_loss": 69.74634552001953,
+      "lr": 0.001,
+      "grad_norm": 31.19917372161267,
+      "elapsed": 69.09868490003282,
+      "samples_per_s": 30.80190144028362,
+      "batch_size": 13,
+      "precision": "bf16",
+      "gpu_util_percent": 100.0,
+      "vram_used_mb": 41.2,
+      "vram_total_mb": 6143.5
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786018103.152049,
+    "payload": {
+      "epoch": 1,
+      "batch": 52,
+      "total_batches": 27840,
+      "train_loss": 54.19188690185547,
+      "lr": 0.001,
+      "grad_norm": 31.28987070230337,
+      "elapsed": 69.59152960003121,
+      "samples_per_s": NaN,
+      "batch_size": 13,
+      "precision": "bf16",
+      "gpu_util_percent": null,
+      "vram_used_mb": null,
+      "vram_total_mb": null
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786018103.552306,
+    "payload": {
+      "epoch": 1,
+      "batch": 53,
+      "total_batches": 27840,
+      "train_loss": 59.412635803222656,
+      "lr": 0.001,
+      "grad_norm": 31.432578104846883,
+      "elapsed": 69.99076570000034,
+      "samples_per_s": NaN,
+      "batch_size": 13,
+      "precision": "bf16",
+      "gpu_util_percent": null,
+      "vram_used_mb": null,
+      "vram_total_mb": null
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786018104.0257452,
+    "payload": {
+      "epoch": 1,
+      "batch": 54,
+      "total_batches": 27840,
+      "train_loss": 60.267059326171875,
+      "lr": 0.001,
+      "grad_norm": 31.543679767184788,
+      "elapsed": 70.38885710004251,
+      "samples_per_s": 30.228567500076807,
+      "batch_size": 13,
+      "precision": "bf16",
+      "gpu_util_percent": 88.0,
+      "vram_used_mb": 41.2,
+      "vram_total_mb": 6143.5
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786018104.423934,
+    "payload": {
+      "epoch": 1,
+      "batch": 55,
+      "total_batches": 27840,
+      "train_loss": 67.32524108886719,
+      "lr": 0.001,
+      "grad_norm": 31.715467834472655,
+      "elapsed": 70.86238390003564,
+      "samples_per_s": NaN,
+      "batch_size": 13,
+      "precision": "bf16",
+      "gpu_util_percent": null,
+      "vram_used_mb": null,
+      "vram_total_mb": null
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786018104.8140535,
+    "payload": {
+      "epoch": 1,
+      "batch": 56,
+      "total_batches": 27840,
+      "train_loss": 57.91999435424805,
+      "lr": 0.001,
+      "grad_norm": 31.844873564583914,
+      "elapsed": 71.25241559999995,
+      "samples_per_s": NaN,
+      "batch_size": 13,
+      "precision": "bf16",
+      "gpu_util_percent": null,
+      "vram_used_mb": null,
+      "vram_total_mb": null
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786018105.2765708,
+    "payload": {
+      "epoch": 1,
+      "batch": 57,
+      "total_batches": 27840,
+      "train_loss": 60.22173309326172,
+      "lr": 0.001,
+      "grad_norm": 31.948217090807464,
+      "elapsed": 71.65052790002665,
+      "samples_per_s": 30.911354715592527,
+      "batch_size": 13,
+      "precision": "bf16",
+      "gpu_util_percent": 77.0,
+      "vram_used_mb": 41.2,
+      "vram_total_mb": 6143.5
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786018105.6663287,
+    "payload": {
+      "epoch": 1,
+      "batch": 58,
+      "total_batches": 27840,
+      "train_loss": 66.64620208740234,
+      "lr": 0.001,
+      "grad_norm": 32.101053961392104,
+      "elapsed": 72.10594110004604,
+      "samples_per_s": NaN,
+      "batch_size": 13,
+      "precision": "bf16",
+      "gpu_util_percent": null,
+      "vram_used_mb": null,
+      "vram_total_mb": null
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786018106.0564394,
+    "payload": {
+      "epoch": 1,
+      "batch": 59,
+      "total_batches": 27840,
+      "train_loss": 59.49870300292969,
+      "lr": 0.001,
+      "grad_norm": 32.273909423310876,
+      "elapsed": 72.49674790003337,
+      "samples_per_s": NaN,
+      "batch_size": 13,
+      "precision": "bf16",
+      "gpu_util_percent": null,
+      "vram_used_mb": null,
+      "vram_total_mb": null
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786018106.539393,
+    "payload": {
+      "epoch": 1,
+      "batch": 60,
+      "total_batches": 27840,
+      "train_loss": 49.64381790161133,
+      "lr": 0.001,
+      "grad_norm": 32.395507113138834,
+      "elapsed": 72.89930480002658,
+      "samples_per_s": 31.23058348598793,
+      "batch_size": 13,
+      "precision": "bf16",
+      "gpu_util_percent": 100.0,
+      "vram_used_mb": 41.2,
+      "vram_total_mb": 6143.5
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786018106.945114,
+    "payload": {
+      "epoch": 1,
+      "batch": 61,
+      "total_batches": 27840,
+      "train_loss": 60.40377426147461,
+      "lr": 0.001,
+      "grad_norm": 32.553731386778786,
+      "elapsed": 73.38336910004728,
+      "samples_per_s": NaN,
+      "batch_size": 13,
+      "precision": "bf16",
+      "gpu_util_percent": null,
+      "vram_used_mb": null,
+      "vram_total_mb": null
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786018107.3398619,
+    "payload": {
+      "epoch": 1,
+      "batch": 62,
+      "total_batches": 27840,
+      "train_loss": 68.52051544189453,
+      "lr": 0.001,
+      "grad_norm": 32.70442765758884,
+      "elapsed": 73.77816810004879,
+      "samples_per_s": NaN,
+      "batch_size": 13,
+      "precision": "bf16",
+      "gpu_util_percent": null,
+      "vram_used_mb": null,
+      "vram_total_mb": null
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786018107.808216,
+    "payload": {
+      "epoch": 1,
+      "batch": 63,
+      "total_batches": 27840,
+      "train_loss": 63.80839920043945,
+      "lr": 0.001,
+      "grad_norm": 32.86347252982004,
+      "elapsed": 74.17387850000523,
+      "samples_per_s": 30.598477985234506,
+      "batch_size": 13,
+      "precision": "bf16",
+      "gpu_util_percent": 90.0,
+      "vram_used_mb": 41.2,
+      "vram_total_mb": 6143.5
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786018108.1894445,
+    "payload": {
+      "epoch": 1,
+      "batch": 64,
+      "total_batches": 27840,
+      "train_loss": 57.10834503173828,
+      "lr": 0.001,
+      "grad_norm": 33.01663452386856,
+      "elapsed": 74.63302960002329,
+      "samples_per_s": NaN,
+      "batch_size": 13,
+      "precision": "bf16",
+      "gpu_util_percent": null,
+      "vram_used_mb": null,
+      "vram_total_mb": null
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786018108.581006,
+    "payload": {
+      "epoch": 1,
+      "batch": 65,
+      "total_batches": 27840,
+      "train_loss": 53.990028381347656,
+      "lr": 0.001,
+      "grad_norm": 33.12747092613807,
+      "elapsed": 75.02557420002995,
+      "samples_per_s": NaN,
+      "batch_size": 13,
+      "precision": "bf16",
+      "gpu_util_percent": null,
+      "vram_used_mb": null,
+      "vram_total_mb": null
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786018109.074663,
+    "payload": {
+      "epoch": 1,
+      "batch": 66,
+      "total_batches": 27840,
+      "train_loss": 62.41165542602539,
+      "lr": 0.001,
+      "grad_norm": 33.266693924412586,
+      "elapsed": 75.42466100002639,
+      "samples_per_s": 31.180481018354694,
+      "batch_size": 13,
+      "precision": "bf16",
+      "gpu_util_percent": 89.0,
+      "vram_used_mb": 41.2,
+      "vram_total_mb": 6143.5
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786018109.4563477,
+    "payload": {
+      "epoch": 1,
+      "batch": 67,
+      "total_batches": 27840,
+      "train_loss": 47.299476623535156,
+      "lr": 0.001,
+      "grad_norm": 33.34347317823723,
+      "elapsed": 75.90067530004308,
+      "samples_per_s": NaN,
+      "batch_size": 13,
+      "precision": "bf16",
+      "gpu_util_percent": null,
+      "vram_used_mb": null,
+      "vram_total_mb": null
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786018109.8562706,
+    "payload": {
+      "epoch": 1,
+      "batch": 68,
+      "total_batches": 27840,
+      "train_loss": 52.25657272338867,
+      "lr": 0.001,
+      "grad_norm": 33.49888521082261,
+      "elapsed": 76.29599800001597,
+      "samples_per_s": NaN,
+      "batch_size": 13,
+      "precision": "bf16",
+      "gpu_util_percent": null,
+      "vram_used_mb": null,
+      "vram_total_mb": null
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786018110.342376,
+    "payload": {
+      "epoch": 1,
+      "batch": 69,
+      "total_batches": 27840,
+      "train_loss": 52.7458381652832,
+      "lr": 0.001,
+      "grad_norm": 33.64290641010671,
+      "elapsed": 76.7002459000214,
+      "samples_per_s": 30.57418315965875,
+      "batch_size": 13,
+      "precision": "bf16",
+      "gpu_util_percent": 100.0,
+      "vram_used_mb": 41.2,
+      "vram_total_mb": 6143.5
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786018110.7433836,
+    "payload": {
+      "epoch": 1,
+      "batch": 70,
+      "total_batches": 27840,
+      "train_loss": 62.60122299194336,
+      "lr": 0.001,
+      "grad_norm": 33.85033618382045,
+      "elapsed": 77.18183020001743,
+      "samples_per_s": NaN,
+      "batch_size": 13,
+      "precision": "bf16",
+      "gpu_util_percent": null,
+      "vram_used_mb": null,
+      "vram_total_mb": null
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786018111.1454241,
+    "payload": {
+      "epoch": 1,
+      "batch": 71,
+      "total_batches": 27840,
+      "train_loss": 51.23043441772461,
+      "lr": 0.001,
+      "grad_norm": 33.99087320247167,
+      "elapsed": 77.5847859000205,
+      "samples_per_s": NaN,
+      "batch_size": 13,
+      "precision": "bf16",
+      "gpu_util_percent": null,
+      "vram_used_mb": null,
+      "vram_total_mb": null
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786018111.632701,
+    "payload": {
+      "epoch": 1,
+      "batch": 72,
+      "total_batches": 27840,
+      "train_loss": 62.86882400512695,
+      "lr": 0.001,
+      "grad_norm": 34.159479247199165,
+      "elapsed": 77.99094390001846,
+      "samples_per_s": 30.216229664028667,
+      "batch_size": 13,
+      "precision": "bf16",
+      "gpu_util_percent": 85.0,
+      "vram_used_mb": 41.2,
+      "vram_total_mb": 6143.5
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786018112.022974,
+    "payload": {
+      "epoch": 1,
+      "batch": 73,
+      "total_batches": 27840,
+      "train_loss": 58.51227569580078,
+      "lr": 0.001,
+      "grad_norm": 34.30021866053751,
+      "elapsed": 78.46145570004592,
+      "samples_per_s": NaN,
+      "batch_size": 13,
+      "precision": "bf16",
+      "gpu_util_percent": null,
+      "vram_used_mb": null,
+      "vram_total_mb": null
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786018112.4146473,
+    "payload": {
+      "epoch": 1,
+      "batch": 74,
+      "total_batches": 27840,
+      "train_loss": 51.8470344543457,
+      "lr": 0.001,
+      "grad_norm": 34.458571614445866,
+      "elapsed": 78.85456460004207,
+      "samples_per_s": NaN,
+      "batch_size": 13,
+      "precision": "bf16",
+      "gpu_util_percent": null,
+      "vram_used_mb": null,
+      "vram_total_mb": null
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786018112.906157,
+    "payload": {
+      "epoch": 1,
+      "batch": 75,
+      "total_batches": 27840,
+      "train_loss": 48.208229064941406,
+      "lr": 0.001,
+      "grad_norm": 34.573958028157556,
+      "elapsed": 79.25626819999889,
+      "samples_per_s": 30.822137850828817,
+      "batch_size": 13,
+      "precision": "bf16",
+      "gpu_util_percent": 81.0,
+      "vram_used_mb": 41.2,
+      "vram_total_mb": 6143.5
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786018113.3019123,
+    "payload": {
+      "epoch": 1,
+      "batch": 76,
+      "total_batches": 27840,
+      "train_loss": 49.94702911376953,
+      "lr": 0.001,
+      "grad_norm": 34.72939882780376,
+      "elapsed": 79.74043660005555,
+      "samples_per_s": NaN,
+      "batch_size": 13,
+      "precision": "bf16",
+      "gpu_util_percent": null,
+      "vram_used_mb": null,
+      "vram_total_mb": null
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786018113.6898856,
+    "payload": {
+      "epoch": 1,
+      "batch": 77,
+      "total_batches": 27840,
+      "train_loss": 50.86943054199219,
+      "lr": 0.001,
+      "grad_norm": 34.89046948915952,
+      "elapsed": 80.13248070003465,
+      "samples_per_s": NaN,
+      "batch_size": 13,
+      "precision": "bf16",
+      "gpu_util_percent": null,
+      "vram_used_mb": null,
+      "vram_total_mb": null
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786018114.1561954,
+    "payload": {
+      "epoch": 1,
+      "batch": 78,
+      "total_batches": 27840,
+      "train_loss": 56.45979309082031,
+      "lr": 0.001,
+      "grad_norm": 35.042438360360954,
+      "elapsed": 80.539945800032,
+      "samples_per_s": 30.38145789941725,
+      "batch_size": 13,
+      "precision": "bf16",
+      "gpu_util_percent": 94.0,
+      "vram_used_mb": 41.2,
+      "vram_total_mb": 6143.5
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786018114.5489721,
+    "payload": {
+      "epoch": 1,
+      "batch": 79,
+      "total_batches": 27840,
+      "train_loss": 41.59790802001953,
+      "lr": 0.001,
+      "grad_norm": 35.198814536951765,
+      "elapsed": 80.9904230000102,
+      "samples_per_s": NaN,
+      "batch_size": 13,
+      "precision": "bf16",
+      "gpu_util_percent": null,
+      "vram_used_mb": null,
+      "vram_total_mb": null
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786018114.9420722,
+    "payload": {
+      "epoch": 1,
+      "batch": 80,
+      "total_batches": 27840,
+      "train_loss": 51.077152252197266,
+      "lr": 0.001,
+      "grad_norm": 35.347919130325316,
+      "elapsed": 81.38069420005195,
+      "samples_per_s": NaN,
+      "batch_size": 13,
+      "precision": "bf16",
+      "gpu_util_percent": null,
+      "vram_used_mb": null,
+      "vram_total_mb": null
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786018115.3981433,
+    "payload": {
+      "epoch": 1,
+      "batch": 81,
+      "total_batches": 27840,
+      "train_loss": 48.6842041015625,
+      "lr": 0.001,
+      "grad_norm": 35.471504117235725,
+      "elapsed": 81.77753220003797,
+      "samples_per_s": 31.512941152665817,
+      "batch_size": 13,
+      "precision": "bf16",
+      "gpu_util_percent": 90.0,
+      "vram_used_mb": 41.2,
+      "vram_total_mb": 6143.5
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786018115.7895539,
+    "payload": {
+      "epoch": 1,
+      "batch": 82,
+      "total_batches": 27840,
+      "train_loss": 47.35054016113281,
+      "lr": 0.001,
+      "grad_norm": 35.6171732181456,
+      "elapsed": 82.23034550005104,
+      "samples_per_s": NaN,
+      "batch_size": 13,
+      "precision": "bf16",
+      "gpu_util_percent": null,
+      "vram_used_mb": null,
+      "vram_total_mb": null
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786018116.1855488,
+    "payload": {
+      "epoch": 1,
+      "batch": 83,
+      "total_batches": 27840,
+      "train_loss": 43.7770881652832,
+      "lr": 0.001,
+      "grad_norm": 35.76267320563994,
+      "elapsed": 82.62431220000144,
+      "samples_per_s": NaN,
+      "batch_size": 13,
+      "precision": "bf16",
+      "gpu_util_percent": null,
+      "vram_used_mb": null,
+      "vram_total_mb": null
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786018116.6685905,
+    "payload": {
+      "epoch": 1,
+      "batch": 84,
+      "total_batches": 27840,
+      "train_loss": 47.97622299194336,
+      "lr": 0.001,
+      "grad_norm": 35.93716185433524,
+      "elapsed": 83.02751929999795,
+      "samples_per_s": 31.20033946082527,
+      "batch_size": 13,
+      "precision": "bf16",
+      "gpu_util_percent": 87.0,
+      "vram_used_mb": 41.2,
+      "vram_total_mb": 6143.5
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786018117.056759,
+    "payload": {
+      "epoch": 1,
+      "batch": 85,
+      "total_batches": 27840,
+      "train_loss": 36.308963775634766,
+      "lr": 0.001,
+      "grad_norm": 36.068861389160155,
+      "elapsed": 83.495066100033,
+      "samples_per_s": NaN,
+      "batch_size": 13,
+      "precision": "bf16",
+      "gpu_util_percent": null,
+      "vram_used_mb": null,
+      "vram_total_mb": null
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786018117.4504323,
+    "payload": {
+      "epoch": 1,
+      "batch": 86,
+      "total_batches": 27840,
+      "train_loss": 42.74562454223633,
+      "lr": 0.001,
+      "grad_norm": 36.19649989105935,
+      "elapsed": 83.88905560004059,
+      "samples_per_s": NaN,
+      "batch_size": 13,
+      "precision": "bf16",
+      "gpu_util_percent": null,
+      "vram_used_mb": null,
+      "vram_total_mb": null
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786018117.9146838,
+    "payload": {
+      "epoch": 1,
+      "batch": 87,
+      "total_batches": 27840,
+      "train_loss": 38.52932357788086,
+      "lr": 0.001,
+      "grad_norm": 36.31118419252593,
+      "elapsed": 84.28874170000199,
+      "samples_per_s": 30.922381334073155,
+      "batch_size": 13,
+      "precision": "bf16",
+      "gpu_util_percent": 98.0,
+      "vram_used_mb": 41.2,
+      "vram_total_mb": 6143.5
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786018118.3186789,
+    "payload": {
+      "epoch": 1,
+      "batch": 88,
+      "total_batches": 27840,
+      "train_loss": 35.78300857543945,
+      "lr": 0.001,
+      "grad_norm": 36.59370764819059,
+      "elapsed": 84.75871920003556,
+      "samples_per_s": NaN,
+      "batch_size": 13,
+      "precision": "bf16",
+      "gpu_util_percent": null,
+      "vram_used_mb": null,
+      "vram_total_mb": null
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786018118.7145443,
+    "payload": {
+      "epoch": 1,
+      "batch": 89,
+      "total_batches": 27840,
+      "train_loss": 40.298744201660156,
+      "lr": 0.001,
+      "grad_norm": 36.72137785493658,
+      "elapsed": 85.1529841000447,
+      "samples_per_s": NaN,
+      "batch_size": 13,
+      "precision": "bf16",
+      "gpu_util_percent": null,
+      "vram_used_mb": null,
+      "vram_total_mb": null
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786018119.208798,
+    "payload": {
+      "epoch": 1,
+      "batch": 90,
+      "total_batches": 27840,
+      "train_loss": 39.973670959472656,
+      "lr": 0.001,
+      "grad_norm": 36.91442527770996,
+      "elapsed": 85.5499153000419,
+      "samples_per_s": 30.923572943490207,
+      "batch_size": 13,
+      "precision": "bf16",
+      "gpu_util_percent": 91.0,
+      "vram_used_mb": 41.2,
+      "vram_total_mb": 6143.5
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786018119.5981011,
+    "payload": {
+      "epoch": 1,
+      "batch": 91,
+      "total_batches": 27840,
+      "train_loss": 41.732521057128906,
+      "lr": 0.001,
+      "grad_norm": 37.05270037808261,
+      "elapsed": 86.04317940003239,
+      "samples_per_s": NaN,
+      "batch_size": 13,
+      "precision": "bf16",
+      "gpu_util_percent": null,
+      "vram_used_mb": null,
+      "vram_total_mb": null
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786018119.9901993,
+    "payload": {
+      "epoch": 1,
+      "batch": 92,
+      "total_batches": 27840,
+      "train_loss": 32.969085693359375,
+      "lr": 0.001,
+      "grad_norm": 37.23879030476446,
+      "elapsed": 86.43515730003128,
+      "samples_per_s": NaN,
+      "batch_size": 13,
+      "precision": "bf16",
+      "gpu_util_percent": null,
+      "vram_used_mb": null,
+      "vram_total_mb": null
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786018120.4682171,
+    "payload": {
+      "epoch": 1,
+      "batch": 93,
+      "total_batches": 27840,
+      "train_loss": 34.44432067871094,
+      "lr": 0.001,
+      "grad_norm": 37.361234562371365,
+      "elapsed": 86.83646260004025,
+      "samples_per_s": 30.31368131050763,
+      "batch_size": 13,
+      "precision": "bf16",
+      "gpu_util_percent": 89.0,
+      "vram_used_mb": 41.2,
+      "vram_total_mb": 6143.5
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786018120.8652258,
+    "payload": {
+      "epoch": 1,
+      "batch": 94,
+      "total_batches": 27840,
+      "train_loss": 39.24495315551758,
+      "lr": 0.001,
+      "grad_norm": 37.49028136882376,
+      "elapsed": 87.3062039000215,
+      "samples_per_s": NaN,
+      "batch_size": 13,
+      "precision": "bf16",
+      "gpu_util_percent": null,
+      "vram_used_mb": null,
+      "vram_total_mb": null
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786018121.2650793,
+    "payload": {
+      "epoch": 1,
+      "batch": 95,
+      "total_batches": 27840,
+      "train_loss": 33.8400993347168,
+      "lr": 0.001,
+      "grad_norm": 37.59206185591848,
+      "elapsed": 87.70516150002368,
+      "samples_per_s": NaN,
+      "batch_size": 13,
+      "precision": "bf16",
+      "gpu_util_percent": null,
+      "vram_used_mb": null,
+      "vram_total_mb": null
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786018121.7270718,
+    "payload": {
+      "epoch": 1,
+      "batch": 96,
+      "total_batches": 27840,
+      "train_loss": 36.79032897949219,
+      "lr": 0.001,
+      "grad_norm": 37.69742159048716,
+      "elapsed": 88.10607530002017,
+      "samples_per_s": 30.718038885343578,
+      "batch_size": 13,
+      "precision": "bf16",
+      "gpu_util_percent": 100.0,
+      "vram_used_mb": 41.2,
+      "vram_total_mb": 6143.5
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786018122.1176052,
+    "payload": {
+      "epoch": 1,
+      "batch": 97,
+      "total_batches": 27840,
+      "train_loss": 28.637165069580078,
+      "lr": 0.001,
+      "grad_norm": 37.7713044550001,
+      "elapsed": 88.55721009999979,
+      "samples_per_s": NaN,
+      "batch_size": 13,
+      "precision": "bf16",
+      "gpu_util_percent": null,
+      "vram_used_mb": null,
+      "vram_total_mb": null
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786018122.5174189,
+    "payload": {
+      "epoch": 1,
+      "batch": 98,
+      "total_batches": 27840,
+      "train_loss": 29.93094825744629,
+      "lr": 0.001,
+      "grad_norm": 37.878847822851064,
+      "elapsed": 88.95739170000888,
+      "samples_per_s": NaN,
+      "batch_size": 13,
+      "precision": "bf16",
+      "gpu_util_percent": null,
+      "vram_used_mb": null,
+      "vram_total_mb": null
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786018122.9983912,
+    "payload": {
+      "epoch": 1,
+      "batch": 99,
+      "total_batches": 27840,
+      "train_loss": 34.23613739013672,
+      "lr": 0.001,
+      "grad_norm": 38.008552859527896,
+      "elapsed": 89.36936060001608,
+      "samples_per_s": 30.87186907791394,
+      "batch_size": 13,
+      "precision": "bf16",
+      "gpu_util_percent": 83.0,
+      "vram_used_mb": 41.2,
+      "vram_total_mb": 6143.5
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786018123.3922913,
+    "payload": {
+      "epoch": 1,
+      "batch": 100,
+      "total_batches": 27840,
+      "train_loss": 32.677268981933594,
+      "lr": 0.001,
+      "grad_norm": 38.169080619812014,
+      "elapsed": 89.83284020004794,
+      "samples_per_s": NaN,
+      "batch_size": 13,
+      "precision": "bf16",
+      "gpu_util_percent": null,
+      "vram_used_mb": null,
+      "vram_total_mb": null
+    }
+  },
+  {
+    "kind": "tier1",
+    "ts": 1786018130.7572308,
+    "payload": {
+      "tier": "tier1",
+      "rmse": 10.515182313143606,
+      "runtime_s": 0.059
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786018131.2168477,
+    "payload": {
+      "epoch": 1,
+      "batch": 101,
+      "total_batches": 27840,
+      "train_loss": 30.71263313293457,
+      "lr": 0.001,
+      "grad_norm": 38.326221012833095,
+      "elapsed": 97.59599310002523,
+      "samples_per_s": 3.160467165181602,
+      "batch_size": 13,
+      "precision": "bf16",
+      "gpu_util_percent": 84.0,
+      "vram_used_mb": 41.2,
+      "vram_total_mb": 6143.5
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786018131.607506,
+    "payload": {
+      "epoch": 1,
+      "batch": 102,
+      "total_batches": 27840,
+      "train_loss": 34.567230224609375,
+      "lr": 0.001,
+      "grad_norm": 38.48190999498554,
+      "elapsed": 98.04738190001808,
+      "samples_per_s": NaN,
+      "batch_size": 13,
+      "precision": "bf16",
+      "gpu_util_percent": null,
+      "vram_used_mb": null,
+      "vram_total_mb": null
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786018132.0062,
+    "payload": {
+      "epoch": 1,
+      "batch": 103,
+      "total_batches": 27840,
+      "train_loss": 27.79313087463379,
+      "lr": 0.001,
+      "grad_norm": 38.5689188392417,
+      "elapsed": 98.44498930004193,
+      "samples_per_s": NaN,
+      "batch_size": 13,
+      "precision": "bf16",
+      "gpu_util_percent": null,
+      "vram_used_mb": null,
+      "vram_total_mb": null
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786018132.464383,
+    "payload": {
+      "epoch": 1,
+      "batch": 104,
+      "total_batches": 27840,
+      "train_loss": 21.17418098449707,
+      "lr": 0.001,
+      "grad_norm": 38.544842316554146,
+      "elapsed": 98.84756090003066,
+      "samples_per_s": 31.16091673166306,
+      "batch_size": 13,
+      "precision": "bf16",
+      "gpu_util_percent": 79.0,
+      "vram_used_mb": 41.2,
+      "vram_total_mb": 6143.5
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786018132.8688002,
+    "payload": {
+      "epoch": 1,
+      "batch": 105,
+      "total_batches": 27840,
+      "train_loss": 21.328615188598633,
+      "lr": 0.001,
+      "grad_norm": 38.58051761445545,
+      "elapsed": 99.30730929999845,
+      "samples_per_s": NaN,
+      "batch_size": 13,
+      "precision": "bf16",
+      "gpu_util_percent": null,
+      "vram_used_mb": null,
+      "vram_total_mb": null
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786018133.264449,
+    "payload": {
+      "epoch": 1,
+      "batch": 106,
+      "total_batches": 27840,
+      "train_loss": 22.915611267089844,
+      "lr": 0.001,
+      "grad_norm": 38.65031541068599,
+      "elapsed": 99.70276170002762,
+      "samples_per_s": NaN,
+      "batch_size": 13,
+      "precision": "bf16",
+      "gpu_util_percent": null,
+      "vram_used_mb": null,
+      "vram_total_mb": null
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786018133.7403104,
+    "payload": {
+      "epoch": 1,
+      "batch": 107,
+      "total_batches": 27840,
+      "train_loss": 34.43251037597656,
+      "lr": 0.001,
+      "grad_norm": 38.76328106461284,
+      "elapsed": 100.10508420004044,
+      "samples_per_s": 31.01332706245584,
+      "batch_size": 13,
+      "precision": "bf16",
+      "gpu_util_percent": 100.0,
+      "vram_used_mb": 41.2,
+      "vram_total_mb": 6143.5
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786018134.1400945,
+    "payload": {
+      "epoch": 1,
+      "batch": 108,
+      "total_batches": 27840,
+      "train_loss": 31.270353317260742,
+      "lr": 0.001,
+      "grad_norm": 38.87582100762261,
+      "elapsed": 100.58055060001789,
+      "samples_per_s": NaN,
+      "batch_size": 13,
+      "precision": "bf16",
+      "gpu_util_percent": null,
+      "vram_used_mb": null,
+      "vram_total_mb": null
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786018134.5429573,
+    "payload": {
+      "epoch": 1,
+      "batch": 109,
+      "total_batches": 27840,
+      "train_loss": 29.896778106689453,
+      "lr": 0.001,
+      "grad_norm": 39.017815651149924,
+      "elapsed": 100.98232880001888,
+      "samples_per_s": NaN,
+      "batch_size": 13,
+      "precision": "bf16",
+      "gpu_util_percent": null,
+      "vram_used_mb": null,
+      "vram_total_mb": null
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786018135.017435,
+    "payload": {
+      "epoch": 1,
+      "batch": 110,
+      "total_batches": 27840,
+      "train_loss": 21.013656616210938,
+      "lr": 0.001,
+      "grad_norm": 39.101202253861864,
+      "elapsed": 101.38632140000118,
+      "samples_per_s": 30.439342742264817,
+      "batch_size": 13,
+      "precision": "bf16",
+      "gpu_util_percent": 88.0,
+      "vram_used_mb": 41.2,
+      "vram_total_mb": 6143.5
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786018135.4247365,
+    "payload": {
+      "epoch": 1,
+      "batch": 111,
+      "total_batches": 27840,
+      "train_loss": 27.472278594970703,
+      "lr": 0.001,
+      "grad_norm": 39.192804525564384,
+      "elapsed": 101.86320750002051,
+      "samples_per_s": NaN,
+      "batch_size": 13,
+      "precision": "bf16",
+      "gpu_util_percent": null,
+      "vram_used_mb": null,
+      "vram_total_mb": null
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786018135.8149214,
+    "payload": {
+      "epoch": 1,
+      "batch": 112,
+      "total_batches": 27840,
+      "train_loss": 22.017244338989258,
+      "lr": 0.001,
+      "grad_norm": 39.17032248633249,
+      "elapsed": 102.25815600005444,
+      "samples_per_s": NaN,
+      "batch_size": 13,
+      "precision": "bf16",
+      "gpu_util_percent": null,
+      "vram_used_mb": null,
+      "vram_total_mb": null
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786018136.3074925,
+    "payload": {
+      "epoch": 1,
+      "batch": 113,
+      "total_batches": 27840,
+      "train_loss": 25.407014846801758,
+      "lr": 0.001,
+      "grad_norm": 39.27851000085341,
+      "elapsed": 102.66819700004999,
+      "samples_per_s": 30.42417857729658,
+      "batch_size": 13,
+      "precision": "bf16",
+      "gpu_util_percent": 90.0,
+      "vram_used_mb": 41.2,
+      "vram_total_mb": 6143.5
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786018136.6981776,
+    "payload": {
+      "epoch": 1,
+      "batch": 114,
+      "total_batches": 27840,
+      "train_loss": 24.06022071838379,
+      "lr": 0.001,
+      "grad_norm": 39.31181355526573,
+      "elapsed": 103.13912590005202,
+      "samples_per_s": NaN,
+      "batch_size": 13,
+      "precision": "bf16",
+      "gpu_util_percent": null,
+      "vram_used_mb": null,
+      "vram_total_mb": null
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786018137.1006434,
+    "payload": {
+      "epoch": 1,
+      "batch": 115,
+      "total_batches": 27840,
+      "train_loss": 21.482824325561523,
+      "lr": 0.001,
+      "grad_norm": 39.317466171928075,
+      "elapsed": 103.53898250003112,
+      "samples_per_s": NaN,
+      "batch_size": 13,
+      "precision": "bf16",
+      "gpu_util_percent": null,
+      "vram_used_mb": null,
+      "vram_total_mb": null
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786018137.5926323,
+    "payload": {
+      "epoch": 1,
+      "batch": 116,
+      "total_batches": 27840,
+      "train_loss": 22.506872177124023,
+      "lr": 0.001,
+      "grad_norm": 39.35025155955348,
+      "elapsed": 103.94607430003816,
+      "samples_per_s": 30.519321469376816,
+      "batch_size": 13,
+      "precision": "bf16",
+      "gpu_util_percent": 90.0,
+      "vram_used_mb": 41.2,
+      "vram_total_mb": 6143.5
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786018137.9826412,
+    "payload": {
+      "epoch": 1,
+      "batch": 117,
+      "total_batches": 27840,
+      "train_loss": 19.820934295654297,
+      "lr": 0.001,
+      "grad_norm": 39.35997781998072,
+      "elapsed": 104.42435550002847,
+      "samples_per_s": NaN,
+      "batch_size": 13,
+      "precision": "bf16",
+      "gpu_util_percent": null,
+      "vram_used_mb": null,
+      "vram_total_mb": null
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786018138.3949122,
+    "payload": {
+      "epoch": 1,
+      "batch": 118,
+      "total_batches": 27840,
+      "train_loss": 18.878679275512695,
+      "lr": 0.001,
+      "grad_norm": 39.24516026448395,
+      "elapsed": 104.83466260001296,
+      "samples_per_s": NaN,
+      "batch_size": 13,
+      "precision": "bf16",
+      "gpu_util_percent": null,
+      "vram_used_mb": null,
+      "vram_total_mb": null
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786018138.8689175,
+    "payload": {
+      "epoch": 1,
+      "batch": 119,
+      "total_batches": 27840,
+      "train_loss": 18.50634765625,
+      "lr": 0.001,
+      "grad_norm": 39.150517760204664,
+      "elapsed": 105.24392960005207,
+      "samples_per_s": 30.049602649177427,
+      "batch_size": 13,
+      "precision": "bf16",
+      "gpu_util_percent": 79.0,
+      "vram_used_mb": 41.2,
+      "vram_total_mb": 6143.5
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786018139.265725,
+    "payload": {
+      "epoch": 1,
+      "batch": 120,
+      "total_batches": 27840,
+      "train_loss": 17.0481014251709,
+      "lr": 0.001,
+      "grad_norm": 39.09760576883952,
+      "elapsed": 105.70392100000754,
+      "samples_per_s": NaN,
+      "batch_size": 13,
+      "precision": "bf16",
+      "gpu_util_percent": null,
+      "vram_used_mb": null,
+      "vram_total_mb": null
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786018139.6590927,
+    "payload": {
+      "epoch": 1,
+      "batch": 121,
+      "total_batches": 27840,
+      "train_loss": 18.34283447265625,
+      "lr": 0.001,
+      "grad_norm": 39.0658395625343,
+      "elapsed": 106.09858900000108,
+      "samples_per_s": NaN,
+      "batch_size": 13,
+      "precision": "bf16",
+      "gpu_util_percent": null,
+      "vram_used_mb": null,
+      "vram_total_mb": null
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786018140.1230595,
+    "payload": {
+      "epoch": 1,
+      "batch": 122,
+      "total_batches": 27840,
+      "train_loss": 18.273075103759766,
+      "lr": 0.001,
+      "grad_norm": 39.17016585928495,
+      "elapsed": 106.50488730001962,
+      "samples_per_s": 30.928879912417383,
+      "batch_size": 13,
+      "precision": "bf16",
+      "gpu_util_percent": 100.0,
+      "vram_used_mb": 41.2,
+      "vram_total_mb": 6143.5
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786018140.5199893,
+    "payload": {
+      "epoch": 1,
+      "batch": 123,
+      "total_batches": 27840,
+      "train_loss": 17.74723243713379,
+      "lr": 0.001,
+      "grad_norm": 39.072906819785516,
+      "elapsed": 106.95845910004573,
+      "samples_per_s": NaN,
+      "batch_size": 13,
+      "precision": "bf16",
+      "gpu_util_percent": null,
+      "vram_used_mb": null,
+      "vram_total_mb": null
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786018140.916763,
+    "payload": {
+      "epoch": 1,
+      "batch": 124,
+      "total_batches": 27840,
+      "train_loss": 23.58863067626953,
+      "lr": 0.001,
+      "grad_norm": 39.18424346370082,
+      "elapsed": 107.36035060003633,
+      "samples_per_s": NaN,
+      "batch_size": 13,
+      "precision": "bf16",
+      "gpu_util_percent": null,
+      "vram_used_mb": null,
+      "vram_total_mb": null
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786018141.4403465,
+    "payload": {
+      "epoch": 1,
+      "batch": 125,
+      "total_batches": 27840,
+      "train_loss": 20.773868560791016,
+      "lr": 0.001,
+      "grad_norm": 39.195549575805664,
+      "elapsed": 107.77366710000206,
+      "samples_per_s": 30.738145834115574,
+      "batch_size": 13,
+      "precision": "bf16",
+      "gpu_util_percent": 83.0,
+      "vram_used_mb": 41.2,
+      "vram_total_mb": 6143.5
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786018141.840707,
+    "payload": {
+      "epoch": 1,
+      "batch": 126,
+      "total_batches": 27840,
+      "train_loss": 22.40233039855957,
+      "lr": 0.001,
+      "grad_norm": 39.22188969263955,
+      "elapsed": 108.2846669999999,
+      "samples_per_s": NaN,
+      "batch_size": 13,
+      "precision": "bf16",
+      "gpu_util_percent": null,
+      "vram_used_mb": null,
+      "vram_total_mb": null
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786018142.2420359,
+    "payload": {
+      "epoch": 1,
+      "batch": 127,
+      "total_batches": 27840,
+      "train_loss": 17.528297424316406,
+      "lr": 0.001,
+      "grad_norm": 39.12722760298121,
+      "elapsed": 108.68035740003688,
+      "samples_per_s": NaN,
+      "batch_size": 13,
+      "precision": "bf16",
+      "gpu_util_percent": null,
+      "vram_used_mb": null,
+      "vram_total_mb": null
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786018142.7332978,
+    "payload": {
+      "epoch": 1,
+      "batch": 128,
+      "total_batches": 27840,
+      "train_loss": 22.388864517211914,
+      "lr": 0.001,
+      "grad_norm": 39.09825247526169,
+      "elapsed": 109.08813889999874,
+      "samples_per_s": 29.669759600067533,
+      "batch_size": 13,
+      "precision": "bf16",
+      "gpu_util_percent": 100.0,
+      "vram_used_mb": 41.2,
+      "vram_total_mb": 6143.5
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786018143.1255565,
+    "payload": {
+      "epoch": 1,
+      "batch": 129,
+      "total_batches": 27840,
+      "train_loss": 18.047788619995117,
+      "lr": 0.001,
+      "grad_norm": 39.05679646573326,
+      "elapsed": 109.56727310002316,
+      "samples_per_s": NaN,
+      "batch_size": 13,
+      "precision": "bf16",
+      "gpu_util_percent": null,
+      "vram_used_mb": null,
+      "vram_total_mb": null
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786018143.5180626,
+    "payload": {
+      "epoch": 1,
+      "batch": 130,
+      "total_batches": 27840,
+      "train_loss": 18.16366958618164,
+      "lr": 0.001,
+      "grad_norm": 38.99272025181697,
+      "elapsed": 109.95987320004497,
+      "samples_per_s": NaN,
+      "batch_size": 13,
+      "precision": "bf16",
+      "gpu_util_percent": null,
+      "vram_used_mb": null,
+      "vram_total_mb": null
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786018143.9867387,
+    "payload": {
+      "epoch": 1,
+      "batch": 131,
+      "total_batches": 27840,
+      "train_loss": 17.324312210083008,
+      "lr": 0.001,
+      "grad_norm": 38.936318870719155,
+      "elapsed": 110.35760410001967,
+      "samples_per_s": 30.721595934393445,
+      "batch_size": 13,
+      "precision": "bf16",
+      "gpu_util_percent": 91.0,
+      "vram_used_mb": 41.2,
+      "vram_total_mb": 6143.5
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786018144.3737738,
+    "payload": {
+      "epoch": 1,
+      "batch": 132,
+      "total_batches": 27840,
+      "train_loss": 19.47405242919922,
+      "lr": 0.001,
+      "grad_norm": 38.848118261857465,
+      "elapsed": 110.8158376000356,
+      "samples_per_s": NaN,
+      "batch_size": 13,
+      "precision": "bf16",
+      "gpu_util_percent": null,
+      "vram_used_mb": null,
+      "vram_total_mb": null
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786018144.7654412,
+    "payload": {
+      "epoch": 1,
+      "batch": 133,
+      "total_batches": 27840,
+      "train_loss": 22.857234954833984,
+      "lr": 0.001,
+      "grad_norm": 38.97211883659649,
+      "elapsed": 111.20766680000816,
+      "samples_per_s": NaN,
+      "batch_size": 13,
+      "precision": "bf16",
+      "gpu_util_percent": null,
+      "vram_used_mb": null,
+      "vram_total_mb": null
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786018145.2314408,
+    "payload": {
+      "epoch": 1,
+      "batch": 134,
+      "total_batches": 27840,
+      "train_loss": 17.333282470703125,
+      "lr": 0.001,
+      "grad_norm": 38.880494886369846,
+      "elapsed": 111.61246140004368,
+      "samples_per_s": 31.079216219710354,
+      "batch_size": 13,
+      "precision": "bf16",
+      "gpu_util_percent": 87.0,
+      "vram_used_mb": 41.2,
+      "vram_total_mb": 6143.5
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786018145.6159155,
+    "payload": {
+      "epoch": 1,
+      "batch": 135,
+      "total_batches": 27840,
+      "train_loss": 15.055293083190918,
+      "lr": 0.001,
+      "grad_norm": 38.72738007439507,
+      "elapsed": 112.06007750000572,
+      "samples_per_s": NaN,
+      "batch_size": 13,
+      "precision": "bf16",
+      "gpu_util_percent": null,
+      "vram_used_mb": null,
+      "vram_total_mb": null
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786018146.0158825,
+    "payload": {
+      "epoch": 1,
+      "batch": 136,
+      "total_batches": 27840,
+      "train_loss": 16.99544334411621,
+      "lr": 0.001,
+      "grad_norm": 38.61725066689884,
+      "elapsed": 112.45492830005242,
+      "samples_per_s": NaN,
+      "batch_size": 13,
+      "precision": "bf16",
+      "gpu_util_percent": null,
+      "vram_used_mb": null,
+      "vram_total_mb": null
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786018146.4987116,
+    "payload": {
+      "epoch": 1,
+      "batch": 137,
+      "total_batches": 27840,
+      "train_loss": 18.876569747924805,
+      "lr": 0.001,
+      "grad_norm": 38.673032217652256,
+      "elapsed": 112.86108560004504,
+      "samples_per_s": 31.23438531012333,
+      "batch_size": 13,
+      "precision": "bf16",
+      "gpu_util_percent": 88.0,
+      "vram_used_mb": 41.2,
+      "vram_total_mb": 6143.5
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786018146.8825054,
+    "payload": {
+      "epoch": 1,
+      "batch": 138,
+      "total_batches": 27840,
+      "train_loss": 15.384217262268066,
+      "lr": 0.001,
+      "grad_norm": 38.670492061670274,
+      "elapsed": 113.32649440004025,
+      "samples_per_s": NaN,
+      "batch_size": 13,
+      "precision": "bf16",
+      "gpu_util_percent": null,
+      "vram_used_mb": null,
+      "vram_total_mb": null
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786018147.2744026,
+    "payload": {
+      "epoch": 1,
+      "batch": 139,
+      "total_batches": 27840,
+      "train_loss": 17.445911407470703,
+      "lr": 0.001,
+      "grad_norm": 38.634066465089646,
+      "elapsed": 113.71595690003596,
+      "samples_per_s": NaN,
+      "batch_size": 13,
+      "precision": "bf16",
+      "gpu_util_percent": null,
+      "vram_used_mb": null,
+      "vram_total_mb": null
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786018147.7755892,
+    "payload": {
+      "epoch": 1,
+      "batch": 140,
+      "total_batches": 27840,
+      "train_loss": 14.313575744628906,
+      "lr": 0.001,
+      "grad_norm": 38.47904605865479,
+      "elapsed": 114.11637340002926,
+      "samples_per_s": 31.068584857513216,
+      "batch_size": 13,
+      "precision": "bf16",
+      "gpu_util_percent": 100.0,
+      "vram_used_mb": 41.2,
+      "vram_total_mb": 6143.5
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786018148.165267,
+    "payload": {
+      "epoch": 1,
+      "batch": 141,
+      "total_batches": 27840,
+      "train_loss": 16.515331268310547,
+      "lr": 0.001,
+      "grad_norm": 38.40335572695901,
+      "elapsed": 114.609585600032,
+      "samples_per_s": NaN,
+      "batch_size": 13,
+      "precision": "bf16",
+      "gpu_util_percent": null,
+      "vram_used_mb": null,
+      "vram_total_mb": null
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786018148.5618694,
+    "payload": {
+      "epoch": 1,
+      "batch": 142,
+      "total_batches": 27840,
+      "train_loss": 13.463786125183105,
+      "lr": 0.001,
+      "grad_norm": 38.330636333411846,
+      "elapsed": 115.00120790000074,
+      "samples_per_s": NaN,
+      "batch_size": 13,
+      "precision": "bf16",
+      "gpu_util_percent": null,
+      "vram_used_mb": null,
+      "vram_total_mb": null
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786018149.076973,
+    "payload": {
+      "epoch": 1,
+      "batch": 143,
+      "total_batches": 27840,
+      "train_loss": 12.165149688720703,
+      "lr": 0.001,
+      "grad_norm": 38.254666428465946,
+      "elapsed": 115.40035070001613,
+      "samples_per_s": 30.37436876835652,
+      "batch_size": 13,
+      "precision": "bf16",
+      "gpu_util_percent": 90.0,
+      "vram_used_mb": 41.2,
+      "vram_total_mb": 6143.5
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786018149.465471,
+    "payload": {
+      "epoch": 1,
+      "batch": 144,
+      "total_batches": 27840,
+      "train_loss": 15.499567985534668,
+      "lr": 0.001,
+      "grad_norm": 38.150241096814476,
+      "elapsed": 115.90693610004382,
+      "samples_per_s": NaN,
+      "batch_size": 13,
+      "precision": "bf16",
+      "gpu_util_percent": null,
+      "vram_used_mb": null,
+      "vram_total_mb": null
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786018149.858557,
+    "payload": {
+      "epoch": 1,
+      "batch": 145,
+      "total_batches": 27840,
+      "train_loss": 18.909265518188477,
+      "lr": 0.001,
+      "grad_norm": 38.26927370531806,
+      "elapsed": 116.29702250001719,
+      "samples_per_s": NaN,
+      "batch_size": 13,
+      "precision": "bf16",
+      "gpu_util_percent": null,
+      "vram_used_mb": null,
+      "vram_total_mb": null
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786018150.354205,
+    "payload": {
+      "epoch": 1,
+      "batch": 146,
+      "total_batches": 27840,
+      "train_loss": 17.55165672302246,
+      "lr": 0.001,
+      "grad_norm": 38.24528648428721,
+      "elapsed": 116.6993590000202,
+      "samples_per_s": 30.02289129970772,
+      "batch_size": 13,
+      "precision": "bf16",
+      "gpu_util_percent": 100.0,
+      "vram_used_mb": 41.2,
+      "vram_total_mb": 6143.5
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786018150.7408187,
+    "payload": {
+      "epoch": 1,
+      "batch": 147,
+      "total_batches": 27840,
+      "train_loss": 12.989216804504395,
+      "lr": 0.001,
+      "grad_norm": 38.17603357795144,
+      "elapsed": 117.18208070000401,
+      "samples_per_s": NaN,
+      "batch_size": 13,
+      "precision": "bf16",
+      "gpu_util_percent": null,
+      "vram_used_mb": null,
+      "vram_total_mb": null
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786018151.146294,
+    "payload": {
+      "epoch": 1,
+      "batch": 148,
+      "total_batches": 27840,
+      "train_loss": 14.854682922363281,
+      "lr": 0.001,
+      "grad_norm": 38.06676718995378,
+      "elapsed": 117.58471500000451,
+      "samples_per_s": NaN,
+      "batch_size": 13,
+      "precision": "bf16",
+      "gpu_util_percent": null,
+      "vram_used_mb": null,
+      "vram_total_mb": null
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786018151.723384,
+    "payload": {
+      "epoch": 1,
+      "batch": 149,
+      "total_batches": 27840,
+      "train_loss": 16.670448303222656,
+      "lr": 0.001,
+      "grad_norm": 37.963974242242394,
+      "elapsed": 118.0127213000087,
+      "samples_per_s": 29.69477200719216,
+      "batch_size": 13,
+      "precision": "bf16",
+      "gpu_util_percent": 64.0,
+      "vram_used_mb": 41.2,
+      "vram_total_mb": 6143.5
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786018152.1342738,
+    "payload": {
+      "epoch": 1,
+      "batch": 150,
+      "total_batches": 27840,
+      "train_loss": 13.734186172485352,
+      "lr": 0.001,
+      "grad_norm": 37.99628251393636,
+      "elapsed": 118.57269490003819,
+      "samples_per_s": NaN,
+      "batch_size": 13,
+      "precision": "bf16",
+      "gpu_util_percent": null,
+      "vram_used_mb": null,
+      "vram_total_mb": null
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786018152.5642443,
+    "payload": {
+      "epoch": 1,
+      "batch": 151,
+      "total_batches": 27840,
+      "train_loss": 15.8743896484375,
+      "lr": 0.001,
+      "grad_norm": 38.00175201971799,
+      "elapsed": 119.00445110001601,
+      "samples_per_s": NaN,
+      "batch_size": 13,
+      "precision": "bf16",
+      "gpu_util_percent": null,
+      "vram_used_mb": null,
+      "vram_total_mb": null
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786018153.0893145,
+    "payload": {
+      "epoch": 1,
+      "batch": 152,
+      "total_batches": 27840,
+      "train_loss": 15.40559196472168,
+      "lr": 0.001,
+      "grad_norm": 38.03547928207799,
+      "elapsed": 119.41361390001839,
+      "samples_per_s": 27.839399217051884,
+      "batch_size": 13,
+      "precision": "bf16",
+      "gpu_util_percent": 82.0,
+      "vram_used_mb": 41.2,
+      "vram_total_mb": 6143.5
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786018153.4918535,
+    "payload": {
+      "epoch": 1,
+      "batch": 153,
+      "total_batches": 27840,
+      "train_loss": 12.829230308532715,
+      "lr": 0.001,
+      "grad_norm": 37.994019938450236,
+      "elapsed": 119.9303672000533,
+      "samples_per_s": NaN,
+      "batch_size": 13,
+      "precision": "bf16",
+      "gpu_util_percent": null,
+      "vram_used_mb": null,
+      "vram_total_mb": null
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786018153.8925586,
+    "payload": {
+      "epoch": 1,
+      "batch": 154,
+      "total_batches": 27840,
+      "train_loss": 16.306055068969727,
+      "lr": 0.001,
+      "grad_norm": 37.94110544625815,
+      "elapsed": 120.33101320004789,
+      "samples_per_s": NaN,
+      "batch_size": 13,
+      "precision": "bf16",
+      "gpu_util_percent": null,
+      "vram_used_mb": null,
+      "vram_total_mb": null
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786018154.3681579,
+    "payload": {
+      "epoch": 1,
+      "batch": 155,
+      "total_batches": 27840,
+      "train_loss": 13.283183097839355,
+      "lr": 0.001,
+      "grad_norm": 37.82638355378182,
+      "elapsed": 120.744143500051,
+      "samples_per_s": 29.311632103772354,
+      "batch_size": 13,
+      "precision": "bf16",
+      "gpu_util_percent": 89.0,
+      "vram_used_mb": 41.2,
+      "vram_total_mb": 6143.5
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786018154.7690263,
+    "payload": {
+      "epoch": 1,
+      "batch": 156,
+      "total_batches": 27840,
+      "train_loss": 16.632793426513672,
+      "lr": 0.001,
+      "grad_norm": 37.778000794924225,
+      "elapsed": 121.2092690000427,
+      "samples_per_s": NaN,
+      "batch_size": 13,
+      "precision": "bf16",
+      "gpu_util_percent": null,
+      "vram_used_mb": null,
+      "vram_total_mb": null
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786018155.172207,
+    "payload": {
+      "epoch": 1,
+      "batch": 157,
+      "total_batches": 27840,
+      "train_loss": 18.483301162719727,
+      "lr": 0.001,
+      "grad_norm": 37.73938606650966,
+      "elapsed": 121.6108438000083,
+      "samples_per_s": NaN,
+      "batch_size": 13,
+      "precision": "bf16",
+      "gpu_util_percent": null,
+      "vram_used_mb": null,
+      "vram_total_mb": null
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786018155.6369112,
+    "payload": {
+      "epoch": 1,
+      "batch": 158,
+      "total_batches": 27840,
+      "train_loss": 16.600900650024414,
+      "lr": 0.001,
+      "grad_norm": 37.61515659621999,
+      "elapsed": 122.02416000002995,
+      "samples_per_s": 30.468350101965918,
+      "batch_size": 13,
+      "precision": "bf16",
+      "gpu_util_percent": 83.0,
+      "vram_used_mb": 41.2,
+      "vram_total_mb": 6143.5
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786018156.0342243,
+    "payload": {
+      "epoch": 1,
+      "batch": 159,
+      "total_batches": 27840,
+      "train_loss": 18.279329299926758,
+      "lr": 0.001,
+      "grad_norm": 37.57187718565359,
+      "elapsed": 122.47668960003648,
+      "samples_per_s": NaN,
+      "batch_size": 13,
+      "precision": "bf16",
+      "gpu_util_percent": null,
+      "vram_used_mb": null,
+      "vram_total_mb": null
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786018156.4508042,
+    "payload": {
+      "epoch": 1,
+      "batch": 160,
+      "total_batches": 27840,
+      "train_loss": 15.135375022888184,
+      "lr": 0.001,
+      "grad_norm": 37.51634838581085,
+      "elapsed": 122.88931650004815,
+      "samples_per_s": NaN,
+      "batch_size": 13,
+      "precision": "bf16",
+      "gpu_util_percent": null,
+      "vram_used_mb": null,
+      "vram_total_mb": null
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786018156.929885,
+    "payload": {
+      "epoch": 1,
+      "batch": 161,
+      "total_batches": 27840,
+      "train_loss": 15.745970726013184,
+      "lr": 0.001,
+      "grad_norm": 37.46439791614225,
+      "elapsed": 123.30818890000228,
+      "samples_per_s": 30.373136316602157,
+      "batch_size": 13,
+      "precision": "bf16",
+      "gpu_util_percent": 100.0,
+      "vram_used_mb": 41.2,
+      "vram_total_mb": 6143.5
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786018157.3334482,
+    "payload": {
+      "epoch": 1,
+      "batch": 162,
+      "total_batches": 27840,
+      "train_loss": 18.068342208862305,
+      "lr": 0.001,
+      "grad_norm": 37.4390499562393,
+      "elapsed": 123.77164140000241,
+      "samples_per_s": NaN,
+      "batch_size": 13,
+      "precision": "bf16",
+      "gpu_util_percent": null,
+      "vram_used_mb": null,
+      "vram_total_mb": null
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786018157.746882,
+    "payload": {
+      "epoch": 1,
+      "batch": 163,
+      "total_batches": 27840,
+      "train_loss": 14.524794578552246,
+      "lr": 0.001,
+      "grad_norm": 37.341428838624545,
+      "elapsed": 124.18562250002287,
+      "samples_per_s": NaN,
+      "batch_size": 13,
+      "precision": "bf16",
+      "gpu_util_percent": null,
+      "vram_used_mb": null,
+      "vram_total_mb": null
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786018158.23174,
+    "payload": {
+      "epoch": 1,
+      "batch": 164,
+      "total_batches": 27840,
+      "train_loss": 13.098012924194336,
+      "lr": 0.001,
+      "grad_norm": 37.245300944258524,
+      "elapsed": 124.59859830001369,
+      "samples_per_s": 30.22298752671126,
+      "batch_size": 13,
+      "precision": "bf16",
+      "gpu_util_percent": 82.0,
+      "vram_used_mb": 41.2,
+      "vram_total_mb": 6143.5
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786018158.6344674,
+    "payload": {
+      "epoch": 1,
+      "batch": 165,
+      "total_batches": 27840,
+      "train_loss": 17.72092056274414,
+      "lr": 0.001,
+      "grad_norm": 37.120459851351654,
+      "elapsed": 125.07343860005494,
+      "samples_per_s": NaN,
+      "batch_size": 13,
+      "precision": "bf16",
+      "gpu_util_percent": null,
+      "vram_used_mb": null,
+      "vram_total_mb": null
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786018159.0321574,
+    "payload": {
+      "epoch": 1,
+      "batch": 166,
+      "total_batches": 27840,
+      "train_loss": 12.891947746276855,
+      "lr": 0.001,
+      "grad_norm": 37.00044895080199,
+      "elapsed": 125.47724490001565,
+      "samples_per_s": NaN,
+      "batch_size": 13,
+      "precision": "bf16",
+      "gpu_util_percent": null,
+      "vram_used_mb": null,
+      "vram_total_mb": null
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786018159.5544577,
+    "payload": {
+      "epoch": 1,
+      "batch": 167,
+      "total_batches": 27840,
+      "train_loss": 15.462446212768555,
+      "lr": 0.001,
+      "grad_norm": 36.98127887063398,
+      "elapsed": 125.88336470001377,
+      "samples_per_s": 30.35570346299819,
+      "batch_size": 13,
+      "precision": "bf16",
+      "gpu_util_percent": 100.0,
+      "vram_used_mb": 41.2,
+      "vram_total_mb": 6143.5
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786018159.9501314,
+    "payload": {
+      "epoch": 1,
+      "batch": 168,
+      "total_batches": 27840,
+      "train_loss": 14.242027282714844,
+      "lr": 0.001,
+      "grad_norm": 36.95043244816008,
+      "elapsed": 126.38855040003546,
+      "samples_per_s": NaN,
+      "batch_size": 13,
+      "precision": "bf16",
+      "gpu_util_percent": null,
+      "vram_used_mb": null,
+      "vram_total_mb": null
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786018160.3425663,
+    "payload": {
+      "epoch": 1,
+      "batch": 169,
+      "total_batches": 27840,
+      "train_loss": 14.54568099975586,
+      "lr": 0.001,
+      "grad_norm": 36.90800280824921,
+      "elapsed": 126.78301390004344,
+      "samples_per_s": NaN,
+      "batch_size": 13,
+      "precision": "bf16",
+      "gpu_util_percent": null,
+      "vram_used_mb": null,
+      "vram_total_mb": null
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786018160.8161778,
+    "payload": {
+      "epoch": 1,
+      "batch": 170,
+      "total_batches": 27840,
+      "train_loss": 15.0331392288208,
+      "lr": 0.001,
+      "grad_norm": 36.86011317757999,
+      "elapsed": 127.18391790002352,
+      "samples_per_s": 29.987243887602776,
+      "batch_size": 13,
+      "precision": "bf16",
+      "gpu_util_percent": 91.0,
+      "vram_used_mb": 41.2,
+      "vram_total_mb": 6143.5
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786018161.2243502,
+    "payload": {
+      "epoch": 1,
+      "batch": 171,
+      "total_batches": 27840,
+      "train_loss": 18.898969650268555,
+      "lr": 0.001,
+      "grad_norm": 36.837391981604505,
+      "elapsed": 127.66395790001843,
+      "samples_per_s": NaN,
+      "batch_size": 13,
+      "precision": "bf16",
+      "gpu_util_percent": null,
+      "vram_used_mb": null,
+      "vram_total_mb": null
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786018161.6244805,
+    "payload": {
+      "epoch": 1,
+      "batch": 172,
+      "total_batches": 27840,
+      "train_loss": 14.147457122802734,
+      "lr": 0.001,
+      "grad_norm": 36.73024114342623,
+      "elapsed": 128.06274200003827,
+      "samples_per_s": NaN,
+      "batch_size": 13,
+      "precision": "bf16",
+      "gpu_util_percent": null,
+      "vram_used_mb": null,
+      "vram_total_mb": null
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786018162.1150017,
+    "payload": {
+      "epoch": 1,
+      "batch": 173,
+      "total_batches": 27840,
+      "train_loss": 12.698328018188477,
+      "lr": 0.001,
+      "grad_norm": 36.68389212327197,
+      "elapsed": 128.4696990000084,
+      "samples_per_s": 30.331768888544325,
+      "batch_size": 13,
+      "precision": "bf16",
+      "gpu_util_percent": 95.0,
+      "vram_used_mb": 41.2,
+      "vram_total_mb": 6143.5
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786018162.507466,
+    "payload": {
+      "epoch": 1,
+      "batch": 174,
+      "total_batches": 27840,
+      "train_loss": 13.520454406738281,
+      "lr": 0.001,
+      "grad_norm": 36.58973676308818,
+      "elapsed": 128.94948220002698,
+      "samples_per_s": NaN,
+      "batch_size": 13,
+      "precision": "bf16",
+      "gpu_util_percent": null,
+      "vram_used_mb": null,
+      "vram_total_mb": null
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786018162.90691,
+    "payload": {
+      "epoch": 1,
+      "batch": 175,
+      "total_batches": 27840,
+      "train_loss": 15.321833610534668,
+      "lr": 0.001,
+      "grad_norm": 36.5183632005964,
+      "elapsed": 129.34521710005356,
+      "samples_per_s": NaN,
+      "batch_size": 13,
+      "precision": "bf16",
+      "gpu_util_percent": null,
+      "vram_used_mb": null,
+      "vram_total_mb": null
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786018163.368202,
+    "payload": {
+      "epoch": 1,
+      "batch": 176,
+      "total_batches": 27840,
+      "train_loss": 15.947823524475098,
+      "lr": 0.001,
+      "grad_norm": 36.441882220181554,
+      "elapsed": 129.7498215000378,
+      "samples_per_s": 30.465831943816422,
+      "batch_size": 13,
+      "precision": "bf16",
+      "gpu_util_percent": 89.0,
+      "vram_used_mb": 41.2,
+      "vram_total_mb": 6143.5
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786018163.767059,
+    "payload": {
+      "epoch": 1,
+      "batch": 177,
+      "total_batches": 27840,
+      "train_loss": 15.787659645080566,
+      "lr": 0.001,
+      "grad_norm": 36.35879142675022,
+      "elapsed": 130.20668310002657,
+      "samples_per_s": NaN,
+      "batch_size": 13,
+      "precision": "bf16",
+      "gpu_util_percent": null,
+      "vram_used_mb": null,
+      "vram_total_mb": null
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786018164.1572962,
+    "payload": {
+      "epoch": 1,
+      "batch": 178,
+      "total_batches": 27840,
+      "train_loss": 14.570368766784668,
+      "lr": 0.001,
+      "grad_norm": 36.24448024021106,
+      "elapsed": 130.59700850001536,
+      "samples_per_s": NaN,
+      "batch_size": 13,
+      "precision": "bf16",
+      "gpu_util_percent": null,
+      "vram_used_mb": null,
+      "vram_total_mb": null
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786018164.6603243,
+    "payload": {
+      "epoch": 1,
+      "batch": 179,
+      "total_batches": 27840,
+      "train_loss": 11.783036231994629,
+      "lr": 0.001,
+      "grad_norm": 36.106923737339464,
+      "elapsed": 131.01232500001788,
+      "samples_per_s": 30.891005917796917,
+      "batch_size": 13,
+      "precision": "bf16",
+      "gpu_util_percent": 83.0,
+      "vram_used_mb": 41.2,
+      "vram_total_mb": 6143.5
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786018165.052312,
+    "payload": {
+      "epoch": 1,
+      "batch": 180,
+      "total_batches": 27840,
+      "train_loss": 16.64687156677246,
+      "lr": 0.001,
+      "grad_norm": 36.01669447157118,
+      "elapsed": 131.49469090002822,
+      "samples_per_s": NaN,
+      "batch_size": 13,
+      "precision": "bf16",
+      "gpu_util_percent": null,
+      "vram_used_mb": null,
+      "vram_total_mb": null
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786018165.4568822,
+    "payload": {
+      "epoch": 1,
+      "batch": 181,
+      "total_batches": 27840,
+      "train_loss": 12.485418319702148,
+      "lr": 0.001,
+      "grad_norm": 35.948182448497796,
+      "elapsed": 131.8972005000105,
+      "samples_per_s": NaN,
+      "batch_size": 13,
+      "precision": "bf16",
+      "gpu_util_percent": null,
+      "vram_used_mb": null,
+      "vram_total_mb": null
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786018165.9610648,
+    "payload": {
+      "epoch": 1,
+      "batch": 182,
+      "total_batches": 27840,
+      "train_loss": 16.036945343017578,
+      "lr": 0.001,
+      "grad_norm": 35.82595736115844,
+      "elapsed": 132.29787690000376,
+      "samples_per_s": 30.337162557722586,
+      "batch_size": 13,
+      "precision": "bf16",
+      "gpu_util_percent": 100.0,
+      "vram_used_mb": 41.2,
+      "vram_total_mb": 6143.5
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786018166.3490348,
+    "payload": {
+      "epoch": 1,
+      "batch": 183,
+      "total_batches": 27840,
+      "train_loss": 17.308271408081055,
+      "lr": 0.001,
+      "grad_norm": 35.822685794100735,
+      "elapsed": 132.79328820004594,
+      "samples_per_s": NaN,
+      "batch_size": 13,
+      "precision": "bf16",
+      "gpu_util_percent": null,
+      "vram_used_mb": null,
+      "vram_total_mb": null
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786018166.740791,
+    "payload": {
+      "epoch": 1,
+      "batch": 184,
+      "total_batches": 27840,
+      "train_loss": 15.217348098754883,
+      "lr": 0.001,
+      "grad_norm": 35.73753044916236,
+      "elapsed": 133.18469300004654,
+      "samples_per_s": NaN,
+      "batch_size": 13,
+      "precision": "bf16",
+      "gpu_util_percent": null,
+      "vram_used_mb": null,
+      "vram_total_mb": null
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786018167.2656648,
+    "payload": {
+      "epoch": 1,
+      "batch": 185,
+      "total_batches": 27840,
+      "train_loss": 15.11963939666748,
+      "lr": 0.001,
+      "grad_norm": 35.70880135201119,
+      "elapsed": 133.59461369999917,
+      "samples_per_s": 30.07550107535849,
+      "batch_size": 13,
+      "precision": "bf16",
+      "gpu_util_percent": 86.0,
+      "vram_used_mb": 41.2,
+      "vram_total_mb": 6143.5
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786018167.6574562,
+    "payload": {
+      "epoch": 1,
+      "batch": 186,
+      "total_batches": 27840,
+      "train_loss": 12.88194751739502,
+      "lr": 0.001,
+      "grad_norm": 35.62636142648677,
+      "elapsed": 134.09818100003758,
+      "samples_per_s": NaN,
+      "batch_size": 13,
+      "precision": "bf16",
+      "gpu_util_percent": null,
+      "vram_used_mb": null,
+      "vram_total_mb": null
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786018168.0488288,
+    "payload": {
+      "epoch": 1,
+      "batch": 187,
+      "total_batches": 27840,
+      "train_loss": 14.89184856414795,
+      "lr": 0.001,
+      "grad_norm": 35.56296573985707,
+      "elapsed": 134.49122560000978,
+      "samples_per_s": NaN,
+      "batch_size": 13,
+      "precision": "bf16",
+      "gpu_util_percent": null,
+      "vram_used_mb": null,
+      "vram_total_mb": null
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786018168.6016653,
+    "payload": {
+      "epoch": 1,
+      "batch": 188,
+      "total_batches": 27840,
+      "train_loss": 13.300296783447266,
+      "lr": 0.001,
+      "grad_norm": 35.52361532982359,
+      "elapsed": 134.9058182000299,
+      "samples_per_s": 29.74363503293459,
+      "batch_size": 13,
+      "precision": "bf16",
+      "gpu_util_percent": 100.0,
+      "vram_used_mb": 41.2,
+      "vram_total_mb": 6143.5
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786018169.0074284,
+    "payload": {
+      "epoch": 1,
+      "batch": 189,
+      "total_batches": 27840,
+      "train_loss": 15.723170280456543,
+      "lr": 0.001,
+      "grad_norm": 35.49367356678796,
+      "elapsed": 135.45110300002852,
+      "samples_per_s": NaN,
+      "batch_size": 13,
+      "precision": "bf16",
+      "gpu_util_percent": null,
+      "vram_used_mb": null,
+      "vram_total_mb": null
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786018169.3991451,
+    "payload": {
+      "epoch": 1,
+      "batch": 190,
+      "total_batches": 27840,
+      "train_loss": 14.325030326843262,
+      "lr": 0.001,
+      "grad_norm": 35.40627822875977,
+      "elapsed": 135.8447057000012,
+      "samples_per_s": NaN,
+      "batch_size": 13,
+      "precision": "bf16",
+      "gpu_util_percent": null,
+      "vram_used_mb": null,
+      "vram_total_mb": null
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786018169.8950474,
+    "payload": {
+      "epoch": 1,
+      "batch": 191,
+      "total_batches": 27840,
+      "train_loss": 17.271778106689453,
+      "lr": 0.001,
+      "grad_norm": 35.328212777981584,
+      "elapsed": 136.2491426000488,
+      "samples_per_s": 29.032444651002738,
+      "batch_size": 13,
+      "precision": "bf16",
+      "gpu_util_percent": 86.0,
+      "vram_used_mb": 41.2,
+      "vram_total_mb": 6143.5
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786018170.2826185,
+    "payload": {
+      "epoch": 1,
+      "batch": 192,
+      "total_batches": 27840,
+      "train_loss": 16.384845733642578,
+      "lr": 0.001,
+      "grad_norm": 35.34842779239019,
+      "elapsed": 136.72358440002427,
+      "samples_per_s": NaN,
+      "batch_size": 13,
+      "precision": "bf16",
+      "gpu_util_percent": null,
+      "vram_used_mb": null,
+      "vram_total_mb": null
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786018170.6763878,
+    "payload": {
+      "epoch": 1,
+      "batch": 193,
+      "total_batches": 27840,
+      "train_loss": 14.785234451293945,
+      "lr": 0.001,
+      "grad_norm": 35.34591336818557,
+      "elapsed": 137.1178030000301,
+      "samples_per_s": NaN,
+      "batch_size": 13,
+      "precision": "bf16",
+      "gpu_util_percent": null,
+      "vram_used_mb": null,
+      "vram_total_mb": null
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786018171.1491804,
+    "payload": {
+      "epoch": 1,
+      "batch": 194,
+      "total_batches": 27840,
+      "train_loss": 13.741501808166504,
+      "lr": 0.001,
+      "grad_norm": 35.279911778636816,
+      "elapsed": 137.52667280001333,
+      "samples_per_s": 30.52766600997384,
+      "batch_size": 13,
+      "precision": "bf16",
+      "gpu_util_percent": 93.0,
+      "vram_used_mb": 41.2,
+      "vram_total_mb": 6143.5
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786018171.5411081,
+    "payload": {
+      "epoch": 1,
+      "batch": 195,
+      "total_batches": 27840,
+      "train_loss": 13.719099044799805,
+      "lr": 0.001,
+      "grad_norm": 35.215075977032,
+      "elapsed": 137.9846381000243,
+      "samples_per_s": NaN,
+      "batch_size": 13,
+      "precision": "bf16",
+      "gpu_util_percent": null,
+      "vram_used_mb": null,
+      "vram_total_mb": null
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786018171.9413247,
+    "payload": {
+      "epoch": 1,
+      "batch": 196,
+      "total_batches": 27840,
+      "train_loss": 13.586044311523438,
+      "lr": 0.001,
+      "grad_norm": 35.14243424668604,
+      "elapsed": 138.38264350005193,
+      "samples_per_s": NaN,
+      "batch_size": 13,
+      "precision": "bf16",
+      "gpu_util_percent": null,
+      "vram_used_mb": null,
+      "vram_total_mb": null
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786018172.4323766,
+    "payload": {
+      "epoch": 1,
+      "batch": 197,
+      "total_batches": 27840,
+      "train_loss": 12.092754364013672,
+      "lr": 0.001,
+      "grad_norm": 35.071334887277054,
+      "elapsed": 138.7948360000155,
+      "samples_per_s": 30.753139658944104,
+      "batch_size": 13,
+      "precision": "bf16",
+      "gpu_util_percent": 85.0,
+      "vram_used_mb": 41.2,
+      "vram_total_mb": 6143.5
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786018172.8241792,
+    "payload": {
+      "epoch": 1,
+      "batch": 198,
+      "total_batches": 27840,
+      "train_loss": 13.479764938354492,
+      "lr": 0.001,
+      "grad_norm": 35.00424647090411,
+      "elapsed": 139.26850300002843,
+      "samples_per_s": NaN,
+      "batch_size": 13,
+      "precision": "bf16",
+      "gpu_util_percent": null,
+      "vram_used_mb": null,
+      "vram_total_mb": null
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786018173.2242575,
+    "payload": {
+      "epoch": 1,
+      "batch": 199,
+      "total_batches": 27840,
+      "train_loss": 13.170071601867676,
+      "lr": 0.001,
+      "grad_norm": 34.896376950057906,
+      "elapsed": 139.66552600002615,
+      "samples_per_s": NaN,
+      "batch_size": 13,
+      "precision": "bf16",
+      "gpu_util_percent": null,
+      "vram_used_mb": null,
+      "vram_total_mb": null
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786018173.7411346,
+    "payload": {
+      "epoch": 1,
+      "batch": 200,
+      "total_batches": 27840,
+      "train_loss": 16.432424545288086,
+      "lr": 0.001,
+      "grad_norm": 34.80911205291748,
+      "elapsed": 140.07356740004616,
+      "samples_per_s": 30.49897734509745,
+      "batch_size": 13,
+      "precision": "bf16",
+      "gpu_util_percent": 98.0,
+      "vram_used_mb": 41.2,
+      "vram_total_mb": 6143.5
+    }
+  },
+  {
+    "kind": "tier1",
+    "ts": 1786018180.8640492,
+    "payload": {
+      "tier": "tier1",
+      "rmse": 10.064546014396695,
+      "runtime_s": 0.0591
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786018181.3173327,
+    "payload": {
+      "epoch": 1,
+      "batch": 201,
+      "total_batches": 27840,
+      "train_loss": 14.444324493408203,
+      "lr": 0.001,
+      "grad_norm": 34.73072487560671,
+      "elapsed": 147.69467750005424,
+      "samples_per_s": 1.7057882644505595,
+      "batch_size": 13,
+      "precision": "bf16",
+      "gpu_util_percent": 100.0,
+      "vram_used_mb": 41.2,
+      "vram_total_mb": 6143.5
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786018181.7160366,
+    "payload": {
+      "epoch": 1,
+      "batch": 202,
+      "total_batches": 27840,
+      "train_loss": 14.513070106506348,
+      "lr": 0.001,
+      "grad_norm": 34.67542073278144,
+      "elapsed": 148.157483100018,
+      "samples_per_s": NaN,
+      "batch_size": 13,
+      "precision": "bf16",
+      "gpu_util_percent": null,
+      "vram_used_mb": null,
+      "vram_total_mb": null
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786018182.1160834,
+    "payload": {
+      "epoch": 1,
+      "batch": 203,
+      "total_batches": 27840,
+      "train_loss": 12.631032943725586,
+      "lr": 0.001,
+      "grad_norm": 34.57338896408457,
+      "elapsed": 148.56014590000268,
+      "samples_per_s": NaN,
+      "batch_size": 13,
+      "precision": "bf16",
+      "gpu_util_percent": null,
+      "vram_used_mb": null,
+      "vram_total_mb": null
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786018182.6109817,
+    "payload": {
+      "epoch": 1,
+      "batch": 204,
+      "total_batches": 27840,
+      "train_loss": 15.21053695678711,
+      "lr": 0.001,
+      "grad_norm": 34.55317547274571,
+      "elapsed": 148.97341289999895,
+      "samples_per_s": 30.498872401803556,
+      "batch_size": 13,
+      "precision": "bf16",
+      "gpu_util_percent": 83.0,
+      "vram_used_mb": 41.2,
+      "vram_total_mb": 6143.5
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786018183.018878,
+    "payload": {
+      "epoch": 1,
+      "batch": 205,
+      "total_batches": 27840,
+      "train_loss": 13.20811653137207,
+      "lr": 0.001,
+      "grad_norm": 34.48476482019192,
+      "elapsed": 149.4572763000033,
+      "samples_per_s": NaN,
+      "batch_size": 13,
+      "precision": "bf16",
+      "gpu_util_percent": null,
+      "vram_used_mb": null,
+      "vram_total_mb": null
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786018183.417768,
+    "payload": {
+      "epoch": 1,
+      "batch": 206,
+      "total_batches": 27840,
+      "train_loss": 16.541868209838867,
+      "lr": 0.001,
+      "grad_norm": 34.473543218038614,
+      "elapsed": 149.85737070004689,
+      "samples_per_s": NaN,
+      "batch_size": 13,
+      "precision": "bf16",
+      "gpu_util_percent": null,
+      "vram_used_mb": null,
+      "vram_total_mb": null
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786018183.8828723,
+    "payload": {
+      "epoch": 1,
+      "batch": 207,
+      "total_batches": 27840,
+      "train_loss": 13.006155014038086,
+      "lr": 0.001,
+      "grad_norm": 34.389090169455116,
+      "elapsed": 150.25484140001936,
+      "samples_per_s": 30.434786679772333,
+      "batch_size": 13,
+      "precision": "bf16",
+      "gpu_util_percent": 91.0,
+      "vram_used_mb": 41.2,
+      "vram_total_mb": 6143.5
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786018184.2744918,
+    "payload": {
+      "epoch": 1,
+      "batch": 208,
+      "total_batches": 27840,
+      "train_loss": 14.807415008544922,
+      "lr": 0.001,
+      "grad_norm": 34.31899568209281,
+      "elapsed": 150.71663690003334,
+      "samples_per_s": NaN,
+      "batch_size": 13,
+      "precision": "bf16",
+      "gpu_util_percent": null,
+      "vram_used_mb": null,
+      "vram_total_mb": null
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786018184.6743884,
+    "payload": {
+      "epoch": 1,
+      "batch": 209,
+      "total_batches": 27840,
+      "train_loss": 15.544650077819824,
+      "lr": 0.001,
+      "grad_norm": 34.25336987892406,
+      "elapsed": 151.1202997000073,
+      "samples_per_s": NaN,
+      "batch_size": 13,
+      "precision": "bf16",
+      "gpu_util_percent": null,
+      "vram_used_mb": null,
+      "vram_total_mb": null
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786018185.1410227,
+    "payload": {
+      "epoch": 1,
+      "batch": 210,
+      "total_batches": 27840,
+      "train_loss": 17.414390563964844,
+      "lr": 0.001,
+      "grad_norm": 34.17347958428519,
+      "elapsed": 151.52891839999938,
+      "samples_per_s": 30.61038280677188,
+      "batch_size": 13,
+      "precision": "bf16",
+      "gpu_util_percent": 91.0,
+      "vram_used_mb": 41.2,
+      "vram_total_mb": 6143.5
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786018185.5329926,
+    "payload": {
+      "epoch": 1,
+      "batch": 211,
+      "total_batches": 27840,
+      "train_loss": 14.358122825622559,
+      "lr": 0.001,
+      "grad_norm": 34.08415358213452,
+      "elapsed": 151.97338400001172,
+      "samples_per_s": NaN,
+      "batch_size": 13,
+      "precision": "bf16",
+      "gpu_util_percent": null,
+      "vram_used_mb": null,
+      "vram_total_mb": null
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786018185.9289024,
+    "payload": {
+      "epoch": 1,
+      "batch": 212,
+      "total_batches": 27840,
+      "train_loss": 14.556915283203125,
+      "lr": 0.001,
+      "grad_norm": 34.04996506223139,
+      "elapsed": 152.36972240003524,
+      "samples_per_s": NaN,
+      "batch_size": 13,
+      "precision": "bf16",
+      "gpu_util_percent": null,
+      "vram_used_mb": null,
+      "vram_total_mb": null
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786018186.4212675,
+    "payload": {
+      "epoch": 1,
+      "batch": 213,
+      "total_batches": 27840,
+      "train_loss": 12.314162254333496,
+      "lr": 0.001,
+      "grad_norm": 33.973651120360465,
+      "elapsed": 152.77161290001823,
+      "samples_per_s": 31.383427345075706,
+      "batch_size": 13,
+      "precision": "bf16",
+      "gpu_util_percent": 90.0,
+      "vram_used_mb": 41.2,
+      "vram_total_mb": 6143.5
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786018186.818358,
+    "payload": {
+      "epoch": 1,
+      "batch": 214,
+      "total_batches": 27840,
+      "train_loss": 13.89834213256836,
+      "lr": 0.001,
+      "grad_norm": 33.90211497066177,
+      "elapsed": 153.2599377000006,
+      "samples_per_s": NaN,
+      "batch_size": 13,
+      "precision": "bf16",
+      "gpu_util_percent": null,
+      "vram_used_mb": null,
+      "vram_total_mb": null
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786018187.2194273,
+    "payload": {
+      "epoch": 1,
+      "batch": 215,
+      "total_batches": 27840,
+      "train_loss": 14.691971778869629,
+      "lr": 0.001,
+      "grad_norm": 33.845057310060014,
+      "elapsed": 153.65942060004454,
+      "samples_per_s": NaN,
+      "batch_size": 13,
+      "precision": "bf16",
+      "gpu_util_percent": null,
+      "vram_used_mb": null,
+      "vram_total_mb": null
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786018187.71677,
+    "payload": {
+      "epoch": 1,
+      "batch": 216,
+      "total_batches": 27840,
+      "train_loss": 12.946185111999512,
+      "lr": 0.001,
+      "grad_norm": 33.79748262740947,
+      "elapsed": 154.06710600003134,
+      "samples_per_s": 30.104371856959563,
+      "batch_size": 13,
+      "precision": "bf16",
+      "gpu_util_percent": 97.0,
+      "vram_used_mb": 41.2,
+      "vram_total_mb": 6143.5
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786018188.115713,
+    "payload": {
+      "epoch": 1,
+      "batch": 217,
+      "total_batches": 27840,
+      "train_loss": 14.037835121154785,
+      "lr": 0.001,
+      "grad_norm": 33.72439603761594,
+      "elapsed": 154.55419059999986,
+      "samples_per_s": NaN,
+      "batch_size": 13,
+      "precision": "bf16",
+      "gpu_util_percent": null,
+      "vram_used_mb": null,
+      "vram_total_mb": null
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786018188.516142,
+    "payload": {
+      "epoch": 1,
+      "batch": 218,
+      "total_batches": 27840,
+      "train_loss": 12.288562774658203,
+      "lr": 0.001,
+      "grad_norm": 33.71057488940178,
+      "elapsed": 154.95572270004777,
+      "samples_per_s": NaN,
+      "batch_size": 13,
+      "precision": "bf16",
+      "gpu_util_percent": null,
+      "vram_used_mb": null,
+      "vram_total_mb": null
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786018189.032655,
+    "payload": {
+      "epoch": 1,
+      "batch": 219,
+      "total_batches": 27840,
+      "train_loss": 13.371735572814941,
+      "lr": 0.001,
+      "grad_norm": 33.67849913906289,
+      "elapsed": 155.36102780001238,
+      "samples_per_s": 30.140927384241692,
+      "batch_size": 13,
+      "precision": "bf16",
+      "gpu_util_percent": 86.0,
+      "vram_used_mb": 41.2,
+      "vram_total_mb": 6143.5
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786018189.424694,
+    "payload": {
+      "epoch": 1,
+      "batch": 220,
+      "total_batches": 27840,
+      "train_loss": 14.52978229522705,
+      "lr": 0.001,
+      "grad_norm": 33.61390311934731,
+      "elapsed": 155.86855940002715,
+      "samples_per_s": NaN,
+      "batch_size": 13,
+      "precision": "bf16",
+      "gpu_util_percent": null,
+      "vram_used_mb": null,
+      "vram_total_mb": null
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786018189.8248265,
+    "payload": {
+      "epoch": 1,
+      "batch": 221,
+      "total_batches": 27840,
+      "train_loss": 12.599918365478516,
+      "lr": 0.001,
+      "grad_norm": 33.54525059057037,
+      "elapsed": 156.2645906000398,
+      "samples_per_s": NaN,
+      "batch_size": 13,
+      "precision": "bf16",
+      "gpu_util_percent": null,
+      "vram_used_mb": null,
+      "vram_total_mb": null
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786018190.316365,
+    "payload": {
+      "epoch": 1,
+      "batch": 222,
+      "total_batches": 27840,
+      "train_loss": 16.40226173400879,
+      "lr": 0.001,
+      "grad_norm": 33.53037135235898,
+      "elapsed": 156.6689814000274,
+      "samples_per_s": 29.817546432840697,
+      "batch_size": 13,
+      "precision": "bf16",
+      "gpu_util_percent": 98.0,
+      "vram_used_mb": 41.2,
+      "vram_total_mb": 6143.5
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786018190.701769,
+    "payload": {
+      "epoch": 1,
+      "batch": 223,
+      "total_batches": 27840,
+      "train_loss": 12.087648391723633,
+      "lr": 0.001,
+      "grad_norm": 33.43555735686435,
+      "elapsed": 157.14549250004347,
+      "samples_per_s": NaN,
+      "batch_size": 13,
+      "precision": "bf16",
+      "gpu_util_percent": null,
+      "vram_used_mb": null,
+      "vram_total_mb": null
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786018191.1077294,
+    "payload": {
+      "epoch": 1,
+      "batch": 224,
+      "total_batches": 27840,
+      "train_loss": 15.54981517791748,
+      "lr": 0.001,
+      "grad_norm": 33.39623603224754,
+      "elapsed": 157.54860700003337,
+      "samples_per_s": NaN,
+      "batch_size": 13,
+      "precision": "bf16",
+      "gpu_util_percent": null,
+      "vram_used_mb": null,
+      "vram_total_mb": null
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786018191.5919473,
+    "payload": {
+      "epoch": 1,
+      "batch": 225,
+      "total_batches": 27840,
+      "train_loss": 15.10787296295166,
+      "lr": 0.001,
+      "grad_norm": 33.41126643286811,
+      "elapsed": 157.9563660999993,
+      "samples_per_s": 30.294005656086384,
+      "batch_size": 13,
+      "precision": "bf16",
+      "gpu_util_percent": 85.0,
+      "vram_used_mb": 41.2,
+      "vram_total_mb": 6143.5
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786018191.98624,
+    "payload": {
+      "epoch": 1,
+      "batch": 226,
+      "total_batches": 27840,
+      "train_loss": 13.010890007019043,
+      "lr": 0.001,
+      "grad_norm": 33.42095431184347,
+      "elapsed": 158.42683750001015,
+      "samples_per_s": NaN,
+      "batch_size": 13,
+      "precision": "bf16",
+      "gpu_util_percent": null,
+      "vram_used_mb": null,
+      "vram_total_mb": null
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786018192.3923306,
+    "payload": {
+      "epoch": 1,
+      "batch": 227,
+      "total_batches": 27840,
+      "train_loss": 13.880812644958496,
+      "lr": 0.001,
+      "grad_norm": 33.41133844064721,
+      "elapsed": 158.8334597000503,
+      "samples_per_s": NaN,
+      "batch_size": 13,
+      "precision": "bf16",
+      "gpu_util_percent": null,
+      "vram_used_mb": null,
+      "vram_total_mb": null
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786018192.8836136,
+    "payload": {
+      "epoch": 1,
+      "batch": 228,
+      "total_batches": 27840,
+      "train_loss": 15.351792335510254,
+      "lr": 0.001,
+      "grad_norm": 33.33649316168668,
+      "elapsed": 159.23497640003916,
+      "samples_per_s": 30.501863584685832,
+      "batch_size": 13,
+      "precision": "bf16",
+      "gpu_util_percent": 82.0,
+      "vram_used_mb": 41.2,
+      "vram_total_mb": 6143.5
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786018193.2877722,
+    "payload": {
+      "epoch": 1,
+      "batch": 229,
+      "total_batches": 27840,
+      "train_loss": 13.865389823913574,
+      "lr": 0.001,
+      "grad_norm": 33.4324295718597,
+      "elapsed": 159.7260215000133,
+      "samples_per_s": NaN,
+      "batch_size": 13,
+      "precision": "bf16",
+      "gpu_util_percent": null,
+      "vram_used_mb": null,
+      "vram_total_mb": null
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786018193.6844778,
+    "payload": {
+      "epoch": 1,
+      "batch": 230,
+      "total_batches": 27840,
+      "train_loss": 13.210514068603516,
+      "lr": 0.001,
+      "grad_norm": 33.38555768469106,
+      "elapsed": 160.12585160002345,
+      "samples_per_s": NaN,
+      "batch_size": 13,
+      "precision": "bf16",
+      "gpu_util_percent": null,
+      "vram_used_mb": null,
+      "vram_total_mb": null
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786018194.1813407,
+    "payload": {
+      "epoch": 1,
+      "batch": 231,
+      "total_batches": 27840,
+      "train_loss": 14.750096321105957,
+      "lr": 0.001,
+      "grad_norm": 33.32223793541714,
+      "elapsed": 160.5319253000198,
+      "samples_per_s": 30.070573322898152,
+      "batch_size": 13,
+      "precision": "bf16",
+      "gpu_util_percent": 89.0,
+      "vram_used_mb": 41.2,
+      "vram_total_mb": 6143.5
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786018194.57512,
+    "payload": {
+      "epoch": 1,
+      "batch": 232,
+      "total_batches": 27840,
+      "train_loss": 14.340270042419434,
+      "lr": 0.001,
+      "grad_norm": 33.22759724074397,
+      "elapsed": 161.01529110001866,
+      "samples_per_s": NaN,
+      "batch_size": 13,
+      "precision": "bf16",
+      "gpu_util_percent": null,
+      "vram_used_mb": null,
+      "vram_total_mb": null
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786018194.9771428,
+    "payload": {
+      "epoch": 1,
+      "batch": 233,
+      "total_batches": 27840,
+      "train_loss": 12.759654998779297,
+      "lr": 0.001,
+      "grad_norm": 33.21795447599223,
+      "elapsed": 161.41742900002282,
+      "samples_per_s": NaN,
+      "batch_size": 13,
+      "precision": "bf16",
+      "gpu_util_percent": null,
+      "vram_used_mb": null,
+      "vram_total_mb": null
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786018195.4460506,
+    "payload": {
+      "epoch": 1,
+      "batch": 234,
+      "total_batches": 27840,
+      "train_loss": 13.692167282104492,
+      "lr": 0.001,
+      "grad_norm": 33.144627338800674,
+      "elapsed": 161.82848430000013,
+      "samples_per_s": 30.079623076591165,
+      "batch_size": 13,
+      "precision": "bf16",
+      "gpu_util_percent": 79.0,
+      "vram_used_mb": 41.2,
+      "vram_total_mb": 6143.5
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786018195.8492405,
+    "payload": {
+      "epoch": 1,
+      "batch": 235,
+      "total_batches": 27840,
+      "train_loss": 13.0065279006958,
+      "lr": 0.001,
+      "grad_norm": 33.1125184444671,
+      "elapsed": 162.2878993000486,
+      "samples_per_s": NaN,
+      "batch_size": 13,
+      "precision": "bf16",
+      "gpu_util_percent": null,
+      "vram_used_mb": null,
+      "vram_total_mb": null
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786018196.258523,
+    "payload": {
+      "epoch": 1,
+      "batch": 236,
+      "total_batches": 27840,
+      "train_loss": 13.665606498718262,
+      "lr": 0.001,
+      "grad_norm": 33.04575012902082,
+      "elapsed": 162.69835940003395,
+      "samples_per_s": NaN,
+      "batch_size": 13,
+      "precision": "bf16",
+      "gpu_util_percent": null,
+      "vram_used_mb": null,
+      "vram_total_mb": null
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786018196.73062,
+    "payload": {
+      "epoch": 1,
+      "batch": 237,
+      "total_batches": 27840,
+      "train_loss": 16.461761474609375,
+      "lr": 0.001,
+      "grad_norm": 33.0815304100262,
+      "elapsed": 163.10645459999796,
+      "samples_per_s": 30.51713157427881,
+      "batch_size": 13,
+      "precision": "bf16",
+      "gpu_util_percent": 99.0,
+      "vram_used_mb": 41.2,
+      "vram_total_mb": 6143.5
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786018197.1443765,
+    "payload": {
+      "epoch": 1,
+      "batch": 238,
+      "total_batches": 27840,
+      "train_loss": 15.19506549835205,
+      "lr": 0.001,
+      "grad_norm": 33.003934740018444,
+      "elapsed": 163.58292600000277,
+      "samples_per_s": NaN,
+      "batch_size": 13,
+      "precision": "bf16",
+      "gpu_util_percent": null,
+      "vram_used_mb": null,
+      "vram_total_mb": null
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786018197.5334673,
+    "payload": {
+      "epoch": 1,
+      "batch": 239,
+      "total_batches": 27840,
+      "train_loss": 12.999052047729492,
+      "lr": 0.001,
+      "grad_norm": 32.98408406947946,
+      "elapsed": 163.97730340005364,
+      "samples_per_s": NaN,
+      "batch_size": 13,
+      "precision": "bf16",
+      "gpu_util_percent": null,
+      "vram_used_mb": null,
+      "vram_total_mb": null
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786018198.0247684,
+    "payload": {
+      "epoch": 1,
+      "batch": 240,
+      "total_batches": 27840,
+      "train_loss": 13.999556541442871,
+      "lr": 0.001,
+      "grad_norm": 32.95914455254873,
+      "elapsed": 164.3848942000186,
+      "samples_per_s": 30.50594103154148,
+      "batch_size": 13,
+      "precision": "bf16",
+      "gpu_util_percent": 86.0,
+      "vram_used_mb": 41.2,
+      "vram_total_mb": 6143.5
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786018198.4330692,
+    "payload": {
+      "epoch": 1,
+      "batch": 241,
+      "total_batches": 27840,
+      "train_loss": 13.972100257873535,
+      "lr": 0.001,
+      "grad_norm": 32.991226663233334,
+      "elapsed": 164.87145140004577,
+      "samples_per_s": NaN,
+      "batch_size": 13,
+      "precision": "bf16",
+      "gpu_util_percent": null,
+      "vram_used_mb": null,
+      "vram_total_mb": null
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786018198.8456802,
+    "payload": {
+      "epoch": 1,
+      "batch": 242,
+      "total_batches": 27840,
+      "train_loss": 14.361795425415039,
+      "lr": 0.001,
+      "grad_norm": 32.98112903941762,
+      "elapsed": 165.28647690004436,
+      "samples_per_s": NaN,
+      "batch_size": 13,
+      "precision": "bf16",
+      "gpu_util_percent": null,
+      "vram_used_mb": null,
+      "vram_total_mb": null
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786018199.392847,
+    "payload": {
+      "epoch": 1,
+      "batch": 243,
+      "total_batches": 27840,
+      "train_loss": 12.842718124389648,
+      "lr": 0.001,
+      "grad_norm": 32.88778403168352,
+      "elapsed": 165.6897170000011,
+      "samples_per_s": 29.889097653001443,
+      "batch_size": 13,
+      "precision": "bf16",
+      "gpu_util_percent": 100.0,
+      "vram_used_mb": 41.2,
+      "vram_total_mb": 6143.5
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786018199.7854667,
+    "payload": {
+      "epoch": 1,
+      "batch": 244,
+      "total_batches": 27840,
+      "train_loss": 13.265481948852539,
+      "lr": 0.001,
+      "grad_norm": 32.913082552737876,
+      "elapsed": 166.22410570003558,
+      "samples_per_s": NaN,
+      "batch_size": 13,
+      "precision": "bf16",
+      "gpu_util_percent": null,
+      "vram_used_mb": null,
+      "vram_total_mb": null
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786018200.1802056,
+    "payload": {
+      "epoch": 1,
+      "batch": 245,
+      "total_batches": 27840,
+      "train_loss": 11.449238777160645,
+      "lr": 0.001,
+      "grad_norm": 32.84972491361657,
+      "elapsed": 166.6204301000107,
+      "samples_per_s": NaN,
+      "batch_size": 13,
+      "precision": "bf16",
+      "gpu_util_percent": null,
+      "vram_used_mb": null,
+      "vram_total_mb": null
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786018200.7109334,
+    "payload": {
+      "epoch": 1,
+      "batch": 246,
+      "total_batches": 27840,
+      "train_loss": 15.759780883789062,
+      "lr": 0.001,
+      "grad_norm": 32.85157295940368,
+      "elapsed": 167.04639000003226,
+      "samples_per_s": 28.74680514215034,
+      "batch_size": 13,
+      "precision": "bf16",
+      "gpu_util_percent": 89.0,
+      "vram_used_mb": 41.2,
+      "vram_total_mb": 6143.5
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786018201.1086075,
+    "payload": {
+      "epoch": 1,
+      "batch": 247,
+      "total_batches": 27840,
+      "train_loss": 14.139752388000488,
+      "lr": 0.001,
+      "grad_norm": 32.76747012427944,
+      "elapsed": 167.55271480005467,
+      "samples_per_s": NaN,
+      "batch_size": 13,
+      "precision": "bf16",
+      "gpu_util_percent": null,
+      "vram_used_mb": null,
+      "vram_total_mb": null
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786018201.5278451,
+    "payload": {
+      "epoch": 1,
+      "batch": 248,
+      "total_batches": 27840,
+      "train_loss": 18.351625442504883,
+      "lr": 0.001,
+      "grad_norm": 32.71720684728315,
+      "elapsed": 167.9663172000437,
+      "samples_per_s": NaN,
+      "batch_size": 13,
+      "precision": "bf16",
+      "gpu_util_percent": null,
+      "vram_used_mb": null,
+      "vram_total_mb": null
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786018202.053194,
+    "payload": {
+      "epoch": 1,
+      "batch": 249,
+      "total_batches": 27840,
+      "train_loss": 14.584524154663086,
+      "lr": 0.001,
+      "grad_norm": 32.666828906200976,
+      "elapsed": 168.37328480003634,
+      "samples_per_s": 29.39194398469317,
+      "batch_size": 13,
+      "precision": "bf16",
+      "gpu_util_percent": 85.0,
+      "vram_used_mb": 41.2,
+      "vram_total_mb": 6143.5
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786018202.4520643,
+    "payload": {
+      "epoch": 1,
+      "batch": 250,
+      "total_batches": 27840,
+      "train_loss": 18.228530883789062,
+      "lr": 0.001,
+      "grad_norm": 32.69491943359375,
+      "elapsed": 168.89209000003757,
+      "samples_per_s": NaN,
+      "batch_size": 13,
+      "precision": "bf16",
+      "gpu_util_percent": null,
+      "vram_used_mb": null,
+      "vram_total_mb": null
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786018202.85027,
+    "payload": {
+      "epoch": 1,
+      "batch": 251,
+      "total_batches": 27840,
+      "train_loss": 12.96384048461914,
+      "lr": 0.001,
+      "grad_norm": 32.60080190863742,
+      "elapsed": 169.29442930000369,
+      "samples_per_s": NaN,
+      "batch_size": 13,
+      "precision": "bf16",
+      "gpu_util_percent": null,
+      "vram_used_mb": null,
+      "vram_total_mb": null
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786018203.3247833,
+    "payload": {
+      "epoch": 1,
+      "batch": 252,
+      "total_batches": 27840,
+      "train_loss": 11.799029350280762,
+      "lr": 0.001,
+      "grad_norm": 32.565081770457915,
+      "elapsed": 169.70387850003317,
+      "samples_per_s": 29.310224451004878,
+      "batch_size": 13,
+      "precision": "bf16",
+      "gpu_util_percent": 99.0,
+      "vram_used_mb": 41.2,
+      "vram_total_mb": 6143.5
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786018203.7194471,
+    "payload": {
+      "epoch": 1,
+      "batch": 253,
+      "total_batches": 27840,
+      "train_loss": 13.51882553100586,
+      "lr": 0.001,
+      "grad_norm": 32.54722608784913,
+      "elapsed": 170.15874770004302,
+      "samples_per_s": NaN,
+      "batch_size": 13,
+      "precision": "bf16",
+      "gpu_util_percent": null,
+      "vram_used_mb": null,
+      "vram_total_mb": null
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786018204.11709,
+    "payload": {
+      "epoch": 1,
+      "batch": 254,
+      "total_batches": 27840,
+      "train_loss": 16.70025062561035,
+      "lr": 0.001,
+      "grad_norm": 32.50451338760496,
+      "elapsed": 170.55549350002548,
+      "samples_per_s": NaN,
+      "batch_size": 13,
+      "precision": "bf16",
+      "gpu_util_percent": null,
+      "vram_used_mb": null,
+      "vram_total_mb": null
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786018204.6358783,
+    "payload": {
+      "epoch": 1,
+      "batch": 255,
+      "total_batches": 27840,
+      "train_loss": 13.705114364624023,
+      "lr": 0.001,
+      "grad_norm": 32.44516123603372,
+      "elapsed": 170.9653506000177,
+      "samples_per_s": 30.916258004302215,
+      "batch_size": 13,
+      "precision": "bf16",
+      "gpu_util_percent": 86.0,
+      "vram_used_mb": 41.2,
+      "vram_total_mb": 6143.5
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786018205.0262582,
+    "payload": {
+      "epoch": 1,
+      "batch": 256,
+      "total_batches": 27840,
+      "train_loss": 19.585071563720703,
+      "lr": 0.001,
+      "grad_norm": 32.38326531648636,
+      "elapsed": 171.46469900000375,
+      "samples_per_s": NaN,
+      "batch_size": 13,
+      "precision": "bf16",
+      "gpu_util_percent": null,
+      "vram_used_mb": null,
+      "vram_total_mb": null
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786018205.4166813,
+    "payload": {
+      "epoch": 1,
+      "batch": 257,
+      "total_batches": 27840,
+      "train_loss": 14.035426139831543,
+      "lr": 0.001,
+      "grad_norm": 32.42537848031011,
+      "elapsed": 171.8566506000352,
+      "samples_per_s": NaN,
+      "batch_size": 13,
+      "precision": "bf16",
+      "gpu_util_percent": null,
+      "vram_used_mb": null,
+      "vram_total_mb": null
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786018205.9015412,
+    "payload": {
+      "epoch": 1,
+      "batch": 258,
+      "total_batches": 27840,
+      "train_loss": 14.718210220336914,
+      "lr": 0.001,
+      "grad_norm": 32.44008620210396,
+      "elapsed": 172.26800950005418,
+      "samples_per_s": 29.938763713779128,
+      "batch_size": 13,
+      "precision": "bf16",
+      "gpu_util_percent": 100.0,
+      "vram_used_mb": 41.2,
+      "vram_total_mb": 6143.5
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786018206.2956882,
+    "payload": {
+      "epoch": 1,
+      "batch": 259,
+      "total_batches": 27840,
+      "train_loss": 12.584850311279297,
+      "lr": 0.001,
+      "grad_norm": 32.40483625699194,
+      "elapsed": 172.73425760003738,
+      "samples_per_s": NaN,
+      "batch_size": 13,
+      "precision": "bf16",
+      "gpu_util_percent": null,
+      "vram_used_mb": null,
+      "vram_total_mb": null
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786018206.6870582,
+    "payload": {
+      "epoch": 1,
+      "batch": 260,
+      "total_batches": 27840,
+      "train_loss": 13.371919631958008,
+      "lr": 0.001,
+      "grad_norm": 32.389834521367,
+      "elapsed": 173.1288760000025,
+      "samples_per_s": NaN,
+      "batch_size": 13,
+      "precision": "bf16",
+      "gpu_util_percent": null,
+      "vram_used_mb": null,
+      "vram_total_mb": null
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786018207.1453977,
+    "payload": {
+      "epoch": 1,
+      "batch": 261,
+      "total_batches": 27840,
+      "train_loss": 14.276579856872559,
+      "lr": 0.001,
+      "grad_norm": 32.367771974468596,
+      "elapsed": 173.5312852000352,
+      "samples_per_s": 30.87211834404282,
+      "batch_size": 13,
+      "precision": "bf16",
+      "gpu_util_percent": 90.0,
+      "vram_used_mb": 41.2,
+      "vram_total_mb": 6143.5
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786018207.546916,
+    "payload": {
+      "epoch": 1,
+      "batch": 262,
+      "total_batches": 27840,
+      "train_loss": 16.122028350830078,
+      "lr": 0.001,
+      "grad_norm": 32.30530184097872,
+      "elapsed": 173.98563040001318,
+      "samples_per_s": NaN,
+      "batch_size": 13,
+      "precision": "bf16",
+      "gpu_util_percent": null,
+      "vram_used_mb": null,
+      "vram_total_mb": null
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786018207.944001,
+    "payload": {
+      "epoch": 1,
+      "batch": 263,
+      "total_batches": 27840,
+      "train_loss": 14.886281967163086,
+      "lr": 0.001,
+      "grad_norm": 32.285178180883136,
+      "elapsed": 174.38424939999823,
+      "samples_per_s": NaN,
+      "batch_size": 13,
+      "precision": "bf16",
+      "gpu_util_percent": null,
+      "vram_used_mb": null,
+      "vram_total_mb": null
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786018208.4663694,
+    "payload": {
+      "epoch": 1,
+      "batch": 264,
+      "total_batches": 27840,
+      "train_loss": 12.488364219665527,
+      "lr": 0.001,
+      "grad_norm": 32.199921517661124,
+      "elapsed": 174.79906170000322,
+      "samples_per_s": 30.76249093252124,
+      "batch_size": 13,
+      "precision": "bf16",
+      "gpu_util_percent": 83.0,
+      "vram_used_mb": 41.2,
+      "vram_total_mb": 6143.5
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786018208.8580794,
+    "payload": {
+      "epoch": 1,
+      "batch": 265,
+      "total_batches": 27840,
+      "train_loss": 15.114243507385254,
+      "lr": 0.001,
+      "grad_norm": 32.15211925506592,
+      "elapsed": 175.29984690004494,
+      "samples_per_s": NaN,
+      "batch_size": 13,
+      "precision": "bf16",
+      "gpu_util_percent": null,
+      "vram_used_mb": null,
+      "vram_total_mb": null
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786018209.2503908,
+    "payload": {
+      "epoch": 1,
+      "batch": 266,
+      "total_batches": 27840,
+      "train_loss": 12.028284072875977,
+      "lr": 0.001,
+      "grad_norm": 32.086743032125604,
+      "elapsed": 175.69307720003417,
+      "samples_per_s": NaN,
+      "batch_size": 13,
+      "precision": "bf16",
+      "gpu_util_percent": null,
+      "vram_used_mb": null,
+      "vram_total_mb": null
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786018209.7424726,
+    "payload": {
+      "epoch": 1,
+      "batch": 267,
+      "total_batches": 27840,
+      "train_loss": 12.953042984008789,
+      "lr": 0.001,
+      "grad_norm": 32.03564153806994,
+      "elapsed": 176.09704240004066,
+      "samples_per_s": 30.046685614835127,
+      "batch_size": 13,
+      "precision": "bf16",
+      "gpu_util_percent": 100.0,
+      "vram_used_mb": 41.2,
+      "vram_total_mb": 6143.5
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786018210.1504173,
+    "payload": {
+      "epoch": 1,
+      "batch": 268,
+      "total_batches": 27840,
+      "train_loss": 14.588194847106934,
+      "lr": 0.001,
+      "grad_norm": 32.00574923273343,
+      "elapsed": 176.58990980003728,
+      "samples_per_s": NaN,
+      "batch_size": 13,
+      "precision": "bf16",
+      "gpu_util_percent": null,
+      "vram_used_mb": null,
+      "vram_total_mb": null
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786018210.552225,
+    "payload": {
+      "epoch": 1,
+      "batch": 269,
+      "total_batches": 27840,
+      "train_loss": 13.729941368103027,
+      "lr": 0.001,
+      "grad_norm": 31.969320212155026,
+      "elapsed": 176.99086510000052,
+      "samples_per_s": NaN,
+      "batch_size": 13,
+      "precision": "bf16",
+      "gpu_util_percent": null,
+      "vram_used_mb": null,
+      "vram_total_mb": null
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786018211.0411386,
+    "payload": {
+      "epoch": 1,
+      "batch": 270,
+      "total_batches": 27840,
+      "train_loss": 12.835188865661621,
+      "lr": 0.001,
+      "grad_norm": 31.941672049628362,
+      "elapsed": 177.39970619999804,
+      "samples_per_s": 29.93864650235454,
+      "batch_size": 13,
+      "precision": "bf16",
+      "gpu_util_percent": 85.0,
+      "vram_used_mb": 41.2,
+      "vram_total_mb": 6143.5
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786018211.4349382,
+    "payload": {
+      "epoch": 1,
+      "batch": 271,
+      "total_batches": 27840,
+      "train_loss": 14.437771797180176,
+      "lr": 0.001,
+      "grad_norm": 31.903476236491187,
+      "elapsed": 177.87344330002088,
+      "samples_per_s": NaN,
+      "batch_size": 13,
+      "precision": "bf16",
+      "gpu_util_percent": null,
+      "vram_used_mb": null,
+      "vram_total_mb": null
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786018211.8444111,
+    "payload": {
+      "epoch": 1,
+      "batch": 272,
+      "total_batches": 27840,
+      "train_loss": 16.32356834411621,
+      "lr": 0.001,
+      "grad_norm": 31.85246718631071,
+      "elapsed": 178.28282960003708,
+      "samples_per_s": NaN,
+      "batch_size": 13,
+      "precision": "bf16",
+      "gpu_util_percent": null,
+      "vram_used_mb": null,
+      "vram_total_mb": null
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786018212.3388681,
+    "payload": {
+      "epoch": 1,
+      "batch": 273,
+      "total_batches": 27840,
+      "train_loss": 13.469640731811523,
+      "lr": 0.001,
+      "grad_norm": 31.80376916403299,
+      "elapsed": 178.68713010003557,
+      "samples_per_s": 30.293078543518558,
+      "batch_size": 13,
+      "precision": "bf16",
+      "gpu_util_percent": 100.0,
+      "vram_used_mb": 41.2,
+      "vram_total_mb": 6143.5
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786018212.7535489,
+    "payload": {
+      "epoch": 1,
+      "batch": 274,
+      "total_batches": 27840,
+      "train_loss": 12.999197006225586,
+      "lr": 0.001,
+      "grad_norm": 31.774679601627543,
+      "elapsed": 179.19198650005274,
+      "samples_per_s": NaN,
+      "batch_size": 13,
+      "precision": "bf16",
+      "gpu_util_percent": null,
+      "vram_used_mb": null,
+      "vram_total_mb": null
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786018213.1499808,
+    "payload": {
+      "epoch": 1,
+      "batch": 275,
+      "total_batches": 27840,
+      "train_loss": 14.367961883544922,
+      "lr": 0.001,
+      "grad_norm": 31.73779348200018,
+      "elapsed": 179.5883222000557,
+      "samples_per_s": NaN,
+      "batch_size": 13,
+      "precision": "bf16",
+      "gpu_util_percent": null,
+      "vram_used_mb": null,
+      "vram_total_mb": null
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786018213.6083927,
+    "payload": {
+      "epoch": 1,
+      "batch": 276,
+      "total_batches": 27840,
+      "train_loss": 10.493142127990723,
+      "lr": 0.001,
+      "grad_norm": 31.672066685082257,
+      "elapsed": 179.99322850001045,
+      "samples_per_s": 29.85992708264996,
+      "batch_size": 13,
+      "precision": "bf16",
+      "gpu_util_percent": 87.0,
+      "vram_used_mb": 41.2,
+      "vram_total_mb": 6143.5
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786018214.012501,
+    "payload": {
+      "epoch": 1,
+      "batch": 277,
+      "total_batches": 27840,
+      "train_loss": 16.335256576538086,
+      "lr": 0.001,
+      "grad_norm": 31.628653285305422,
+      "elapsed": 180.4528135000146,
+      "samples_per_s": NaN,
+      "batch_size": 13,
+      "precision": "bf16",
+      "gpu_util_percent": null,
+      "vram_used_mb": null,
+      "vram_total_mb": null
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786018214.408481,
+    "payload": {
+      "epoch": 1,
+      "batch": 278,
+      "total_batches": 27840,
+      "train_loss": 14.816251754760742,
+      "lr": 0.001,
+      "grad_norm": 31.550182417999928,
+      "elapsed": 180.85335750004742,
+      "samples_per_s": NaN,
+      "batch_size": 13,
+      "precision": "bf16",
+      "gpu_util_percent": null,
+      "vram_used_mb": null,
+      "vram_total_mb": null
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786018214.8784153,
+    "payload": {
+      "epoch": 1,
+      "batch": 279,
+      "total_batches": 27840,
+      "train_loss": 15.68040657043457,
+      "lr": 0.001,
+      "grad_norm": 31.538909659163497,
+      "elapsed": 181.26446890004445,
+      "samples_per_s": 30.678688096593024,
+      "batch_size": 13,
+      "precision": "bf16",
+      "gpu_util_percent": 100.0,
+      "vram_used_mb": 41.2,
+      "vram_total_mb": 6143.5
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786018215.266895,
+    "payload": {
+      "epoch": 1,
+      "batch": 280,
+      "total_batches": 27840,
+      "train_loss": 11.313005447387695,
+      "lr": 0.001,
+      "grad_norm": 31.49682185309274,
+      "elapsed": 181.70998220000183,
+      "samples_per_s": NaN,
+      "batch_size": 13,
+      "precision": "bf16",
+      "gpu_util_percent": null,
+      "vram_used_mb": null,
+      "vram_total_mb": null
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786018215.6680818,
+    "payload": {
+      "epoch": 1,
+      "batch": 281,
+      "total_batches": 27840,
+      "train_loss": 16.944034576416016,
+      "lr": 0.001,
+      "grad_norm": 31.46075125181802,
+      "elapsed": 182.10753840004327,
+      "samples_per_s": NaN,
+      "batch_size": 13,
+      "precision": "bf16",
+      "gpu_util_percent": null,
+      "vram_used_mb": null,
+      "vram_total_mb": null
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786018216.1523557,
+    "payload": {
+      "epoch": 1,
+      "batch": 282,
+      "total_batches": 27840,
+      "train_loss": 14.526628494262695,
+      "lr": 0.001,
+      "grad_norm": 31.411007191272493,
+      "elapsed": 182.51808220002567,
+      "samples_per_s": 31.110084390253935,
+      "batch_size": 13,
+      "precision": "bf16",
+      "gpu_util_percent": 92.0,
+      "vram_used_mb": 41.2,
+      "vram_total_mb": 6143.5
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786018216.5500712,
+    "payload": {
+      "epoch": 1,
+      "batch": 283,
+      "total_batches": 27840,
+      "train_loss": 15.941240310668945,
+      "lr": 0.001,
+      "grad_norm": 31.349450438266928,
+      "elapsed": 182.98934910004027,
+      "samples_per_s": NaN,
+      "batch_size": 13,
+      "precision": "bf16",
+      "gpu_util_percent": null,
+      "vram_used_mb": null,
+      "vram_total_mb": null
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786018216.9501214,
+    "payload": {
+      "epoch": 1,
+      "batch": 284,
+      "total_batches": 27840,
+      "train_loss": 12.750419616699219,
+      "lr": 0.001,
+      "grad_norm": 31.348394696141632,
+      "elapsed": 183.39361940004164,
+      "samples_per_s": NaN,
+      "batch_size": 13,
+      "precision": "bf16",
+      "gpu_util_percent": null,
+      "vram_used_mb": null,
+      "vram_total_mb": null
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786018217.4541016,
+    "payload": {
+      "epoch": 1,
+      "batch": 285,
+      "total_batches": 27840,
+      "train_loss": 13.819828033447266,
+      "lr": 0.001,
+      "grad_norm": 31.296462330065275,
+      "elapsed": 183.8019867000403,
+      "samples_per_s": 30.37608869033801,
+      "batch_size": 13,
+      "precision": "bf16",
+      "gpu_util_percent": 86.0,
+      "vram_used_mb": 41.2,
+      "vram_total_mb": 6143.5
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786018217.8500943,
+    "payload": {
+      "epoch": 1,
+      "batch": 286,
+      "total_batches": 27840,
+      "train_loss": 13.378058433532715,
+      "lr": 0.001,
+      "grad_norm": 31.238583257981947,
+      "elapsed": 184.29088840004988,
+      "samples_per_s": NaN,
+      "batch_size": 13,
+      "precision": "bf16",
+      "gpu_util_percent": null,
+      "vram_used_mb": null,
+      "vram_total_mb": null
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786018218.2561433,
+    "payload": {
+      "epoch": 1,
+      "batch": 287,
+      "total_batches": 27840,
+      "train_loss": 12.781628608703613,
+      "lr": 0.001,
+      "grad_norm": 31.170593265041656,
+      "elapsed": 184.69525730004534,
+      "samples_per_s": NaN,
+      "batch_size": 13,
+      "precision": "bf16",
+      "gpu_util_percent": null,
+      "vram_used_mb": null,
+      "vram_total_mb": null
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786018218.7738328,
+    "payload": {
+      "epoch": 1,
+      "batch": 288,
+      "total_batches": 27840,
+      "train_loss": 15.008258819580078,
+      "lr": 0.001,
+      "grad_norm": 31.176964537964928,
+      "elapsed": 185.11068770004204,
+      "samples_per_s": 29.800542675483502,
+      "batch_size": 13,
+      "precision": "bf16",
+      "gpu_util_percent": 94.0,
+      "vram_used_mb": 41.2,
+      "vram_total_mb": 6143.5
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786018219.1589184,
+    "payload": {
+      "epoch": 1,
+      "batch": 289,
+      "total_batches": 27840,
+      "train_loss": 13.576534271240234,
+      "lr": 0.001,
+      "grad_norm": 31.12295469528251,
+      "elapsed": 185.6009374000132,
+      "samples_per_s": NaN,
+      "batch_size": 13,
+      "precision": "bf16",
+      "gpu_util_percent": null,
+      "vram_used_mb": null,
+      "vram_total_mb": null
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786018219.5519667,
+    "payload": {
+      "epoch": 1,
+      "batch": 290,
+      "total_batches": 27840,
+      "train_loss": 12.95824146270752,
+      "lr": 0.001,
+      "grad_norm": 31.071983475520693,
+      "elapsed": 185.993985100009,
+      "samples_per_s": NaN,
+      "batch_size": 13,
+      "precision": "bf16",
+      "gpu_util_percent": null,
+      "vram_used_mb": null,
+      "vram_total_mb": null
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786018220.0440824,
+    "payload": {
+      "epoch": 1,
+      "batch": 291,
+      "total_batches": 27840,
+      "train_loss": 13.205618858337402,
+      "lr": 0.001,
+      "grad_norm": 31.007095943201858,
+      "elapsed": 186.39311800000723,
+      "samples_per_s": 30.41100947245112,
+      "batch_size": 13,
+      "precision": "bf16",
+      "gpu_util_percent": 91.0,
+      "vram_used_mb": 41.2,
+      "vram_total_mb": 6143.5
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786018220.4447234,
+    "payload": {
+      "epoch": 1,
+      "batch": 292,
+      "total_batches": 27840,
+      "train_loss": 13.468904495239258,
+      "lr": 0.001,
+      "grad_norm": 30.976016269971247,
+      "elapsed": 186.88359120005043,
+      "samples_per_s": NaN,
+      "batch_size": 13,
+      "precision": "bf16",
+      "gpu_util_percent": null,
+      "vram_used_mb": null,
+      "vram_total_mb": null
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786018220.8421779,
+    "payload": {
+      "epoch": 1,
+      "batch": 293,
+      "total_batches": 27840,
+      "train_loss": 13.868922233581543,
+      "lr": 0.001,
+      "grad_norm": 30.936373372126766,
+      "elapsed": 187.28101620002417,
+      "samples_per_s": NaN,
+      "batch_size": 13,
+      "precision": "bf16",
+      "gpu_util_percent": null,
+      "vram_used_mb": null,
+      "vram_total_mb": null
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786018221.3752673,
+    "payload": {
+      "epoch": 1,
+      "batch": 294,
+      "total_batches": 27840,
+      "train_loss": 13.820528030395508,
+      "lr": 0.001,
+      "grad_norm": 30.93168337491094,
+      "elapsed": 187.70122660003835,
+      "samples_per_s": 29.814033816626583,
+      "batch_size": 13,
+      "precision": "bf16",
+      "gpu_util_percent": 98.0,
+      "vram_used_mb": 41.2,
+      "vram_total_mb": 6143.5
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786018221.7751493,
+    "payload": {
+      "epoch": 1,
+      "batch": 295,
+      "total_batches": 27840,
+      "train_loss": 13.016280174255371,
+      "lr": 0.001,
+      "grad_norm": 30.876564248941712,
+      "elapsed": 188.22068620001664,
+      "samples_per_s": NaN,
+      "batch_size": 13,
+      "precision": "bf16",
+      "gpu_util_percent": null,
+      "vram_used_mb": null,
+      "vram_total_mb": null
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786018222.1751394,
+    "payload": {
+      "epoch": 1,
+      "batch": 296,
+      "total_batches": 27840,
+      "train_loss": 14.914669036865234,
+      "lr": 0.001,
+      "grad_norm": 30.81441985916447,
+      "elapsed": 188.6155772000202,
+      "samples_per_s": NaN,
+      "batch_size": 13,
+      "precision": "bf16",
+      "gpu_util_percent": null,
+      "vram_used_mb": null,
+      "vram_total_mb": null
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786018222.7010512,
+    "payload": {
+      "epoch": 1,
+      "batch": 297,
+      "total_batches": 27840,
+      "train_loss": 14.77816390991211,
+      "lr": 0.001,
+      "grad_norm": 30.780835569105566,
+      "elapsed": 189.02820070000598,
+      "samples_per_s": 29.39017866213959,
+      "batch_size": 13,
+      "precision": "bf16",
+      "gpu_util_percent": 83.0,
+      "vram_used_mb": 41.2,
+      "vram_total_mb": 6143.5
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786018223.1002765,
+    "payload": {
+      "epoch": 1,
+      "batch": 298,
+      "total_batches": 27840,
+      "train_loss": 13.238415718078613,
+      "lr": 0.001,
+      "grad_norm": 30.731118352621195,
+      "elapsed": 189.53989140002523,
+      "samples_per_s": NaN,
+      "batch_size": 13,
+      "precision": "bf16",
+      "gpu_util_percent": null,
+      "vram_used_mb": null,
+      "vram_total_mb": null
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786018223.4939814,
+    "payload": {
+      "epoch": 1,
+      "batch": 299,
+      "total_batches": 27840,
+      "train_loss": 16.07892608642578,
+      "lr": 0.001,
+      "grad_norm": 30.679672250779575,
+      "elapsed": 189.93570180004463,
+      "samples_per_s": NaN,
+      "batch_size": 13,
+      "precision": "bf16",
+      "gpu_util_percent": null,
+      "vram_used_mb": null,
+      "vram_total_mb": null
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786018223.9834387,
+    "payload": {
+      "epoch": 1,
+      "batch": 300,
+      "total_batches": 27840,
+      "train_loss": 15.198066711425781,
+      "lr": 0.001,
+      "grad_norm": 30.63092854499817,
+      "elapsed": 190.34123990003718,
+      "samples_per_s": 29.702079007703887,
+      "batch_size": 13,
+      "precision": "bf16",
+      "gpu_util_percent": 88.0,
+      "vram_used_mb": 41.2,
+      "vram_total_mb": 6143.5
+    }
+  },
+  {
+    "kind": "tier1",
+    "ts": 1786018231.2091439,
+    "payload": {
+      "tier": "tier1",
+      "rmse": 9.651730959228773,
+      "runtime_s": 0.0656
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786018231.6715388,
+    "payload": {
+      "epoch": 1,
+      "batch": 301,
+      "total_batches": 27840,
+      "train_loss": 13.063465118408203,
+      "lr": 0.001,
+      "grad_norm": 30.586229745731796,
+      "elapsed": 198.04048200004036,
+      "samples_per_s": 1.6884779047074925,
+      "batch_size": 13,
+      "precision": "bf16",
+      "gpu_util_percent": 90.0,
+      "vram_used_mb": 41.2,
+      "vram_total_mb": 6143.5
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786018232.067727,
+    "payload": {
+      "epoch": 1,
+      "batch": 302,
+      "total_batches": 27840,
+      "train_loss": 13.752607345581055,
+      "lr": 0.001,
+      "grad_norm": 30.58223833943045,
+      "elapsed": 198.50603580003371,
+      "samples_per_s": NaN,
+      "batch_size": 13,
+      "precision": "bf16",
+      "gpu_util_percent": null,
+      "vram_used_mb": null,
+      "vram_total_mb": null
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786018232.4712465,
+    "payload": {
+      "epoch": 1,
+      "batch": 303,
+      "total_batches": 27840,
+      "train_loss": 14.305276870727539,
+      "lr": 0.001,
+      "grad_norm": 30.56618835587706,
+      "elapsed": 198.91236360004405,
+      "samples_per_s": NaN,
+      "batch_size": 13,
+      "precision": "bf16",
+      "gpu_util_percent": null,
+      "vram_used_mb": null,
+      "vram_total_mb": null
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786018233.017581,
+    "payload": {
+      "epoch": 1,
+      "batch": 304,
+      "total_batches": 27840,
+      "train_loss": 13.322993278503418,
+      "lr": 0.001,
+      "grad_norm": 30.53513127565384,
+      "elapsed": 199.32622940000147,
+      "samples_per_s": 30.33252379267803,
+      "batch_size": 13,
+      "precision": "bf16",
+      "gpu_util_percent": 86.0,
+      "vram_used_mb": 41.2,
+      "vram_total_mb": 6143.5
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786018233.4086483,
+    "payload": {
+      "epoch": 1,
+      "batch": 305,
+      "total_batches": 27840,
+      "train_loss": 11.687138557434082,
+      "lr": 0.001,
+      "grad_norm": 30.481045769863442,
+      "elapsed": 199.85117290000198,
+      "samples_per_s": NaN,
+      "batch_size": 13,
+      "precision": "bf16",
+      "gpu_util_percent": null,
+      "vram_used_mb": null,
+      "vram_total_mb": null
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786018233.8090537,
+    "payload": {
+      "epoch": 1,
+      "batch": 306,
+      "total_batches": 27840,
+      "train_loss": 14.103889465332031,
+      "lr": 0.001,
+      "grad_norm": 30.421738157085343,
+      "elapsed": 200.24862990004476,
+      "samples_per_s": NaN,
+      "batch_size": 13,
+      "precision": "bf16",
+      "gpu_util_percent": null,
+      "vram_used_mb": null,
+      "vram_total_mb": null
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786018234.299973,
+    "payload": {
+      "epoch": 1,
+      "batch": 307,
+      "total_batches": 27840,
+      "train_loss": 13.848337173461914,
+      "lr": 0.001,
+      "grad_norm": 30.442863277969607,
+      "elapsed": 200.66328080004314,
+      "samples_per_s": 29.168683543272977,
+      "batch_size": 13,
+      "precision": "bf16",
+      "gpu_util_percent": 100.0,
+      "vram_used_mb": 41.2,
+      "vram_total_mb": 6143.5
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786018234.6947281,
+    "payload": {
+      "epoch": 1,
+      "batch": 308,
+      "total_batches": 27840,
+      "train_loss": 13.595579147338867,
+      "lr": 0.001,
+      "grad_norm": 30.374771440183963,
+      "elapsed": 201.1363593999995,
+      "samples_per_s": NaN,
+      "batch_size": 13,
+      "precision": "bf16",
+      "gpu_util_percent": null,
+      "vram_used_mb": null,
+      "vram_total_mb": null
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786018235.0988717,
+    "payload": {
+      "epoch": 1,
+      "batch": 309,
+      "total_batches": 27840,
+      "train_loss": 12.86008071899414,
+      "lr": 0.001,
+      "grad_norm": 30.319445727326723,
+      "elapsed": 201.53749910002807,
+      "samples_per_s": NaN,
+      "batch_size": 13,
+      "precision": "bf16",
+      "gpu_util_percent": null,
+      "vram_used_mb": null,
+      "vram_total_mb": null
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786018235.5679278,
+    "payload": {
+      "epoch": 1,
+      "batch": 310,
+      "total_batches": 27840,
+      "train_loss": 11.74205207824707,
+      "lr": 0.001,
+      "grad_norm": 30.26897395349318,
+      "elapsed": 201.93873790005455,
+      "samples_per_s": 30.577275440453327,
+      "batch_size": 13,
+      "precision": "bf16",
+      "gpu_util_percent": 89.0,
+      "vram_used_mb": 41.2,
+      "vram_total_mb": 6143.5
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786018235.9586895,
+    "payload": {
+      "epoch": 1,
+      "batch": 311,
+      "total_batches": 27840,
+      "train_loss": 13.145038604736328,
+      "lr": 0.001,
+      "grad_norm": 30.235366809023155,
+      "elapsed": 202.4007805000292,
+      "samples_per_s": NaN,
+      "batch_size": 13,
+      "precision": "bf16",
+      "gpu_util_percent": null,
+      "vram_used_mb": null,
+      "vram_total_mb": null
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786018236.3619125,
+    "payload": {
+      "epoch": 1,
+      "batch": 312,
+      "total_batches": 27840,
+      "train_loss": 17.43598175048828,
+      "lr": 0.001,
+      "grad_norm": 30.23708616770231,
+      "elapsed": 202.80123670003377,
+      "samples_per_s": NaN,
+      "batch_size": 13,
+      "precision": "bf16",
+      "gpu_util_percent": null,
+      "vram_used_mb": null,
+      "vram_total_mb": null
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786018236.8229876,
+    "payload": {
+      "epoch": 1,
+      "batch": 313,
+      "total_batches": 27840,
+      "train_loss": 14.525761604309082,
+      "lr": 0.001,
+      "grad_norm": 30.229685201431614,
+      "elapsed": 203.20192680001492,
+      "samples_per_s": 30.8742397213742,
+      "batch_size": 13,
+      "precision": "bf16",
+      "gpu_util_percent": 90.0,
+      "vram_used_mb": 41.2,
+      "vram_total_mb": 6143.5
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786018237.210864,
+    "payload": {
+      "epoch": 1,
+      "batch": 314,
+      "total_batches": 27840,
+      "train_loss": 16.184083938598633,
+      "lr": 0.001,
+      "grad_norm": 30.206551503223977,
+      "elapsed": 203.65453840000555,
+      "samples_per_s": NaN,
+      "batch_size": 13,
+      "precision": "bf16",
+      "gpu_util_percent": null,
+      "vram_used_mb": null,
+      "vram_total_mb": null
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786018237.6113162,
+    "payload": {
+      "epoch": 1,
+      "batch": 315,
+      "total_batches": 27840,
+      "train_loss": 16.863483428955078,
+      "lr": 0.001,
+      "grad_norm": 30.19853989131867,
+      "elapsed": 204.0510242000455,
+      "samples_per_s": NaN,
+      "batch_size": 13,
+      "precision": "bf16",
+      "gpu_util_percent": null,
+      "vram_used_mb": null,
+      "vram_total_mb": null
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786018238.0922525,
+    "payload": {
+      "epoch": 1,
+      "batch": 316,
+      "total_batches": 27840,
+      "train_loss": 12.061737060546875,
+      "lr": 0.001,
+      "grad_norm": 30.141241167165056,
+      "elapsed": 204.45748630003072,
+      "samples_per_s": 31.06183694876451,
+      "batch_size": 13,
+      "precision": "bf16",
+      "gpu_util_percent": 99.0,
+      "vram_used_mb": 41.2,
+      "vram_total_mb": 6143.5
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786018238.4920979,
+    "payload": {
+      "epoch": 1,
+      "batch": 317,
+      "total_batches": 27840,
+      "train_loss": 11.975663185119629,
+      "lr": 0.001,
+      "grad_norm": 30.093937837739094,
+      "elapsed": 204.9331055000075,
+      "samples_per_s": NaN,
+      "batch_size": 13,
+      "precision": "bf16",
+      "gpu_util_percent": null,
+      "vram_used_mb": null,
+      "vram_total_mb": null
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786018238.8924696,
+    "payload": {
+      "epoch": 1,
+      "batch": 318,
+      "total_batches": 27840,
+      "train_loss": 14.120173454284668,
+      "lr": 0.001,
+      "grad_norm": 30.14077586347952,
+      "elapsed": 205.3332814000314,
+      "samples_per_s": NaN,
+      "batch_size": 13,
+      "precision": "bf16",
+      "gpu_util_percent": null,
+      "vram_used_mb": null,
+      "vram_total_mb": null
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786018239.3527226,
+    "payload": {
+      "epoch": 1,
+      "batch": 319,
+      "total_batches": 27840,
+      "train_loss": 12.161438941955566,
+      "lr": 0.001,
+      "grad_norm": 30.11530511730517,
+      "elapsed": 205.737386599998,
+      "samples_per_s": 30.471142461719097,
+      "batch_size": 13,
+      "precision": "bf16",
+      "gpu_util_percent": 89.0,
+      "vram_used_mb": 41.2,
+      "vram_total_mb": 6143.5
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786018239.7426257,
+    "payload": {
+      "epoch": 1,
+      "batch": 320,
+      "total_batches": 27840,
+      "train_loss": 13.599310874938965,
+      "lr": 0.001,
+      "grad_norm": 30.06497415602207,
+      "elapsed": 206.18088420003187,
+      "samples_per_s": NaN,
+      "batch_size": 13,
+      "precision": "bf16",
+      "gpu_util_percent": null,
+      "vram_used_mb": null,
+      "vram_total_mb": null
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786018240.1338549,
+    "payload": {
+      "epoch": 1,
+      "batch": 321,
+      "total_batches": 27840,
+      "train_loss": 11.534380912780762,
+      "lr": 0.001,
+      "grad_norm": 30.02006256840311,
+      "elapsed": 206.5746987000457,
+      "samples_per_s": NaN,
+      "batch_size": 13,
+      "precision": "bf16",
+      "gpu_util_percent": null,
+      "vram_used_mb": null,
+      "vram_total_mb": null
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786018240.6044917,
+    "payload": {
+      "epoch": 1,
+      "batch": 322,
+      "total_batches": 27840,
+      "train_loss": 18.575641632080078,
+      "lr": 0.001,
+      "grad_norm": 30.055569530273818,
+      "elapsed": 206.98266830004286,
+      "samples_per_s": 31.318214985890133,
+      "batch_size": 13,
+      "precision": "bf16",
+      "gpu_util_percent": 86.0,
+      "vram_used_mb": 41.2,
+      "vram_total_mb": 6143.5
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786018240.997055,
+    "payload": {
+      "epoch": 1,
+      "batch": 323,
+      "total_batches": 27840,
+      "train_loss": 14.216387748718262,
+      "lr": 0.001,
+      "grad_norm": 30.008242267573213,
+      "elapsed": 207.43693710002117,
+      "samples_per_s": NaN,
+      "batch_size": 13,
+      "precision": "bf16",
+      "gpu_util_percent": null,
+      "vram_used_mb": null,
+      "vram_total_mb": null
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786018241.407013,
+    "payload": {
+      "epoch": 1,
+      "batch": 324,
+      "total_batches": 27840,
+      "train_loss": 17.26938247680664,
+      "lr": 0.001,
+      "grad_norm": 30.10126366438689,
+      "elapsed": 207.84563700004946,
+      "samples_per_s": NaN,
+      "batch_size": 13,
+      "precision": "bf16",
+      "gpu_util_percent": null,
+      "vram_used_mb": null,
+      "vram_total_mb": null
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786018241.8677793,
+    "payload": {
+      "epoch": 1,
+      "batch": 325,
+      "total_batches": 27840,
+      "train_loss": 14.022756576538086,
+      "lr": 0.001,
+      "grad_norm": 30.073436302771935,
+      "elapsed": 208.2510303000454,
+      "samples_per_s": 30.748314637471466,
+      "batch_size": 13,
+      "precision": "bf16",
+      "gpu_util_percent": 97.0,
+      "vram_used_mb": 41.2,
+      "vram_total_mb": 6143.5
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786018242.2675471,
+    "payload": {
+      "epoch": 1,
+      "batch": 326,
+      "total_batches": 27840,
+      "train_loss": 13.88839340209961,
+      "lr": 0.001,
+      "grad_norm": 30.06115746644377,
+      "elapsed": 208.70741319999797,
+      "samples_per_s": NaN,
+      "batch_size": 13,
+      "precision": "bf16",
+      "gpu_util_percent": null,
+      "vram_used_mb": null,
+      "vram_total_mb": null
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786018242.667119,
+    "payload": {
+      "epoch": 1,
+      "batch": 327,
+      "total_batches": 27840,
+      "train_loss": 13.407902717590332,
+      "lr": 0.001,
+      "grad_norm": 30.008282363961595,
+      "elapsed": 209.1104275000398,
+      "samples_per_s": NaN,
+      "batch_size": 13,
+      "precision": "bf16",
+      "gpu_util_percent": null,
+      "vram_used_mb": null,
+      "vram_total_mb": null
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786018243.1740935,
+    "payload": {
+      "epoch": 1,
+      "batch": 328,
+      "total_batches": 27840,
+      "train_loss": 14.044553756713867,
+      "lr": 0.001,
+      "grad_norm": 29.964391888641728,
+      "elapsed": 209.51492210000288,
+      "samples_per_s": 30.85707666809296,
+      "batch_size": 13,
+      "precision": "bf16",
+      "gpu_util_percent": 91.0,
+      "vram_used_mb": 41.2,
+      "vram_total_mb": 6143.5
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786018243.5710237,
+    "payload": {
+      "epoch": 1,
+      "batch": 329,
+      "total_batches": 27840,
+      "train_loss": 15.113178253173828,
+      "lr": 0.001,
+      "grad_norm": 29.91424945495049,
+      "elapsed": 210.01167420001002,
+      "samples_per_s": NaN,
+      "batch_size": 13,
+      "precision": "bf16",
+      "gpu_util_percent": null,
+      "vram_used_mb": null,
+      "vram_total_mb": null
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786018243.9691389,
+    "payload": {
+      "epoch": 1,
+      "batch": 330,
+      "total_batches": 27840,
+      "train_loss": 13.017884254455566,
+      "lr": 0.001,
+      "grad_norm": 29.881916375593704,
+      "elapsed": 210.40758130000904,
+      "samples_per_s": NaN,
+      "batch_size": 13,
+      "precision": "bf16",
+      "gpu_util_percent": null,
+      "vram_used_mb": null,
+      "vram_total_mb": null
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786018244.4693773,
+    "payload": {
+      "epoch": 1,
+      "batch": 331,
+      "total_batches": 27840,
+      "train_loss": 12.338397026062012,
+      "lr": 0.001,
+      "grad_norm": 29.875468280020076,
+      "elapsed": 210.8161162000033,
+      "samples_per_s": 29.9724276717874,
+      "batch_size": 13,
+      "precision": "bf16",
+      "gpu_util_percent": 80.0,
+      "vram_used_mb": 41.2,
+      "vram_total_mb": 6143.5
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786018244.8608625,
+    "payload": {
+      "epoch": 1,
+      "batch": 332,
+      "total_batches": 27840,
+      "train_loss": 13.80540943145752,
+      "lr": 0.001,
+      "grad_norm": 29.831819080444703,
+      "elapsed": 211.30049310001777,
+      "samples_per_s": NaN,
+      "batch_size": 13,
+      "precision": "bf16",
+      "gpu_util_percent": null,
+      "vram_used_mb": null,
+      "vram_total_mb": null
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786018245.27128,
+    "payload": {
+      "epoch": 1,
+      "batch": 333,
+      "total_batches": 27840,
+      "train_loss": 13.035526275634766,
+      "lr": 0.001,
+      "grad_norm": 29.804654937606674,
+      "elapsed": 211.70973820000654,
+      "samples_per_s": NaN,
+      "batch_size": 13,
+      "precision": "bf16",
+      "gpu_util_percent": null,
+      "vram_used_mb": null,
+      "vram_total_mb": null
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786018245.7341673,
+    "payload": {
+      "epoch": 1,
+      "batch": 334,
+      "total_batches": 27840,
+      "train_loss": 15.378079414367676,
+      "lr": 0.001,
+      "grad_norm": 29.80952133818301,
+      "elapsed": 212.11893150000833,
+      "samples_per_s": 29.935204099502446,
+      "batch_size": 13,
+      "precision": "bf16",
+      "gpu_util_percent": 88.0,
+      "vram_used_mb": 41.2,
+      "vram_total_mb": 6143.5
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786018246.1410203,
+    "payload": {
+      "epoch": 1,
+      "batch": 335,
+      "total_batches": 27840,
+      "train_loss": 13.482436180114746,
+      "lr": 0.001,
+      "grad_norm": 29.77233866791227,
+      "elapsed": 212.57978480000747,
+      "samples_per_s": NaN,
+      "batch_size": 13,
+      "precision": "bf16",
+      "gpu_util_percent": null,
+      "vram_used_mb": null,
+      "vram_total_mb": null
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786018246.5531569,
+    "payload": {
+      "epoch": 1,
+      "batch": 336,
+      "total_batches": 27840,
+      "train_loss": 12.648581504821777,
+      "lr": 0.001,
+      "grad_norm": 29.75758264745985,
+      "elapsed": 212.99298040004214,
+      "samples_per_s": NaN,
+      "batch_size": 13,
+      "precision": "bf16",
+      "gpu_util_percent": null,
+      "vram_used_mb": null,
+      "vram_total_mb": null
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786018247.0098822,
+    "payload": {
+      "epoch": 1,
+      "batch": 337,
+      "total_batches": 27840,
+      "train_loss": 11.444159507751465,
+      "lr": 0.001,
+      "grad_norm": 29.712412415343152,
+      "elapsed": 213.39916900004027,
+      "samples_per_s": 30.46308576913894,
+      "batch_size": 13,
+      "precision": "bf16",
+      "gpu_util_percent": 86.0,
+      "vram_used_mb": 41.2,
+      "vram_total_mb": 6143.5
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786018247.4006956,
+    "payload": {
+      "epoch": 1,
+      "batch": 338,
+      "total_batches": 27840,
+      "train_loss": 13.738709449768066,
+      "lr": 0.001,
+      "grad_norm": 29.670377426598904,
+      "elapsed": 213.84206430002814,
+      "samples_per_s": NaN,
+      "batch_size": 13,
+      "precision": "bf16",
+      "gpu_util_percent": null,
+      "vram_used_mb": null,
+      "vram_total_mb": null
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786018247.8008854,
+    "payload": {
+      "epoch": 1,
+      "batch": 339,
+      "total_batches": 27840,
+      "train_loss": 12.433317184448242,
+      "lr": 0.001,
+      "grad_norm": 29.643101379934667,
+      "elapsed": 214.2391837000032,
+      "samples_per_s": NaN,
+      "batch_size": 13,
+      "precision": "bf16",
+      "gpu_util_percent": null,
+      "vram_used_mb": null,
+      "vram_total_mb": null
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786018248.2591126,
+    "payload": {
+      "epoch": 1,
+      "batch": 340,
+      "total_batches": 27840,
+      "train_loss": 11.958226203918457,
+      "lr": 0.001,
+      "grad_norm": 29.61336593066945,
+      "elapsed": 214.64158380002482,
+      "samples_per_s": 31.39050520981798,
+      "batch_size": 13,
+      "precision": "bf16",
+      "gpu_util_percent": 93.0,
+      "vram_used_mb": 41.2,
+      "vram_total_mb": 6143.5
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786018248.6527274,
+    "payload": {
+      "epoch": 1,
+      "batch": 341,
+      "total_batches": 27840,
+      "train_loss": 11.177085876464844,
+      "lr": 0.001,
+      "grad_norm": 29.61020071974947,
+      "elapsed": 215.09651510004187,
+      "samples_per_s": NaN,
+      "batch_size": 13,
+      "precision": "bf16",
+      "gpu_util_percent": null,
+      "vram_used_mb": null,
+      "vram_total_mb": null
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786018249.0592532,
+    "payload": {
+      "epoch": 1,
+      "batch": 342,
+      "total_batches": 27840,
+      "train_loss": 13.265165328979492,
+      "lr": 0.001,
+      "grad_norm": 29.584917509067825,
+      "elapsed": 215.50051250000251,
+      "samples_per_s": NaN,
+      "batch_size": 13,
+      "precision": "bf16",
+      "gpu_util_percent": null,
+      "vram_used_mb": null,
+      "vram_total_mb": null
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786018249.5346267,
+    "payload": {
+      "epoch": 1,
+      "batch": 343,
+      "total_batches": 27840,
+      "train_loss": 14.331483840942383,
+      "lr": 0.001,
+      "grad_norm": 29.562557431768745,
+      "elapsed": 215.9174071000307,
+      "samples_per_s": 30.56849164463115,
+      "batch_size": 13,
+      "precision": "bf16",
+      "gpu_util_percent": 87.0,
+      "vram_used_mb": 41.2,
+      "vram_total_mb": 6143.5
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786018249.928524,
+    "payload": {
+      "epoch": 1,
+      "batch": 344,
+      "total_batches": 27840,
+      "train_loss": 14.868277549743652,
+      "lr": 0.001,
+      "grad_norm": 29.55848267466523,
+      "elapsed": 216.36861870001303,
+      "samples_per_s": NaN,
+      "batch_size": 13,
+      "precision": "bf16",
+      "gpu_util_percent": null,
+      "vram_used_mb": null,
+      "vram_total_mb": null
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786018250.3199656,
+    "payload": {
+      "epoch": 1,
+      "batch": 345,
+      "total_batches": 27840,
+      "train_loss": 13.937987327575684,
+      "lr": 0.001,
+      "grad_norm": 29.530163259091584,
+      "elapsed": 216.76188920001732,
+      "samples_per_s": NaN,
+      "batch_size": 13,
+      "precision": "bf16",
+      "gpu_util_percent": null,
+      "vram_used_mb": null,
+      "vram_total_mb": null
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786018250.8092158,
+    "payload": {
+      "epoch": 1,
+      "batch": 346,
+      "total_batches": 27840,
+      "train_loss": 12.68350887298584,
+      "lr": 0.001,
+      "grad_norm": 29.515806583999897,
+      "elapsed": 217.17877090000547,
+      "samples_per_s": 30.9189198109305,
+      "batch_size": 13,
+      "precision": "bf16",
+      "gpu_util_percent": 82.0,
+      "vram_used_mb": 41.2,
+      "vram_total_mb": 6143.5
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786018251.211855,
+    "payload": {
+      "epoch": 1,
+      "batch": 347,
+      "total_batches": 27840,
+      "train_loss": 16.896278381347656,
+      "lr": 0.001,
+      "grad_norm": 29.513080778314333,
+      "elapsed": 217.6506983000436,
+      "samples_per_s": NaN,
+      "batch_size": 13,
+      "precision": "bf16",
+      "gpu_util_percent": null,
+      "vram_used_mb": null,
+      "vram_total_mb": null
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786018251.6092331,
+    "payload": {
+      "epoch": 1,
+      "batch": 348,
+      "total_batches": 27840,
+      "train_loss": 11.185858726501465,
+      "lr": 0.001,
+      "grad_norm": 29.49811562724497,
+      "elapsed": 218.04746290005278,
+      "samples_per_s": NaN,
+      "batch_size": 13,
+      "precision": "bf16",
+      "gpu_util_percent": null,
+      "vram_used_mb": null,
+      "vram_total_mb": null
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786018252.092405,
+    "payload": {
+      "epoch": 1,
+      "batch": 349,
+      "total_batches": 27840,
+      "train_loss": 14.646622657775879,
+      "lr": 0.001,
+      "grad_norm": 29.463599858106377,
+      "elapsed": 218.45477010001196,
+      "samples_per_s": 30.564275299270953,
+      "batch_size": 13,
+      "precision": "bf16",
+      "gpu_util_percent": 100.0,
+      "vram_used_mb": 41.2,
+      "vram_total_mb": 6143.5
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786018252.4881644,
+    "payload": {
+      "epoch": 1,
+      "batch": 350,
+      "total_batches": 27840,
+      "train_loss": 14.396061897277832,
+      "lr": 0.001,
+      "grad_norm": 29.46106579371861,
+      "elapsed": 218.92650270002196,
+      "samples_per_s": NaN,
+      "batch_size": 13,
+      "precision": "bf16",
+      "gpu_util_percent": null,
+      "vram_used_mb": null,
+      "vram_total_mb": null
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786018252.886675,
+    "payload": {
+      "epoch": 1,
+      "batch": 351,
+      "total_batches": 27840,
+      "train_loss": 14.730978012084961,
+      "lr": 0.001,
+      "grad_norm": 29.450606756400518,
+      "elapsed": 219.32620619999943,
+      "samples_per_s": NaN,
+      "batch_size": 13,
+      "precision": "bf16",
+      "gpu_util_percent": null,
+      "vram_used_mb": null,
+      "vram_total_mb": null
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786018253.361009,
+    "payload": {
+      "epoch": 1,
+      "batch": 352,
+      "total_batches": 27840,
+      "train_loss": 15.722137451171875,
+      "lr": 0.001,
+      "grad_norm": 29.42864705215801,
+      "elapsed": 219.73756010003854,
+      "samples_per_s": 30.40248682928271,
+      "batch_size": 13,
+      "precision": "bf16",
+      "gpu_util_percent": 85.0,
+      "vram_used_mb": 41.2,
+      "vram_total_mb": 6143.5
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786018253.7626002,
+    "payload": {
+      "epoch": 1,
+      "batch": 353,
+      "total_batches": 27840,
+      "train_loss": 13.17975902557373,
+      "lr": 0.001,
+      "grad_norm": 29.403654552384072,
+      "elapsed": 220.20394860004308,
+      "samples_per_s": NaN,
+      "batch_size": 13,
+      "precision": "bf16",
+      "gpu_util_percent": null,
+      "vram_used_mb": null,
+      "vram_total_mb": null
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786018254.159539,
+    "payload": {
+      "epoch": 1,
+      "batch": 354,
+      "total_batches": 27840,
+      "train_loss": 14.373960494995117,
+      "lr": 0.001,
+      "grad_norm": 29.390969777511337,
+      "elapsed": 220.60090960003436,
+      "samples_per_s": NaN,
+      "batch_size": 13,
+      "precision": "bf16",
+      "gpu_util_percent": null,
+      "vram_used_mb": null,
+      "vram_total_mb": null
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786018254.6207762,
+    "payload": {
+      "epoch": 1,
+      "batch": 355,
+      "total_batches": 27840,
+      "train_loss": 13.454423904418945,
+      "lr": 0.001,
+      "grad_norm": 29.397765393324303,
+      "elapsed": 221.0068966000108,
+      "samples_per_s": 30.72468664017727,
+      "batch_size": 13,
+      "precision": "bf16",
+      "gpu_util_percent": 89.0,
+      "vram_used_mb": 41.2,
+      "vram_total_mb": 6143.5
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786018255.0209181,
+    "payload": {
+      "epoch": 1,
+      "batch": 356,
+      "total_batches": 27840,
+      "train_loss": 12.944523811340332,
+      "lr": 0.001,
+      "grad_norm": 29.346711847219574,
+      "elapsed": 221.4596767000039,
+      "samples_per_s": NaN,
+      "batch_size": 13,
+      "precision": "bf16",
+      "gpu_util_percent": null,
+      "vram_used_mb": null,
+      "vram_total_mb": null
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786018255.4220626,
+    "payload": {
+      "epoch": 1,
+      "batch": 357,
+      "total_batches": 27840,
+      "train_loss": 15.380365371704102,
+      "lr": 0.001,
+      "grad_norm": 29.3231240467531,
+      "elapsed": 221.86055010004202,
+      "samples_per_s": NaN,
+      "batch_size": 13,
+      "precision": "bf16",
+      "gpu_util_percent": null,
+      "vram_used_mb": null,
+      "vram_total_mb": null
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786018255.9003203,
+    "payload": {
+      "epoch": 1,
+      "batch": 358,
+      "total_batches": 27840,
+      "train_loss": 12.091012954711914,
+      "lr": 0.001,
+      "grad_norm": 29.31443329763146,
+      "elapsed": 222.2718233000487,
+      "samples_per_s": 30.831843126788197,
+      "batch_size": 13,
+      "precision": "bf16",
+      "gpu_util_percent": 100.0,
+      "vram_used_mb": 41.2,
+      "vram_total_mb": 6143.5
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786018256.300857,
+    "payload": {
+      "epoch": 1,
+      "batch": 359,
+      "total_batches": 27840,
+      "train_loss": 16.929222106933594,
+      "lr": 0.001,
+      "grad_norm": 29.294204730509385,
+      "elapsed": 222.7432527000201,
+      "samples_per_s": NaN,
+      "batch_size": 13,
+      "precision": "bf16",
+      "gpu_util_percent": null,
+      "vram_used_mb": null,
+      "vram_total_mb": null
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786018256.6925993,
+    "payload": {
+      "epoch": 1,
+      "batch": 360,
+      "total_batches": 27840,
+      "train_loss": 15.029675483703613,
+      "lr": 0.001,
+      "grad_norm": 29.28437470065223,
+      "elapsed": 223.137853000022,
+      "samples_per_s": NaN,
+      "batch_size": 13,
+      "precision": "bf16",
+      "gpu_util_percent": null,
+      "vram_used_mb": null,
+      "vram_total_mb": null
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786018257.200371,
+    "payload": {
+      "epoch": 1,
+      "batch": 361,
+      "total_batches": 27840,
+      "train_loss": 13.393033027648926,
+      "lr": 0.001,
+      "grad_norm": 29.244659909911434,
+      "elapsed": 223.56637840002077,
+      "samples_per_s": 30.12613115925666,
+      "batch_size": 13,
+      "precision": "bf16",
+      "gpu_util_percent": 76.0,
+      "vram_used_mb": 41.2,
+      "vram_total_mb": 6143.5
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786018257.5977354,
+    "payload": {
+      "epoch": 1,
+      "batch": 362,
+      "total_batches": 27840,
+      "train_loss": 16.579933166503906,
+      "lr": 0.001,
+      "grad_norm": 29.233460405254892,
+      "elapsed": 224.03661970002577,
+      "samples_per_s": NaN,
+      "batch_size": 13,
+      "precision": "bf16",
+      "gpu_util_percent": null,
+      "vram_used_mb": null,
+      "vram_total_mb": null
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786018258.0027802,
+    "payload": {
+      "epoch": 1,
+      "batch": 363,
+      "total_batches": 27840,
+      "train_loss": 13.679678916931152,
+      "lr": 0.001,
+      "grad_norm": 29.22522908465593,
+      "elapsed": 224.44138070003828,
+      "samples_per_s": NaN,
+      "batch_size": 13,
+      "precision": "bf16",
+      "gpu_util_percent": null,
+      "vram_used_mb": null,
+      "vram_total_mb": null
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786018258.484497,
+    "payload": {
+      "epoch": 1,
+      "batch": 364,
+      "total_batches": 27840,
+      "train_loss": 11.225455284118652,
+      "lr": 0.001,
+      "grad_norm": 29.211318718208062,
+      "elapsed": 224.85076220001793,
+      "samples_per_s": 30.3648098330738,
+      "batch_size": 13,
+      "precision": "bf16",
+      "gpu_util_percent": 99.0,
+      "vram_used_mb": 41.2,
+      "vram_total_mb": 6143.5
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786018258.897072,
+    "payload": {
+      "epoch": 1,
+      "batch": 365,
+      "total_batches": 27840,
+      "train_loss": 11.76182746887207,
+      "lr": 0.001,
+      "grad_norm": 29.22049614893247,
+      "elapsed": 225.33748430002015,
+      "samples_per_s": NaN,
+      "batch_size": 13,
+      "precision": "bf16",
+      "gpu_util_percent": null,
+      "vram_used_mb": null,
+      "vram_total_mb": null
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786018259.304241,
+    "payload": {
+      "epoch": 1,
+      "batch": 366,
+      "total_batches": 27840,
+      "train_loss": 13.080838203430176,
+      "lr": 0.001,
+      "grad_norm": 29.19419208380694,
+      "elapsed": 225.74285470001632,
+      "samples_per_s": NaN,
+      "batch_size": 13,
+      "precision": "bf16",
+      "gpu_util_percent": null,
+      "vram_used_mb": null,
+      "vram_total_mb": null
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786018259.8376453,
+    "payload": {
+      "epoch": 1,
+      "batch": 367,
+      "total_batches": 27840,
+      "train_loss": 12.064336776733398,
+      "lr": 0.001,
+      "grad_norm": 29.154385979883678,
+      "elapsed": 226.16081850003684,
+      "samples_per_s": 29.76971522249168,
+      "batch_size": 13,
+      "precision": "bf16",
+      "gpu_util_percent": 80.0,
+      "vram_used_mb": 41.2,
+      "vram_total_mb": 6143.5
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786018260.2389092,
+    "payload": {
+      "epoch": 1,
+      "batch": 368,
+      "total_batches": 27840,
+      "train_loss": 15.065479278564453,
+      "lr": 0.001,
+      "grad_norm": 29.111363250276316,
+      "elapsed": 226.67763600003673,
+      "samples_per_s": NaN,
+      "batch_size": 13,
+      "precision": "bf16",
+      "gpu_util_percent": null,
+      "vram_used_mb": null,
+      "vram_total_mb": null
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786018260.6429503,
+    "payload": {
+      "epoch": 1,
+      "batch": 369,
+      "total_batches": 27840,
+      "train_loss": 13.530373573303223,
+      "lr": 0.001,
+      "grad_norm": 29.097878344982945,
+      "elapsed": 227.08131110004615,
+      "samples_per_s": NaN,
+      "batch_size": 13,
+      "precision": "bf16",
+      "gpu_util_percent": null,
+      "vram_used_mb": null,
+      "vram_total_mb": null
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786018261.1343944,
+    "payload": {
+      "epoch": 1,
+      "batch": 370,
+      "total_batches": 27840,
+      "train_loss": 14.06840705871582,
+      "lr": 0.001,
+      "grad_norm": 29.047656791274612,
+      "elapsed": 227.49553330003982,
+      "samples_per_s": 29.219723253176046,
+      "batch_size": 13,
+      "precision": "bf16",
+      "gpu_util_percent": 96.0,
+      "vram_used_mb": 41.2,
+      "vram_total_mb": 6143.5
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786018261.542378,
+    "payload": {
+      "epoch": 1,
+      "batch": 371,
+      "total_batches": 27840,
+      "train_loss": 11.446370124816895,
+      "lr": 0.001,
+      "grad_norm": 28.998256441717842,
+      "elapsed": 227.9811924000387,
+      "samples_per_s": NaN,
+      "batch_size": 13,
+      "precision": "bf16",
+      "gpu_util_percent": null,
+      "vram_used_mb": null,
+      "vram_total_mb": null
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786018261.9468899,
+    "payload": {
+      "epoch": 1,
+      "batch": 372,
+      "total_batches": 27840,
+      "train_loss": 14.45783519744873,
+      "lr": 0.001,
+      "grad_norm": 29.004109459538615,
+      "elapsed": 228.3870939000044,
+      "samples_per_s": NaN,
+      "batch_size": 13,
+      "precision": "bf16",
+      "gpu_util_percent": null,
+      "vram_used_mb": null,
+      "vram_total_mb": null
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786018262.4349382,
+    "payload": {
+      "epoch": 1,
+      "batch": 373,
+      "total_batches": 27840,
+      "train_loss": 13.203214645385742,
+      "lr": 0.001,
+      "grad_norm": 28.950281017906864,
+      "elapsed": 228.7991527999984,
+      "samples_per_s": 29.916700400579565,
+      "batch_size": 13,
+      "precision": "bf16",
+      "gpu_util_percent": 74.0,
+      "vram_used_mb": 41.2,
+      "vram_total_mb": 6143.5
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786018262.834707,
+    "payload": {
+      "epoch": 1,
+      "batch": 374,
+      "total_batches": 27840,
+      "train_loss": 12.170007705688477,
+      "lr": 0.001,
+      "grad_norm": 28.924240726838136,
+      "elapsed": 229.28006420005113,
+      "samples_per_s": NaN,
+      "batch_size": 13,
+      "precision": "bf16",
+      "gpu_util_percent": null,
+      "vram_used_mb": null,
+      "vram_total_mb": null
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786018263.243213,
+    "payload": {
+      "epoch": 1,
+      "batch": 375,
+      "total_batches": 27840,
+      "train_loss": 14.24963092803955,
+      "lr": 0.001,
+      "grad_norm": 28.93447523244222,
+      "elapsed": 229.6823172000004,
+      "samples_per_s": NaN,
+      "batch_size": 13,
+      "precision": "bf16",
+      "gpu_util_percent": null,
+      "vram_used_mb": null,
+      "vram_total_mb": null
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786018263.767797,
+    "payload": {
+      "epoch": 1,
+      "batch": 376,
+      "total_batches": 27840,
+      "train_loss": 12.985917091369629,
+      "lr": 0.001,
+      "grad_norm": 28.921335917838075,
+      "elapsed": 230.09295180003392,
+      "samples_per_s": 30.143783527834245,
+      "batch_size": 13,
+      "precision": "bf16",
+      "gpu_util_percent": 98.0,
+      "vram_used_mb": 41.2,
+      "vram_total_mb": 6143.5
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786018264.1677802,
+    "payload": {
+      "epoch": 1,
+      "batch": 377,
+      "total_batches": 27840,
+      "train_loss": 17.459714889526367,
+      "lr": 0.001,
+      "grad_norm": 28.887160503579704,
+      "elapsed": 230.6111235000426,
+      "samples_per_s": NaN,
+      "batch_size": 13,
+      "precision": "bf16",
+      "gpu_util_percent": null,
+      "vram_used_mb": null,
+      "vram_total_mb": null
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786018264.5678453,
+    "payload": {
+      "epoch": 1,
+      "batch": 378,
+      "total_batches": 27840,
+      "train_loss": 12.848158836364746,
+      "lr": 0.001,
+      "grad_norm": 28.85360728117524,
+      "elapsed": 231.00734880001983,
+      "samples_per_s": NaN,
+      "batch_size": 13,
+      "precision": "bf16",
+      "gpu_util_percent": null,
+      "vram_used_mb": null,
+      "vram_total_mb": null
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786018265.02955,
+    "payload": {
+      "epoch": 1,
+      "batch": 379,
+      "total_batches": 27840,
+      "train_loss": 15.617207527160645,
+      "lr": 0.001,
+      "grad_norm": 28.83924133230325,
+      "elapsed": 231.41390980000142,
+      "samples_per_s": 29.524038435053217,
+      "batch_size": 13,
+      "precision": "bf16",
+      "gpu_util_percent": 82.0,
+      "vram_used_mb": 41.2,
+      "vram_total_mb": 6143.5
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786018265.4225104,
+    "payload": {
+      "epoch": 1,
+      "batch": 380,
+      "total_batches": 27840,
+      "train_loss": 11.053964614868164,
+      "lr": 0.001,
+      "grad_norm": 28.7916555003116,
+      "elapsed": 231.8636567000067,
+      "samples_per_s": NaN,
+      "batch_size": 13,
+      "precision": "bf16",
+      "gpu_util_percent": null,
+      "vram_used_mb": null,
+      "vram_total_mb": null
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786018265.8181357,
+    "payload": {
+      "epoch": 1,
+      "batch": 381,
+      "total_batches": 27840,
+      "train_loss": 15.538498878479004,
+      "lr": 0.001,
+      "grad_norm": 28.752619891029017,
+      "elapsed": 232.2585309999995,
+      "samples_per_s": NaN,
+      "batch_size": 13,
+      "precision": "bf16",
+      "gpu_util_percent": null,
+      "vram_used_mb": null,
+      "vram_total_mb": null
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786018266.3088982,
+    "payload": {
+      "epoch": 1,
+      "batch": 382,
+      "total_batches": 27840,
+      "train_loss": 17.180217742919922,
+      "lr": 0.001,
+      "grad_norm": 28.72734174179157,
+      "elapsed": 232.6731104000355,
+      "samples_per_s": 30.972011307131208,
+      "batch_size": 13,
+      "precision": "bf16",
+      "gpu_util_percent": 100.0,
+      "vram_used_mb": 41.2,
+      "vram_total_mb": 6143.5
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786018266.709174,
+    "payload": {
+      "epoch": 1,
+      "batch": 383,
+      "total_batches": 27840,
+      "train_loss": 13.085434913635254,
+      "lr": 0.001,
+      "grad_norm": 28.73609796329827,
+      "elapsed": 233.14746300003026,
+      "samples_per_s": NaN,
+      "batch_size": 13,
+      "precision": "bf16",
+      "gpu_util_percent": null,
+      "vram_used_mb": null,
+      "vram_total_mb": null
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786018267.102016,
+    "payload": {
+      "epoch": 1,
+      "batch": 384,
+      "total_batches": 27840,
+      "train_loss": 16.787090301513672,
+      "lr": 0.001,
+      "grad_norm": 28.709486087163288,
+      "elapsed": 233.5453454000526,
+      "samples_per_s": NaN,
+      "batch_size": 13,
+      "precision": "bf16",
+      "gpu_util_percent": null,
+      "vram_used_mb": null,
+      "vram_total_mb": null
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786018267.592572,
+    "payload": {
+      "epoch": 1,
+      "batch": 385,
+      "total_batches": 27840,
+      "train_loss": 14.45702838897705,
+      "lr": 0.001,
+      "grad_norm": 28.787900295505278,
+      "elapsed": 233.95218950003618,
+      "samples_per_s": 30.49067946830342,
+      "batch_size": 13,
+      "precision": "bf16",
+      "gpu_util_percent": 88.0,
+      "vram_used_mb": 41.2,
+      "vram_total_mb": 6143.5
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786018267.993001,
+    "payload": {
+      "epoch": 1,
+      "batch": 386,
+      "total_batches": 27840,
+      "train_loss": 10.802517890930176,
+      "lr": 0.001,
+      "grad_norm": 28.791470137284826,
+      "elapsed": 234.43328190001193,
+      "samples_per_s": NaN,
+      "batch_size": 13,
+      "precision": "bf16",
+      "gpu_util_percent": null,
+      "vram_used_mb": null,
+      "vram_total_mb": null
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786018268.3933303,
+    "payload": {
+      "epoch": 1,
+      "batch": 387,
+      "total_batches": 27840,
+      "train_loss": 11.761510848999023,
+      "lr": 0.001,
+      "grad_norm": 28.78426260048721,
+      "elapsed": 234.83859480003593,
+      "samples_per_s": NaN,
+      "batch_size": 13,
+      "precision": "bf16",
+      "gpu_util_percent": null,
+      "vram_used_mb": null,
+      "vram_total_mb": null
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786018268.8678644,
+    "payload": {
+      "epoch": 1,
+      "batch": 388,
+      "total_batches": 27840,
+      "train_loss": 13.886401176452637,
+      "lr": 0.001,
+      "grad_norm": 28.742710676389873,
+      "elapsed": 235.24669780000113,
+      "samples_per_s": 30.127294773878766,
+      "batch_size": 13,
+      "precision": "bf16",
+      "gpu_util_percent": 99.0,
+      "vram_used_mb": 41.2,
+      "vram_total_mb": 6143.5
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786018269.259397,
+    "payload": {
+      "epoch": 1,
+      "batch": 389,
+      "total_batches": 27840,
+      "train_loss": 15.805438041687012,
+      "lr": 0.001,
+      "grad_norm": 28.731856870773825,
+      "elapsed": 235.70000330003677,
+      "samples_per_s": NaN,
+      "batch_size": 13,
+      "precision": "bf16",
+      "gpu_util_percent": null,
+      "vram_used_mb": null,
+      "vram_total_mb": null
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786018269.6594899,
+    "payload": {
+      "epoch": 1,
+      "batch": 390,
+      "total_batches": 27840,
+      "train_loss": 11.370243072509766,
+      "lr": 0.001,
+      "grad_norm": 28.70879368170714,
+      "elapsed": 236.0988689000369,
+      "samples_per_s": NaN,
+      "batch_size": 13,
+      "precision": "bf16",
+      "gpu_util_percent": null,
+      "vram_used_mb": null,
+      "vram_total_mb": null
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786018270.117542,
+    "payload": {
+      "epoch": 1,
+      "batch": 391,
+      "total_batches": 27840,
+      "train_loss": 13.524415969848633,
+      "lr": 0.001,
+      "grad_norm": 28.69777724566057,
+      "elapsed": 236.50356360001024,
+      "samples_per_s": 31.029565765666746,
+      "batch_size": 13,
+      "precision": "bf16",
+      "gpu_util_percent": 92.0,
+      "vram_used_mb": 41.2,
+      "vram_total_mb": 6143.5
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786018270.509579,
+    "payload": {
+      "epoch": 1,
+      "batch": 392,
+      "total_batches": 27840,
+      "train_loss": 15.63724422454834,
+      "lr": 0.001,
+      "grad_norm": 28.70275486002163,
+      "elapsed": 236.95007320004515,
+      "samples_per_s": NaN,
+      "batch_size": 13,
+      "precision": "bf16",
+      "gpu_util_percent": null,
+      "vram_used_mb": null,
+      "vram_total_mb": null
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786018270.9118888,
+    "payload": {
+      "epoch": 1,
+      "batch": 393,
+      "total_batches": 27840,
+      "train_loss": 15.146388053894043,
+      "lr": 0.001,
+      "grad_norm": 28.68338355581269,
+      "elapsed": 237.3552235000534,
+      "samples_per_s": NaN,
+      "batch_size": 13,
+      "precision": "bf16",
+      "gpu_util_percent": null,
+      "vram_used_mb": null,
+      "vram_total_mb": null
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786018271.4268975,
+    "payload": {
+      "epoch": 1,
+      "batch": 394,
+      "total_batches": 27840,
+      "train_loss": 14.325124740600586,
+      "lr": 0.001,
+      "grad_norm": 28.65349666237226,
+      "elapsed": 237.76184390002163,
+      "samples_per_s": 30.99464436329353,
+      "batch_size": 13,
+      "precision": "bf16",
+      "gpu_util_percent": 88.0,
+      "vram_used_mb": 41.2,
+      "vram_total_mb": 6143.5
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786018271.8410313,
+    "payload": {
+      "epoch": 1,
+      "batch": 395,
+      "total_batches": 27840,
+      "train_loss": 15.827181816101074,
+      "lr": 0.001,
+      "grad_norm": 28.628577155101148,
+      "elapsed": 238.27958790003322,
+      "samples_per_s": NaN,
+      "batch_size": 13,
+      "precision": "bf16",
+      "gpu_util_percent": null,
+      "vram_used_mb": null,
+      "vram_total_mb": null
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786018272.243512,
+    "payload": {
+      "epoch": 1,
+      "batch": 396,
+      "total_batches": 27840,
+      "train_loss": 12.71435546875,
+      "lr": 0.001,
+      "grad_norm": 28.62918957556137,
+      "elapsed": 238.68562210001983,
+      "samples_per_s": NaN,
+      "batch_size": 13,
+      "precision": "bf16",
+      "gpu_util_percent": null,
+      "vram_used_mb": null,
+      "vram_total_mb": null
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786018272.7748623,
+    "payload": {
+      "epoch": 1,
+      "batch": 397,
+      "total_batches": 27840,
+      "train_loss": 12.999406814575195,
+      "lr": 0.001,
+      "grad_norm": 28.66095005054618,
+      "elapsed": 239.09854000003543,
+      "samples_per_s": 29.176438903296454,
+      "batch_size": 13,
+      "precision": "bf16",
+      "gpu_util_percent": 93.0,
+      "vram_used_mb": 41.2,
+      "vram_total_mb": 6143.5
+    }
+  },
+  {
+    "kind": "log",
+    "ts": 1786018272.77581,
+    "payload": {
+      "level": "info",
+      "message": "stop requested mid-epoch"
+    }
+  },
+  {
+    "kind": "tier4",
+    "ts": 1786018281.9322188,
+    "payload": {
+      "runtime_s": 1.8831,
+      "n_zones": 9
+    }
+  },
+  {
+    "kind": "stopped",
+    "ts": 1786018283.070854,
+    "payload": {}
+  }
+]

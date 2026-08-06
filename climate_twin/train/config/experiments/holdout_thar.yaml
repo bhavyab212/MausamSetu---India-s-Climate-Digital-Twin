@@ -1,0 +1,19 @@
+# holdout_thar.yaml — Phase-5 generalisation test.
+# Trains with Thar arid zone excluded from the loss.
+
+extends: india_fast.yaml
+
+name: holdout_thar
+notes: >-
+  Generalisation test: exclude Thar Arid from the loss. Under
+  inverse-variance weighting Thar normally carries ~2.3× the average
+  per-cell weight, so excluding it makes the aggregate zw_rmse look
+  better but tests true generalisation to an arid regime.
+
+zones:
+  membership: soft
+  zone_mask_sig_expected: 242f813af71b
+  excluded_zone_keys: [thar_arid]
+
+optim:
+  intent: holdout_thar

@@ -1,0 +1,43 @@
+{
+  "generated_at_ist": "2026-08-06T13:24:51.814754+05:30",
+  "signature": "242f813af71b",
+  "yaml_bytes": 9471,
+  "mask_shape": [
+    129,
+    135
+  ],
+  "membership_shape": [
+    129,
+    135,
+    9
+  ],
+  "stats": {
+    "n_cells_total": 17415,
+    "n_land_cells": 4647,
+    "n_assigned_cells": 4647,
+    "n_unassigned_ocean": 12768,
+    "n_unassigned_land": 0,
+    "per_zone_counts": {
+      "himalayan": 526,
+      "tamilnadu_ne": 171,
+      "western_ghats": 534,
+      "thar_arid": 204,
+      "northeast": 459,
+      "northwest": 730,
+      "west_central": 809,
+      "central_northeast": 772,
+      "south_peninsular": 442
+    }
+  },
+  "per_zone_counts": {
+    "himalayan": 526,
+    "tamilnadu_ne": 171,
+    "western_ghats": 534,
+    "thar_arid": 204,
+    "northeast": 459,
+    "northwest": 730,
+    "west_central": 809,
+    "central_northeast": 772,
+    "south_peninsular": 442
+  }
+}

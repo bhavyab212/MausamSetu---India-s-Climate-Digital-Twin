@@ -1,0 +1,77 @@
+2026-08-06 15:19:43.034 WARNING streamlit.runtime.scriptrunner_utils.script_run_context: Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
+2026-08-06 15:19:43.034 WARNING streamlit.runtime.state.session_state_proxy: Session state does not function when running a script without `streamlit run`
+2026-08-06 15:19:43.034 WARNING streamlit.runtime.caching.cache_data_api: No runtime found, using MemoryCacheStorageManager
+2026-08-06 15:19:43.034 WARNING streamlit.runtime.scriptrunner_utils.script_run_context: Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
+2026-08-06 15:19:43.034 WARNING streamlit.runtime.scriptrunner_utils.script_run_context: Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
+2026-08-06 15:19:43.035 WARNING streamlit.runtime.caching.cache_data_api: No runtime found, using MemoryCacheStorageManager
+2026-08-06 15:19:43.035 WARNING streamlit.runtime.caching.cache_data_api: No runtime found, using MemoryCacheStorageManager
+2026-08-06 15:19:43.037 WARNING streamlit.runtime.caching.cache_data_api: No runtime found, using MemoryCacheStorageManager
+2026-08-06 15:19:43.037 WARNING streamlit.runtime.caching.cache_data_api: No runtime found, using MemoryCacheStorageManager
+2026-08-06 15:19:43.037 WARNING streamlit.runtime.caching.cache_data_api: No runtime found, using MemoryCacheStorageManager
+2026-08-06 15:19:43.038 WARNING streamlit.runtime.caching.cache_data_api: No runtime found, using MemoryCacheStorageManager
+2026-08-06 15:19:44.719 WARNING streamlit.runtime.scriptrunner_utils.script_run_context: Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
+2026-08-06 15:19:44.719 WARNING streamlit.runtime.scriptrunner_utils.script_run_context: Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
+L:\MausamSetu\venv\Lib\site-packages\pint\compat.py:231: UserWarning: A NumPy version >=1.22.4 and <2.3.0 is required for this version of SciPy (detected version 2.5.1)
+  import scipy  # noqa: F401
+2026-08-06 15:19:47.537 WARNING streamlit.runtime.scriptrunner_utils.script_run_context: Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
+2026-08-06 15:19:50.352 WARNING streamlit.runtime.scriptrunner_utils.script_run_context: Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
+2026-08-06 15:19:55.802 WARNING streamlit.runtime.scriptrunner_utils.script_run_context: Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
+2026-08-06 15:27:10.038 WARNING streamlit.runtime.scriptrunner_utils.script_run_context: Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
+2026-08-06 15:27:10.042 WARNING streamlit.runtime.scriptrunner_utils.script_run_context: Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
+2026-08-06 15:27:10.061 WARNING streamlit.runtime.scriptrunner_utils.script_run_context: Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
+2026-08-06 15:27:10.209 WARNING streamlit.runtime.scriptrunner_utils.script_run_context: Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
+2026-08-06 15:34:43.029 WARNING streamlit.runtime.scriptrunner_utils.script_run_context: Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
+2026-08-06 15:34:43.035 WARNING streamlit.runtime.scriptrunner_utils.script_run_context: Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
+2026-08-06 15:34:43.054 WARNING streamlit.runtime.scriptrunner_utils.script_run_context: Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
+2026-08-06 15:34:43.250 WARNING streamlit.runtime.scriptrunner_utils.script_run_context: Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.
+
+══ ph5_hold_tnne ══════════════════════════
+experiment      = ph5_hold_tnne
+seed            = 42  deterministic=True
+region          = india
+years           = train (2018, 2022)  val (2023, 2023)  test (2024, 2025)
+variables       = ['rain', 'tmax', 'tmin']  satellite=False
+zone_mask_sig   = 242f813af71b  membership=soft
+model           = convlstm  hidden=16  seq=7  film=True
+loss            = hurdle  zone_weighting=inverse_variance  phys(tmax≥tmin=0.02, smooth=0.01)
+optim           = adamw  lr=0.001  epochs=3  bs=4  amp=fp32  sampler=inverse_frequency
+validation      = tier1/100b tier2/1e tier3/1e thresholds=both
+early_stopping  = worst_zone  monitor=zone_weighted_rmse  patience=5
+  epoch   1  train_loss=37.6057  zw_rmse=6.9503  best=6.9503  elapsed=137.3s
+  epoch   2  train_loss=15.3160  zw_rmse=7.0484  best=6.9503  elapsed=267.4s
+  epoch   3  train_loss=14.2975  zw_rmse=6.7906  best=6.7906  elapsed=398.8s
+
+══ ph5_hold_northeast ══════════════════════════
+experiment      = ph5_hold_northeast
+seed            = 42  deterministic=True
+region          = india
+years           = train (2018, 2022)  val (2023, 2023)  test (2024, 2025)
+variables       = ['rain', 'tmax', 'tmin']  satellite=False
+zone_mask_sig   = 242f813af71b  membership=soft
+model           = convlstm  hidden=16  seq=7  film=True
+loss            = hurdle  zone_weighting=inverse_variance  phys(tmax≥tmin=0.02, smooth=0.01)
+optim           = adamw  lr=0.001  epochs=3  bs=4  amp=fp32  sampler=inverse_frequency
+validation      = tier1/100b tier2/1e tier3/1e thresholds=both
+early_stopping  = worst_zone  monitor=zone_weighted_rmse  patience=5
+  epoch   1  train_loss=38.0470  zw_rmse=7.2000  best=7.2000  elapsed=128.4s
+  epoch   2  train_loss=14.8847  zw_rmse=7.2788  best=7.2000  elapsed=258.1s
+  epoch   3  train_loss=13.6519  zw_rmse=6.9114  best=6.9114  elapsed=388.4s
+
+══ ph5_hold_thar ══════════════════════════
+experiment      = ph5_hold_thar
+seed            = 42  deterministic=True
+region          = india
+years           = train (2018, 2022)  val (2023, 2023)  test (2024, 2025)
+variables       = ['rain', 'tmax', 'tmin']  satellite=False
+zone_mask_sig   = 242f813af71b  membership=soft
+model           = convlstm  hidden=16  seq=7  film=True
+loss            = hurdle  zone_weighting=inverse_variance  phys(tmax≥tmin=0.02, smooth=0.01)
+optim           = adamw  lr=0.001  epochs=3  bs=4  amp=fp32  sampler=inverse_frequency
+validation      = tier1/100b tier2/1e tier3/1e thresholds=both
+early_stopping  = worst_zone  monitor=zone_weighted_rmse  patience=5
+  epoch   1  train_loss=38.1391  zw_rmse=5.5989  best=5.5989  elapsed=185.1s
+  epoch   2  train_loss=15.1774  zw_rmse=5.6274  best=5.5989  elapsed=363.8s
+  epoch   3  train_loss=14.3126  zw_rmse=5.3817  best=5.3817  elapsed=557.9s
+
+── total runtime = 1526.0s ──
+summary written to L:\MausamSetu\climate_twin\_phase0\phase5\holdout_results.json

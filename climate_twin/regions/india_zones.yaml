@@ -1,0 +1,221 @@
+# india_zones.yaml — the SINGLE authoritative definition of zones.
+#
+# Nothing else in the codebase may define a zone. Every module imports the
+# rasterised mask + membership + per-zone parameters from
+# climate_twin.regions.india_zones.
+#
+# Assignment rule (per cell on the 0.25° master grid):
+#   1. Compute for every zone a "match" boolean:
+#      match = (lat, lon) ∈ rect  AND  state_at_cell ∈ states  (if states given)
+#   2. If a cell matches multiple zones, keep the one with LOWEST priority
+#      number (1 wins over 2). Priorities are dense — no ties allowed.
+#   3. Cells matching no zone remain unassigned (mask = 0) and are dropped
+#      from training. `build_mask.py` reports the count.
+#
+# Rectangles are inclusive on both ends and are grid-snapped to 0.25°.
+# `states` is the exact set of ST_NM values from India_States_2024.geojson.
+# `elev_min_m` is documentary until a DEM is supplied (zone 8 uses lat+state
+# fallback per _phase0/prerequisites.md §2).
+#
+# `soft_transition_cells` sets how many 0.25° cells wide the boundary band
+# is for the soft membership vector. Default 2 cells = 0.5° — atmospheric
+# transitions have no hard boundaries.
+#
+# EVERY numeric parameter here must be understood as a DESIGN CHOICE frozen
+# before training. Do NOT tune these to improve a validation number.
+# ─────────────────────────────────────────────────────────────────────
+
+version: 1
+master_grid:
+  n_lat: 129
+  n_lon: 135
+  extent_lat: [6.5, 38.5]
+  extent_lon: [66.5, 100.0]
+  resolution_deg: 0.25
+
+soft_transition_cells: 2   # 0.5° boundary band for soft membership
+min_cells_per_split: 5     # zones with fewer cells in ANY split → flag loudly
+
+# Zone naming: `key` is the machine identifier used everywhere in code and
+# checkpoints. `label` is human-readable. `id` is the integer used in the
+# hard mask (0 = unassigned).
+
+zones:
+
+  # ── Priority 1 (highest) ─────────────────────────────────────────────
+  - key: himalayan
+    id: 8
+    label: "Himalayan (northern)"
+    priority: 1
+    lat_range: [29.0, 38.5]
+    lon_range: [72.0, 97.5]
+    states: ["Jammu & Kashmir", "Ladakh", "Himachal Pradesh",
+             "Uttarakhand", "Sikkim", "Arunachal Pradesh"]
+    elev_min_m: 2500    # documentary; no DEM → fallback lat > 30° + state
+    rationale: >-
+      Snow physics, not rain. Winter western disturbances plus orographic
+      monsoon. Isolated because its precipitation phase (snow) and process
+      set differ from every other zone.
+    seasonality_wet_months: [7, 8, 9]
+
+  - key: tamilnadu_ne
+    id: 9
+    label: "Tamil Nadu (Northeast monsoon)"
+    priority: 2
+    lat_range: [8.0, 13.5]
+    lon_range: [77.0, 80.5]
+    states: ["Tamil Nadu", "Puducherry"]
+    rationale: >-
+      INVERTED seasonality: peak rainfall Oct-Dec, not Jun-Sep. Cannot
+      share a normalization / seasonality profile with any other zone.
+    seasonality_wet_months: [10, 11, 12]
+
+  - key: western_ghats
+    id: 6
+    label: "Western Ghats (orographic strip)"
+    priority: 3
+    lat_range: [8.0, 21.0]
+    lon_range: [73.0, 77.0]
+    states: ["Kerala", "Karnataka", "Goa", "Maharashtra",
+             "Dadra and Nagar Haveli and Daman and Diu"]
+    rationale: >-
+      Orographic uplift, 2000-7000 mm/yr. Extreme heavy tail; low-elevation
+      cells inland of the crest are far drier and must not average with it.
+    seasonality_wet_months: [6, 7, 8, 9]
+
+  - key: thar_arid
+    id: 7
+    label: "Thar Desert (arid)"
+    priority: 4
+    lat_range: [24.0, 30.0]
+    lon_range: [68.0, 73.0]
+    states: ["Rajasthan", "Gujarat"]
+    rationale: >-
+      Near-zero baseline (<150 mm/yr). Heavy-tail statistics dominated by
+      rare convective events. Loss weighting must protect this signal from
+      being crushed by wet-zone gradients.
+    seasonality_wet_months: [7, 8]
+
+  # ── Priority 2 (broad regions — pick up the rest) ────────────────────
+  - key: northeast
+    id: 4
+    label: "Northeast India"
+    priority: 5
+    lat_range: [22.0, 30.0]
+    lon_range: [87.5, 97.5]
+    states: ["Assam", "Meghalaya", "Nagaland", "Manipur", "Mizoram",
+             "Tripura", "Arunachal Pradesh", "Sikkim", "West Bengal"]
+    rationale: >-
+      Global rainfall maximum (Mawsynram). Southwest monsoon dominated
+      with post-monsoon tail. Distinct from Ghats because it is not a
+      narrow orographic strip — it is a broad wet region.
+    seasonality_wet_months: [5, 6, 7, 8, 9]
+
+  - key: northwest
+    id: 1
+    label: "Northwest India"
+    priority: 6
+    lat_range: [23.0, 32.5]
+    lon_range: [72.0, 82.0]
+    states: ["Punjab", "Haryana", "Delhi", "Chandigarh",
+             "Uttar Pradesh", "Rajasthan", "Himachal Pradesh",
+             "Uttarakhand", "Jammu & Kashmir"]
+    rationale: >-
+      Indo-Gangetic plains + Rajasthan uplands. Winter western
+      disturbances contribute meaningfully to annual total (unlike
+      peninsular India). Handles cells not captured by Thar or Himalayan.
+    seasonality_wet_months: [7, 8, 9]
+
+  - key: west_central
+    id: 2
+    label: "West Central India"
+    priority: 7
+    lat_range: [15.0, 27.0]
+    lon_range: [68.0, 84.0]
+    states: ["Gujarat", "Madhya Pradesh", "Maharashtra",
+             "Dadra and Nagar Haveli and Daman and Diu"]
+    rationale: >-
+      Semi-arid to sub-humid interior of peninsular India. Highly
+      heterogeneous in rainfall (Konkan wet, Saurashtra dry) — the
+      Western-Ghats strip is peeled off separately.
+    seasonality_wet_months: [6, 7, 8, 9]
+
+  - key: central_northeast
+    id: 3
+    label: "Central Northeast (Ganga plains)"
+    priority: 8
+    lat_range: [17.0, 28.0]
+    lon_range: [80.0, 89.0]
+    states: ["Bihar", "Jharkhand", "Chhattisgarh", "West Bengal",
+             "Odisha", "Uttar Pradesh"]
+    rationale: >-
+      Middle and lower Gangetic plains plus southern West Bengal.
+      Moderate monsoon rainfall; distinct convective climatology from
+      Northwest and Northeast.
+    seasonality_wet_months: [6, 7, 8, 9]
+
+  - key: south_peninsular
+    id: 5
+    label: "South Peninsular"
+    priority: 9
+    lat_range: [6.5, 20.0]
+    lon_range: [72.0, 94.0]
+    states: ["Karnataka", "Andhra Pradesh", "Telangana", "Kerala",
+             "Tamil Nadu", "Puducherry",
+             "Andaman & Nicobar", "Lakshadweep"]
+    rationale: >-
+      Peninsular India excluding Ghats and TN-NE. Dual monsoon influence
+      (SW major, NE secondary). Catches the interior peninsula plus
+      Andhra/Telangana. Puducherry / Andaman / Lakshadweep are here as a
+      fallback for their non-TN-NE areas.
+    seasonality_wet_months: [6, 7, 8, 9, 10]
+
+# ── Per-zone physics bounds (documentary; used by loss + validation) ──
+# These are TIGHT REALISTIC BOUNDS, not tuning knobs. The upper rain bound
+# per zone comes from published IMD extremes; lower bound is 0. Temperature
+# bounds are ±3σ of the zone's observed range on the 1951-2022 training
+# window.
+physics_bounds:
+  himalayan:        {rain_max_mm_day: 400, tmax_c: [-25, 45], tmin_c: [-35, 30]}
+  tamilnadu_ne:     {rain_max_mm_day: 900, tmax_c: [ 18, 48], tmin_c: [ 12, 30]}
+  western_ghats:    {rain_max_mm_day: 1200, tmax_c: [ 12, 45], tmin_c: [  5, 30]}
+  thar_arid:        {rain_max_mm_day: 600, tmax_c: [ 15, 52], tmin_c: [ -5, 35]}
+  northeast:        {rain_max_mm_day: 1500, tmax_c: [ 10, 45], tmin_c: [  0, 32]}
+  northwest:        {rain_max_mm_day: 500, tmax_c: [ -5, 50], tmin_c: [-15, 35]}
+  west_central:     {rain_max_mm_day: 700, tmax_c: [ 15, 50], tmin_c: [  2, 35]}
+  central_northeast: {rain_max_mm_day: 800, tmax_c: [ 10, 48], tmin_c: [  0, 34]}
+  south_peninsular: {rain_max_mm_day: 800, tmax_c: [ 15, 46], tmin_c: [ 10, 32]}
+
+# ── IMD official daily-rainfall categories (published, comparable) ────
+# https://mausam.imd.gov.in/imd_latest/contents/rainfallinformation_2.php
+imd_rainfall_categories_mm_day:
+  no_rain:              [0.0, 0.1]
+  very_light:           [0.1, 2.4]
+  light:                [2.5, 15.5]
+  moderate:            [15.6, 64.4]
+  heavy:               [64.5, 115.5]
+  very_heavy:         [115.6, 204.4]
+  extremely_heavy:    [204.5, 9999.0]
+
+# ── Loss-weighting policy ─────────────────────────────────────────────
+# "inverse_variance" is the default: per-zone loss weight ∝ 1 / var(rain).
+# Fitted from train years only in Phase 1d and frozen into zone_mask.sha256.
+# Alternative modes are documented but not the default.
+loss_weighting:
+  mode: inverse_variance   # inverse_variance | uniform | area_weighted
+  clip_ratio: [0.2, 5.0]   # bound extreme per-zone weights to avoid instability
+
+# ── Validation tier per zone (Phase 3 tiered validation) ──────────────
+# Every zone is at "full" tier at first. If a zone drops below
+# min_cells_per_split in the val or test split, `build_mask.py` flags it
+# and we can downgrade to "reduced" (Tier 1+2 only, no thresholded scores).
+validation_tier:
+  himalayan:         full
+  tamilnadu_ne:      full
+  western_ghats:     full
+  thar_arid:         full
+  northeast:         full
+  northwest:         full
+  west_central:      full
+  central_northeast: full
+  south_peninsular:  full

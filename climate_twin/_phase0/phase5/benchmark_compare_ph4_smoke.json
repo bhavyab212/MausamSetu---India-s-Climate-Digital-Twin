@@ -1,0 +1,93 @@
+{
+  "model": "india/ph4_smoke",
+  "model_train_years": [
+    2018,
+    2022
+  ],
+  "phase0_baseline_train_years": [
+    1951,
+    2022
+  ],
+  "test_years": [
+    2024,
+    2025
+  ],
+  "zone_mask_sig": "242f813af71b",
+  "note": "Model train_years (2018, 2022) differ from Phase-0's (1951, 2022) \u2014 the Phase-0 climatology used 72 years of stats. Any model-vs-clim comparison is honest only insofar as we acknowledge this data-quantity gap.",
+  "per_zone_test_rmse_rain_mm_day": {
+    "northwest": {
+      "model": 8.54603435307259,
+      "persistence": 12.150348610878336,
+      "climatology": 8.987871735980857,
+      "best_baseline": 8.987871735980857,
+      "delta_vs_best": -0.44183738290826646,
+      "beats_best_baseline": true
+    },
+    "west_central": {
+      "model": 10.47637788841845,
+      "persistence": 14.55006458900092,
+      "climatology": 10.988296861947173,
+      "best_baseline": 10.988296861947173,
+      "delta_vs_best": -0.511918973528724,
+      "beats_best_baseline": true
+    },
+    "central_northeast": {
+      "model": 9.593920064219557,
+      "persistence": 13.506133939996495,
+      "climatology": 10.107754724057628,
+      "best_baseline": 10.107754724057628,
+      "delta_vs_best": -0.5138346598380714,
+      "beats_best_baseline": true
+    },
+    "northeast": {
+      "model": 13.447390359689372,
+      "persistence": 17.417117765209863,
+      "climatology": 13.733523793331914,
+      "best_baseline": 13.733523793331914,
+      "delta_vs_best": -0.28613343364254185,
+      "beats_best_baseline": true
+    },
+    "south_peninsular": {
+      "model": 9.604608965634007,
+      "persistence": 13.39579808194024,
+      "climatology": 9.972066329273392,
+      "best_baseline": 9.972066329273392,
+      "delta_vs_best": -0.3674573636393852,
+      "beats_best_baseline": true
+    },
+    "western_ghats": {
+      "model": 11.628417799208757,
+      "persistence": 13.970478574221579,
+      "climatology": 11.35556153943874,
+      "best_baseline": 11.35556153943874,
+      "delta_vs_best": 0.27285625977001615,
+      "beats_best_baseline": false
+    },
+    "thar_arid": {
+      "model": 7.212377130880317,
+      "persistence": 10.24511015531418,
+      "climatology": 7.625432203757522,
+      "best_baseline": 7.625432203757522,
+      "delta_vs_best": -0.41305507287720467,
+      "beats_best_baseline": true
+    },
+    "himalayan": {
+      "model": 7.644038770132377,
+      "persistence": 10.367892398498094,
+      "climatology": 7.856210319840857,
+      "best_baseline": 7.856210319840857,
+      "delta_vs_best": -0.21217154970848018,
+      "beats_best_baseline": true
+    },
+    "tamilnadu_ne": {
+      "model": 10.175672999050862,
+      "persistence": 13.868909873219309,
+      "climatology": 10.460601243156427,
+      "best_baseline": 10.460601243156427,
+      "delta_vs_best": -0.28492824410556494,
+      "beats_best_baseline": true
+    }
+  },
+  "hard_wins_vs_best_baseline": 8,
+  "total_zones_evaluated": 9
+}

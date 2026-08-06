@@ -1,0 +1,62 @@
+# ph5_hold_thar.yaml — Phase 5a held-out-zone experiment.
+# Train with thar_arid excluded from the loss (no gradient signal from
+# arid cells). Evaluate skill on thar_arid vs the seen zones. This is
+# the direct test of "does the framework generalise to a regime it
+# never trained on?"
+
+extends: base.yaml
+
+name: ph5_hold_thar
+notes: >-
+  Held-out zone: thar_arid. Trained on the other 8 zones only. Skill on
+  thar_arid quantifies how much the zone-aware framework generalises to
+  a regime never seen in gradient. Expect degradation vs a full-train
+  baseline; magnitude of degradation is the honest generalisation
+  measurement.
+
+seed: 42
+deterministic: true
+
+data:
+  region: india
+  train_years: [2018, 2022]
+  val_years:   [2023, 2023]
+  test_years:  [2024, 2025]
+  variables:   [rain, tmax, tmin]
+  include_satellite: false
+
+zones:
+  membership: soft
+  zone_mask_sig_expected: 242f813af71b
+  excluded_zone_keys: [thar_arid]
+
+model:
+  hidden: 16
+  seq_length: 7
+  dropout: 0.1
+
+optim:
+  epochs: 3
+  batch_size: 4
+  lr: 1.0e-3
+  warmup_epochs: 0
+  scheduler: cosine
+  mixed_precision: fp32
+  sampler_mode: inverse_frequency
+
+loss:
+  physics_spatial_smooth: 0.01
+  physics_temporal_smooth: 0.0
+  physics_tmax_ge_tmin: 0.02
+  physics_bounds_penalty: 0.005
+
+validation:
+  tier1_every_n_batches: 100
+  tier2_every_n_epochs: 1
+  tier3_every_n_epochs: 1
+  bootstrap_samples: 100
+  min_cells_for_metric: 5
+
+early_stopping:
+  patience: 5
+  min_delta: 1.0e-3

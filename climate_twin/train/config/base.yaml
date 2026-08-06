@@ -1,0 +1,80 @@
+# base.yaml — defaults for every experiment.
+# An experiment yaml may `extends: base.yaml` and override only the fields
+# that differ. Every field is validated against train.config.schema.
+#
+# Editing this file changes the DEFAULTS for every future experiment that
+# extends it. Do not change these values because a validation number moved
+# — that is "tuning the protocol" and is forbidden by the rebuild plan.
+
+name: base
+notes: >-
+  Zone-aware config-driven defaults. Every experiment overrides these
+  minimally so runs are self-documenting.
+
+seed: 42
+deterministic: true
+
+data:
+  region: india
+  train_years: [1951, 2022]
+  val_years:   [2023, 2023]
+  test_years:  [2024, 2025]
+  variables:   [rain, tmax, tmin]
+  include_satellite: false
+  manifest_sig_expected: null   # optional; pin per-experiment
+
+zones:
+  membership: soft
+  zone_mask_sig_expected: 242f813af71b   # Phase 1 frozen mask
+  excluded_zone_keys: []
+
+model:
+  backbone: convlstm
+  hidden: 48
+  seq_length: 14
+  kernel_size: 3
+  dropout: 0.2
+  residual_scale: 0.1
+  film_conditioning: true
+  zone_conditioned_heads: true
+  satellite_null_dropout: 0.5
+  satellite_channels: [insat_lst]
+
+loss:
+  objective: hurdle
+  rain_occurrence_threshold_mm: 0.1
+  zone_weighting: inverse_variance
+  physics_tmax_ge_tmin: 0.02
+  physics_spatial_smooth: 0.02
+  physics_temporal_smooth: 0.02
+  physics_bounds_penalty: 0.01
+
+optim:
+  optimizer: adamw
+  lr: 1.0e-3
+  weight_decay: 1.0e-4
+  scheduler: cosine
+  warmup_epochs: 2
+  min_lr: 1.0e-6
+  grad_clip: 1.0
+  epochs: 50
+  batch_size: 4
+  gradient_accum: 1
+  mixed_precision: bf16
+  sampler_mode: inverse_frequency
+
+validation:
+  tier1_every_n_batches: 50
+  tier2_every_n_epochs: 1
+  tier3_every_n_epochs: 5
+  tier4_end_of_round: true
+  thresholds_source: both
+  mc_samples: 20
+  bootstrap_samples: 200
+  min_cells_for_metric: 5
+
+early_stopping:
+  policy: worst_zone
+  monitor: zone_weighted_rmse
+  patience: 8
+  min_delta: 1.0e-4

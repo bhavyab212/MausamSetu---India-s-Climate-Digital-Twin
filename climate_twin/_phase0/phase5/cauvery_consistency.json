@@ -1,0 +1,18 @@
+{
+  "zone_mask_sig": "242f813af71b",
+  "manifest_sig": "ab0999487887",
+  "model": "india/ph4_smoke",
+  "n_basin_cells": 113,
+  "n_val_days": 365,
+  "pred_disagreement_on_basin": {
+    "max_abs": 11.830890655517578,
+    "mean_abs": 0.31083595752716064,
+    "rms": 0.7956395149230957,
+    "p95_abs": 1.2037945985794067
+  },
+  "rmse_on_basin_vs_truth": {
+    "predict_from_india_cube": 7.013869762420654,
+    "predict_from_cauvery_cube": 7.0570197105407715,
+    "abs_diff": 0.04314994812011719
+  }
+}

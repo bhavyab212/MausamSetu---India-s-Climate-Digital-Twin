@@ -1,0 +1,18 @@
+# holdout_tamilnadu.yaml — Phase-5 generalisation test.
+# Trains with Tamil Nadu NE zone excluded from the loss.
+
+extends: india_fast.yaml
+
+name: holdout_tamilnadu
+notes: >-
+  Generalisation test: exclude Tamil Nadu NE from the loss. TN-NE
+  has inverted seasonality (peaks Oct-Dec, unlike every other zone),
+  so this is the hardest zero-shot regime for the model to solve.
+
+zones:
+  membership: soft
+  zone_mask_sig_expected: 242f813af71b
+  excluded_zone_keys: [tamilnadu_ne]
+
+optim:
+  intent: holdout_tn

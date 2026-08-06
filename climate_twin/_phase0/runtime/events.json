@@ -1,0 +1,2928 @@
+[
+  {
+    "kind": "started",
+    "ts": 1786014864.458335,
+    "payload": {
+      "model_name": "ph1_proof",
+      "region": "india",
+      "epochs": 2,
+      "device": "cuda:0  NVIDIA GeForce RTX 3060 Laptop GPU  6.0 GB  driver 555.97  torch 2.5.1+cu121 (cuda 12.1)",
+      "config_hash": "19f06d3ee1ec"
+    }
+  },
+  {
+    "kind": "paused",
+    "ts": 1786014867.6640892,
+    "payload": {}
+  },
+  {
+    "kind": "resumed",
+    "ts": 1786014869.6653101,
+    "payload": {}
+  },
+  {
+    "kind": "progress",
+    "ts": 1786014878.5589619,
+    "payload": {
+      "epoch": 1,
+      "batch": 1,
+      "total_batches": 184,
+      "train_loss": 116.4663314819336,
+      "lr": 0.001,
+      "grad_norm": 23.227577209472656,
+      "elapsed": 14.086057999986224
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786014878.7069163,
+    "payload": {
+      "epoch": 1,
+      "batch": 2,
+      "total_batches": 184,
+      "train_loss": 119.20849609375,
+      "lr": 0.001,
+      "grad_norm": 24.660274505615234,
+      "elapsed": 14.233473599946592
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786014878.8296812,
+    "payload": {
+      "epoch": 1,
+      "batch": 3,
+      "total_batches": 184,
+      "train_loss": 102.89708709716797,
+      "lr": 0.001,
+      "grad_norm": 20.847779909769695,
+      "elapsed": 14.356090399960522
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786014878.9918225,
+    "payload": {
+      "epoch": 1,
+      "batch": 4,
+      "total_batches": 184,
+      "train_loss": 106.10496520996094,
+      "lr": 0.001,
+      "grad_norm": 19.33403182029724,
+      "elapsed": 14.518875099951401
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786014879.0897734,
+    "payload": {
+      "epoch": 1,
+      "batch": 5,
+      "total_batches": 184,
+      "train_loss": 112.71733856201172,
+      "lr": 0.001,
+      "grad_norm": 19.038326072692872,
+      "elapsed": 14.61771639995277
+    }
+  },
+  {
+    "kind": "tier1",
+    "ts": 1786014883.073228,
+    "payload": {
+      "tier": "tier1",
+      "rmse": 10.026686988620112,
+      "runtime_s": 0.0941
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786014883.1805995,
+    "payload": {
+      "epoch": 1,
+      "batch": 6,
+      "total_batches": 184,
+      "train_loss": 101.787109375,
+      "lr": 0.001,
+      "grad_norm": 18.28748846054077,
+      "elapsed": 18.707234999979846
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786014883.2791,
+    "payload": {
+      "epoch": 1,
+      "batch": 7,
+      "total_batches": 184,
+      "train_loss": 109.80999755859375,
+      "lr": 0.001,
+      "grad_norm": 17.611376353672572,
+      "elapsed": 18.806793999974616
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786014883.398759,
+    "payload": {
+      "epoch": 1,
+      "batch": 8,
+      "total_batches": 184,
+      "train_loss": 103.08831787109375,
+      "lr": 0.001,
+      "grad_norm": 16.95232117176056,
+      "elapsed": 18.926016599987634
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786014883.5082097,
+    "payload": {
+      "epoch": 1,
+      "batch": 9,
+      "total_batches": 184,
+      "train_loss": 111.80200958251953,
+      "lr": 0.001,
+      "grad_norm": 16.65163252088759,
+      "elapsed": 19.035857099981513
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786014883.6185374,
+    "payload": {
+      "epoch": 1,
+      "batch": 10,
+      "total_batches": 184,
+      "train_loss": 99.65536499023438,
+      "lr": 0.001,
+      "grad_norm": 15.932167434692383,
+      "elapsed": 19.145495099946856
+    }
+  },
+  {
+    "kind": "tier1",
+    "ts": 1786014887.3730218,
+    "payload": {
+      "tier": "tier1",
+      "rmse": 9.756220230170038,
+      "runtime_s": 0.0942
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786014887.446395,
+    "payload": {
+      "epoch": 1,
+      "batch": 11,
+      "total_batches": 184,
+      "train_loss": 111.81997680664062,
+      "lr": 0.001,
+      "grad_norm": 15.61591876636852,
+      "elapsed": 22.97324129997287
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786014887.5308056,
+    "payload": {
+      "epoch": 1,
+      "batch": 12,
+      "total_batches": 184,
+      "train_loss": 104.59053802490234,
+      "lr": 0.001,
+      "grad_norm": 15.33441948890686,
+      "elapsed": 23.058269199973438
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786014887.6377916,
+    "payload": {
+      "epoch": 1,
+      "batch": 13,
+      "total_batches": 184,
+      "train_loss": 109.31925964355469,
+      "lr": 0.001,
+      "grad_norm": 15.296564395611103,
+      "elapsed": 23.16512579994742
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786014887.7055144,
+    "payload": {
+      "epoch": 1,
+      "batch": 14,
+      "total_batches": 184,
+      "train_loss": 94.58319091796875,
+      "lr": 0.001,
+      "grad_norm": 15.14139005116054,
+      "elapsed": 23.232077299966477
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786014887.7772985,
+    "payload": {
+      "epoch": 1,
+      "batch": 15,
+      "total_batches": 184,
+      "train_loss": 109.12450408935547,
+      "lr": 0.001,
+      "grad_norm": 14.95205192565918,
+      "elapsed": 23.30421049997676
+    }
+  },
+  {
+    "kind": "tier1",
+    "ts": 1786014891.777347,
+    "payload": {
+      "tier": "tier1",
+      "rmse": 9.633725564724543,
+      "runtime_s": 0.085
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786014891.9791837,
+    "payload": {
+      "epoch": 1,
+      "batch": 16,
+      "total_batches": 184,
+      "train_loss": 117.3650894165039,
+      "lr": 0.001,
+      "grad_norm": 14.970794677734375,
+      "elapsed": 27.50677179999184
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786014892.090245,
+    "payload": {
+      "epoch": 1,
+      "batch": 17,
+      "total_batches": 184,
+      "train_loss": 105.19959259033203,
+      "lr": 0.001,
+      "grad_norm": 14.83423911823946,
+      "elapsed": 27.61764419998508
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786014892.2005138,
+    "payload": {
+      "epoch": 1,
+      "batch": 18,
+      "total_batches": 184,
+      "train_loss": 90.81392669677734,
+      "lr": 0.001,
+      "grad_norm": 14.757526927524143,
+      "elapsed": 27.727125799981877
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786014892.312885,
+    "payload": {
+      "epoch": 1,
+      "batch": 19,
+      "total_batches": 184,
+      "train_loss": 109.50237274169922,
+      "lr": 0.001,
+      "grad_norm": 14.755839046679045,
+      "elapsed": 27.839526899973862
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786014892.418611,
+    "payload": {
+      "epoch": 1,
+      "batch": 20,
+      "total_batches": 184,
+      "train_loss": 112.41267395019531,
+      "lr": 0.001,
+      "grad_norm": 14.816034078598022,
+      "elapsed": 27.94599229999585
+    }
+  },
+  {
+    "kind": "tier1",
+    "ts": 1786014896.3272254,
+    "payload": {
+      "tier": "tier1",
+      "rmse": 9.644725899272782,
+      "runtime_s": 0.0799
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786014896.428594,
+    "payload": {
+      "epoch": 1,
+      "batch": 21,
+      "total_batches": 184,
+      "train_loss": 101.73860168457031,
+      "lr": 0.001,
+      "grad_norm": 14.789310455322266,
+      "elapsed": 31.95666489994619
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786014896.6131814,
+    "payload": {
+      "epoch": 1,
+      "batch": 22,
+      "total_batches": 184,
+      "train_loss": 102.21177673339844,
+      "lr": 0.001,
+      "grad_norm": 14.76093795082786,
+      "elapsed": 32.13987199997064
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786014896.7524037,
+    "payload": {
+      "epoch": 1,
+      "batch": 23,
+      "total_batches": 184,
+      "train_loss": 115.38204193115234,
+      "lr": 0.001,
+      "grad_norm": 14.781262895335322,
+      "elapsed": 32.280231299984735
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786014896.8817594,
+    "payload": {
+      "epoch": 1,
+      "batch": 24,
+      "total_batches": 184,
+      "train_loss": 94.34454345703125,
+      "lr": 0.001,
+      "grad_norm": 14.774699091911316,
+      "elapsed": 32.4080871999613
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786014896.9864717,
+    "payload": {
+      "epoch": 1,
+      "batch": 25,
+      "total_batches": 184,
+      "train_loss": 107.99266052246094,
+      "lr": 0.001,
+      "grad_norm": 14.806554718017578,
+      "elapsed": 32.51321199996164
+    }
+  },
+  {
+    "kind": "tier1",
+    "ts": 1786014901.128941,
+    "payload": {
+      "tier": "tier1",
+      "rmse": 9.658534119388866,
+      "runtime_s": 0.0844
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786014901.2331924,
+    "payload": {
+      "epoch": 1,
+      "batch": 26,
+      "total_batches": 184,
+      "train_loss": 95.7995376586914,
+      "lr": 0.001,
+      "grad_norm": 14.760387567373423,
+      "elapsed": 36.759817499958444
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786014901.3167849,
+    "payload": {
+      "epoch": 1,
+      "batch": 27,
+      "total_batches": 184,
+      "train_loss": 101.54451751708984,
+      "lr": 0.001,
+      "grad_norm": 14.859493679470486,
+      "elapsed": 36.84448249998968
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786014901.4184437,
+    "payload": {
+      "epoch": 1,
+      "batch": 28,
+      "total_batches": 184,
+      "train_loss": 112.90673828125,
+      "lr": 0.001,
+      "grad_norm": 14.984668799809047,
+      "elapsed": 36.946255299961194
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786014901.5088546,
+    "payload": {
+      "epoch": 1,
+      "batch": 29,
+      "total_batches": 184,
+      "train_loss": 101.61814880371094,
+      "lr": 0.001,
+      "grad_norm": 14.982144585971174,
+      "elapsed": 37.035755899967626
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786014901.615342,
+    "payload": {
+      "epoch": 1,
+      "batch": 30,
+      "total_batches": 184,
+      "train_loss": 93.57341003417969,
+      "lr": 0.001,
+      "grad_norm": 14.984980233510335,
+      "elapsed": 37.141738199978136
+    }
+  },
+  {
+    "kind": "tier1",
+    "ts": 1786014905.398148,
+    "payload": {
+      "tier": "tier1",
+      "rmse": 9.638098092924126,
+      "runtime_s": 0.083
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786014905.5520687,
+    "payload": {
+      "epoch": 1,
+      "batch": 31,
+      "total_batches": 184,
+      "train_loss": 104.45082092285156,
+      "lr": 0.001,
+      "grad_norm": 15.056263862117644,
+      "elapsed": 41.07916269998532
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786014905.654728,
+    "payload": {
+      "epoch": 1,
+      "batch": 32,
+      "total_batches": 184,
+      "train_loss": 103.8768310546875,
+      "lr": 0.001,
+      "grad_norm": 15.143446415662766,
+      "elapsed": 41.181832399975974
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786014905.7587714,
+    "payload": {
+      "epoch": 1,
+      "batch": 33,
+      "total_batches": 184,
+      "train_loss": 91.45919799804688,
+      "lr": 0.001,
+      "grad_norm": 15.237272522666238,
+      "elapsed": 41.28537299996242
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786014905.8624425,
+    "payload": {
+      "epoch": 1,
+      "batch": 34,
+      "total_batches": 184,
+      "train_loss": 85.4451675415039,
+      "lr": 0.001,
+      "grad_norm": 16.33477331610287,
+      "elapsed": 41.38904489995912
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786014905.96848,
+    "payload": {
+      "epoch": 1,
+      "batch": 35,
+      "total_batches": 184,
+      "train_loss": 81.82109832763672,
+      "lr": 0.001,
+      "grad_norm": 16.30991175515311,
+      "elapsed": 41.49655579996761
+    }
+  },
+  {
+    "kind": "tier1",
+    "ts": 1786014909.844046,
+    "payload": {
+      "tier": "tier1",
+      "rmse": 9.517551206122661,
+      "runtime_s": 0.0879
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786014909.962675,
+    "payload": {
+      "epoch": 1,
+      "batch": 36,
+      "total_batches": 184,
+      "train_loss": 97.30799102783203,
+      "lr": 0.001,
+      "grad_norm": 16.31423348850674,
+      "elapsed": 45.48909599997569
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786014910.065119,
+    "payload": {
+      "epoch": 1,
+      "batch": 37,
+      "total_batches": 184,
+      "train_loss": 106.62355041503906,
+      "lr": 0.001,
+      "grad_norm": 16.385711386397077,
+      "elapsed": 45.59241809998639
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786014910.2902386,
+    "payload": {
+      "epoch": 1,
+      "batch": 38,
+      "total_batches": 184,
+      "train_loss": 98.60687255859375,
+      "lr": 0.001,
+      "grad_norm": 16.3928733875877,
+      "elapsed": 45.819040399976075
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786014910.406447,
+    "payload": {
+      "epoch": 1,
+      "batch": 39,
+      "total_batches": 184,
+      "train_loss": 78.51150512695312,
+      "lr": 0.001,
+      "grad_norm": 16.41412263038831,
+      "elapsed": 45.932811499980744
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786014910.4762866,
+    "payload": {
+      "epoch": 1,
+      "batch": 40,
+      "total_batches": 184,
+      "train_loss": 100.96212768554688,
+      "lr": 0.001,
+      "grad_norm": 16.47733700275421,
+      "elapsed": 46.00397119997069
+    }
+  },
+  {
+    "kind": "tier1",
+    "ts": 1786014914.4211738,
+    "payload": {
+      "tier": "tier1",
+      "rmse": 9.587819798542386,
+      "runtime_s": 0.0825
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786014914.5194104,
+    "payload": {
+      "epoch": 1,
+      "batch": 41,
+      "total_batches": 184,
+      "train_loss": 90.55492401123047,
+      "lr": 0.001,
+      "grad_norm": 16.547371026946276,
+      "elapsed": 50.04765669995686
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786014914.6266122,
+    "payload": {
+      "epoch": 1,
+      "batch": 42,
+      "total_batches": 184,
+      "train_loss": 98.1574935913086,
+      "lr": 0.001,
+      "grad_norm": 16.625209286099388,
+      "elapsed": 50.154299599991646
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786014914.7339497,
+    "payload": {
+      "epoch": 1,
+      "batch": 43,
+      "total_batches": 184,
+      "train_loss": 101.65506744384766,
+      "lr": 0.001,
+      "grad_norm": 16.79101138891176,
+      "elapsed": 50.26091789995553
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786014914.8374546,
+    "payload": {
+      "epoch": 1,
+      "batch": 44,
+      "total_batches": 184,
+      "train_loss": 91.69398498535156,
+      "lr": 0.001,
+      "grad_norm": 16.82203494418751,
+      "elapsed": 50.36418330000015
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786014914.941982,
+    "payload": {
+      "epoch": 1,
+      "batch": 45,
+      "total_batches": 184,
+      "train_loss": 95.48564147949219,
+      "lr": 0.001,
+      "grad_norm": 16.87722042931451,
+      "elapsed": 50.46927429997595
+    }
+  },
+  {
+    "kind": "tier1",
+    "ts": 1786014918.7969577,
+    "payload": {
+      "tier": "tier1",
+      "rmse": 9.597367178265694,
+      "runtime_s": 0.082
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786014918.8919802,
+    "payload": {
+      "epoch": 1,
+      "batch": 46,
+      "total_batches": 184,
+      "train_loss": 89.627685546875,
+      "lr": 0.001,
+      "grad_norm": 16.960741271143373,
+      "elapsed": 54.418854199990164
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786014918.9924035,
+    "payload": {
+      "epoch": 1,
+      "batch": 47,
+      "total_batches": 184,
+      "train_loss": 80.7032699584961,
+      "lr": 0.001,
+      "grad_norm": 17.029085139010814,
+      "elapsed": 54.520091699960176
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786014919.0991373,
+    "payload": {
+      "epoch": 1,
+      "batch": 48,
+      "total_batches": 184,
+      "train_loss": 85.80783081054688,
+      "lr": 0.001,
+      "grad_norm": 17.095161775747936,
+      "elapsed": 54.62548839999363
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786014919.2058752,
+    "payload": {
+      "epoch": 1,
+      "batch": 49,
+      "total_batches": 184,
+      "train_loss": 108.62995910644531,
+      "lr": 0.001,
+      "grad_norm": 17.157260447132344,
+      "elapsed": 54.73222079995321
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786014919.3027544,
+    "payload": {
+      "epoch": 1,
+      "batch": 50,
+      "total_batches": 184,
+      "train_loss": 88.90865325927734,
+      "lr": 0.001,
+      "grad_norm": 17.223950901031493,
+      "elapsed": 54.830530199978966
+    }
+  },
+  {
+    "kind": "tier1",
+    "ts": 1786014923.2462728,
+    "payload": {
+      "tier": "tier1",
+      "rmse": 9.655418057997831,
+      "runtime_s": 0.0922
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786014923.47418,
+    "payload": {
+      "epoch": 1,
+      "batch": 51,
+      "total_batches": 184,
+      "train_loss": 94.53630828857422,
+      "lr": 0.001,
+      "grad_norm": 17.300642481037215,
+      "elapsed": 59.00149919994874
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786014923.5777311,
+    "payload": {
+      "epoch": 1,
+      "batch": 52,
+      "total_batches": 184,
+      "train_loss": 85.64225769042969,
+      "lr": 0.001,
+      "grad_norm": 17.343371849793655,
+      "elapsed": 59.10487419995479
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786014923.6796165,
+    "payload": {
+      "epoch": 1,
+      "batch": 53,
+      "total_batches": 184,
+      "train_loss": 102.06612396240234,
+      "lr": 0.001,
+      "grad_norm": 17.439149514684136,
+      "elapsed": 59.20599950000178
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786014923.784075,
+    "payload": {
+      "epoch": 1,
+      "batch": 54,
+      "total_batches": 184,
+      "train_loss": 73.06748962402344,
+      "lr": 0.001,
+      "grad_norm": 17.51213026046753,
+      "elapsed": 59.31079999997746
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786014923.8880439,
+    "payload": {
+      "epoch": 1,
+      "batch": 55,
+      "total_batches": 184,
+      "train_loss": 93.34379577636719,
+      "lr": 0.001,
+      "grad_norm": 17.617176801508123,
+      "elapsed": 59.41522129997611
+    }
+  },
+  {
+    "kind": "tier1",
+    "ts": 1786014927.703792,
+    "payload": {
+      "tier": "tier1",
+      "rmse": 9.649822196472126,
+      "runtime_s": 0.0827
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786014927.852687,
+    "payload": {
+      "epoch": 1,
+      "batch": 56,
+      "total_batches": 184,
+      "train_loss": 106.87606048583984,
+      "lr": 0.001,
+      "grad_norm": 17.729122826031276,
+      "elapsed": 63.380987699958496
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786014927.9491336,
+    "payload": {
+      "epoch": 1,
+      "batch": 57,
+      "total_batches": 184,
+      "train_loss": 98.95909118652344,
+      "lr": 0.001,
+      "grad_norm": 17.843599637349445,
+      "elapsed": 63.47715349995997
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786014928.0544293,
+    "payload": {
+      "epoch": 1,
+      "batch": 58,
+      "total_batches": 184,
+      "train_loss": 82.82353210449219,
+      "lr": 0.001,
+      "grad_norm": 17.888714708130934,
+      "elapsed": 63.58135819999734
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786014928.150483,
+    "payload": {
+      "epoch": 1,
+      "batch": 59,
+      "total_batches": 184,
+      "train_loss": 80.36905670166016,
+      "lr": 0.001,
+      "grad_norm": 17.96326124870171,
+      "elapsed": 63.67707089998294
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786014928.2424755,
+    "payload": {
+      "epoch": 1,
+      "batch": 60,
+      "total_batches": 184,
+      "train_loss": 78.3705825805664,
+      "lr": 0.001,
+      "grad_norm": 18.05989581743876,
+      "elapsed": 63.77043139998568
+    }
+  },
+  {
+    "kind": "tier1",
+    "ts": 1786014932.1065826,
+    "payload": {
+      "tier": "tier1",
+      "rmse": 9.654240441215766,
+      "runtime_s": 0.0862
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786014932.2000074,
+    "payload": {
+      "epoch": 1,
+      "batch": 61,
+      "total_batches": 184,
+      "train_loss": 90.80463409423828,
+      "lr": 0.001,
+      "grad_norm": 18.146395026660358,
+      "elapsed": 67.72643839998636
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786014932.308505,
+    "payload": {
+      "epoch": 1,
+      "batch": 62,
+      "total_batches": 184,
+      "train_loss": 94.74809265136719,
+      "lr": 0.001,
+      "grad_norm": 18.23045855183755,
+      "elapsed": 67.83507999998983
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786014932.4732916,
+    "payload": {
+      "epoch": 1,
+      "batch": 63,
+      "total_batches": 184,
+      "train_loss": 60.633888244628906,
+      "lr": 0.001,
+      "grad_norm": 18.34682584187341,
+      "elapsed": 68.00033999996958
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786014932.5766833,
+    "payload": {
+      "epoch": 1,
+      "batch": 64,
+      "total_batches": 184,
+      "train_loss": 84.5884017944336,
+      "lr": 0.001,
+      "grad_norm": 18.434858694672585,
+      "elapsed": 68.10387049999554
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786014932.6758964,
+    "payload": {
+      "epoch": 1,
+      "batch": 65,
+      "total_batches": 184,
+      "train_loss": 91.07557678222656,
+      "lr": 0.001,
+      "grad_norm": 18.5238798728356,
+      "elapsed": 68.20224769995548
+    }
+  },
+  {
+    "kind": "tier1",
+    "ts": 1786014936.418858,
+    "payload": {
+      "tier": "tier1",
+      "rmse": 9.714512152329922,
+      "runtime_s": 0.0826
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786014936.5162146,
+    "payload": {
+      "epoch": 1,
+      "batch": 66,
+      "total_batches": 184,
+      "train_loss": 94.94218444824219,
+      "lr": 0.001,
+      "grad_norm": 18.622562711889092,
+      "elapsed": 72.04265590000432
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786014936.667615,
+    "payload": {
+      "epoch": 1,
+      "batch": 67,
+      "total_batches": 184,
+      "train_loss": 61.567386627197266,
+      "lr": 0.001,
+      "grad_norm": 18.719748753220287,
+      "elapsed": 72.19511649996275
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786014936.7701645,
+    "payload": {
+      "epoch": 1,
+      "batch": 68,
+      "total_batches": 184,
+      "train_loss": 103.11605072021484,
+      "lr": 0.001,
+      "grad_norm": 18.804319788427915,
+      "elapsed": 72.29707589995814
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786014936.8694003,
+    "payload": {
+      "epoch": 1,
+      "batch": 69,
+      "total_batches": 184,
+      "train_loss": 96.04835510253906,
+      "lr": 0.001,
+      "grad_norm": 18.90961894436159,
+      "elapsed": 72.39750599995023
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786014936.975874,
+    "payload": {
+      "epoch": 1,
+      "batch": 70,
+      "total_batches": 184,
+      "train_loss": 92.37944793701172,
+      "lr": 0.001,
+      "grad_norm": 18.977386815207346,
+      "elapsed": 72.5027305999538
+    }
+  },
+  {
+    "kind": "tier1",
+    "ts": 1786014940.845248,
+    "payload": {
+      "tier": "tier1",
+      "rmse": 9.69730634922925,
+      "runtime_s": 0.0824
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786014940.9563806,
+    "payload": {
+      "epoch": 1,
+      "batch": 71,
+      "total_batches": 184,
+      "train_loss": 78.33839416503906,
+      "lr": 0.001,
+      "grad_norm": 19.084218965449804,
+      "elapsed": 76.48326489998726
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786014941.1107502,
+    "payload": {
+      "epoch": 1,
+      "batch": 72,
+      "total_batches": 184,
+      "train_loss": 83.66517639160156,
+      "lr": 0.001,
+      "grad_norm": 19.18135048283471,
+      "elapsed": 76.63775969995186
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786014941.2681258,
+    "payload": {
+      "epoch": 1,
+      "batch": 73,
+      "total_batches": 184,
+      "train_loss": 83.9681625366211,
+      "lr": 0.001,
+      "grad_norm": 19.267376769078922,
+      "elapsed": 76.79488729999866
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786014941.3741589,
+    "payload": {
+      "epoch": 1,
+      "batch": 74,
+      "total_batches": 184,
+      "train_loss": 78.91033935546875,
+      "lr": 0.001,
+      "grad_norm": 19.34617853164673,
+      "elapsed": 76.90232120000292
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786014941.484678,
+    "payload": {
+      "epoch": 1,
+      "batch": 75,
+      "total_batches": 184,
+      "train_loss": 80.99156188964844,
+      "lr": 0.001,
+      "grad_norm": 19.454167442321776,
+      "elapsed": 77.01134999998612
+    }
+  },
+  {
+    "kind": "tier1",
+    "ts": 1786014945.4859154,
+    "payload": {
+      "tier": "tier1",
+      "rmse": 9.760530036733172,
+      "runtime_s": 0.0843
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786014945.5927217,
+    "payload": {
+      "epoch": 1,
+      "batch": 76,
+      "total_batches": 184,
+      "train_loss": 81.39579772949219,
+      "lr": 0.001,
+      "grad_norm": 19.561808824539185,
+      "elapsed": 81.1195607999689
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786014945.6574256,
+    "payload": {
+      "epoch": 1,
+      "batch": 77,
+      "total_batches": 184,
+      "train_loss": 83.94129180908203,
+      "lr": 0.001,
+      "grad_norm": 19.666625518303412,
+      "elapsed": 81.18508079997264
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786014945.7292526,
+    "payload": {
+      "epoch": 1,
+      "batch": 78,
+      "total_batches": 184,
+      "train_loss": 75.22248840332031,
+      "lr": 0.001,
+      "grad_norm": 19.755393285017746,
+      "elapsed": 81.25666499999352
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786014945.8366337,
+    "payload": {
+      "epoch": 1,
+      "batch": 79,
+      "total_batches": 184,
+      "train_loss": 59.131832122802734,
+      "lr": 0.001,
+      "grad_norm": 19.857216907452933,
+      "elapsed": 81.36403769999743
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786014945.9013305,
+    "payload": {
+      "epoch": 1,
+      "batch": 80,
+      "total_batches": 184,
+      "train_loss": 86.05912780761719,
+      "lr": 0.001,
+      "grad_norm": 19.953030478954314,
+      "elapsed": 81.42913449998014
+    }
+  },
+  {
+    "kind": "tier1",
+    "ts": 1786014949.586549,
+    "payload": {
+      "tier": "tier1",
+      "rmse": 9.72054566494234,
+      "runtime_s": 0.0807
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786014949.6865633,
+    "payload": {
+      "epoch": 1,
+      "batch": 81,
+      "total_batches": 184,
+      "train_loss": 98.94223022460938,
+      "lr": 0.001,
+      "grad_norm": 20.19518099890815,
+      "elapsed": 85.21439679997275
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786014949.7950299,
+    "payload": {
+      "epoch": 1,
+      "batch": 82,
+      "total_batches": 184,
+      "train_loss": 96.8332748413086,
+      "lr": 0.001,
+      "grad_norm": 20.326190332087076,
+      "elapsed": 85.32160059997113
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786014950.033409,
+    "payload": {
+      "epoch": 1,
+      "batch": 83,
+      "total_batches": 184,
+      "train_loss": 88.14823913574219,
+      "lr": 0.001,
+      "grad_norm": 20.432072202843354,
+      "elapsed": 85.56063959997846
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786014950.1366005,
+    "payload": {
+      "epoch": 1,
+      "batch": 84,
+      "total_batches": 184,
+      "train_loss": 90.31909942626953,
+      "lr": 0.001,
+      "grad_norm": 20.56144808587574,
+      "elapsed": 85.66450229997281
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786014950.2508914,
+    "payload": {
+      "epoch": 1,
+      "batch": 85,
+      "total_batches": 184,
+      "train_loss": 91.39054870605469,
+      "lr": 0.001,
+      "grad_norm": 20.681269870084876,
+      "elapsed": 85.77725669997744
+    }
+  },
+  {
+    "kind": "tier1",
+    "ts": 1786014954.0072334,
+    "payload": {
+      "tier": "tier1",
+      "rmse": 9.784036546899642,
+      "runtime_s": 0.0748
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786014954.1015947,
+    "payload": {
+      "epoch": 1,
+      "batch": 86,
+      "total_batches": 184,
+      "train_loss": 82.59442138671875,
+      "lr": 0.001,
+      "grad_norm": 20.80211068308631,
+      "elapsed": 89.62892930000089
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786014954.195334,
+    "payload": {
+      "epoch": 1,
+      "batch": 87,
+      "total_batches": 184,
+      "train_loss": 83.60997009277344,
+      "lr": 0.001,
+      "grad_norm": 20.91019309252158,
+      "elapsed": 89.72347859997535
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786014954.3551443,
+    "payload": {
+      "epoch": 1,
+      "batch": 88,
+      "total_batches": 184,
+      "train_loss": 91.16468811035156,
+      "lr": 0.001,
+      "grad_norm": 21.010221340439536,
+      "elapsed": 89.88183869997738
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786014954.450935,
+    "payload": {
+      "epoch": 1,
+      "batch": 89,
+      "total_batches": 184,
+      "train_loss": 76.6809310913086,
+      "lr": 0.001,
+      "grad_norm": 21.139222509405585,
+      "elapsed": 89.9786604999681
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786014954.5578175,
+    "payload": {
+      "epoch": 1,
+      "batch": 90,
+      "total_batches": 184,
+      "train_loss": 80.68147277832031,
+      "lr": 0.001,
+      "grad_norm": 21.25559441248576,
+      "elapsed": 90.08470720000332
+    }
+  },
+  {
+    "kind": "tier1",
+    "ts": 1786014958.573888,
+    "payload": {
+      "tier": "tier1",
+      "rmse": 9.657797011482605,
+      "runtime_s": 0.0839
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786014958.7357426,
+    "payload": {
+      "epoch": 1,
+      "batch": 91,
+      "total_batches": 184,
+      "train_loss": 72.4852066040039,
+      "lr": 0.001,
+      "grad_norm": 21.359521499046913,
+      "elapsed": 94.26384449994657
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786014958.8262813,
+    "payload": {
+      "epoch": 1,
+      "batch": 92,
+      "total_batches": 184,
+      "train_loss": 78.6368637084961,
+      "lr": 0.001,
+      "grad_norm": 21.473132848739624,
+      "elapsed": 94.3527590999729
+    }
+  },
+  {
+    "kind": "tier2",
+    "ts": 1786014964.090422,
+    "payload": {
+      "epoch": 1,
+      "runtime_s": 1.3883,
+      "per_zone": {
+        "northwest": {
+          "rmse": 8.498519236763103,
+          "mae": 2.386323928833008,
+          "skill_vs_baseline": 0.12351047274857996,
+          "baseline_rmse": 9.696087600057899
+        },
+        "west_central": {
+          "rmse": 10.90731816825188,
+          "mae": 3.14880633354187,
+          "skill_vs_baseline": 0.10301390502334018,
+          "baseline_rmse": 12.159963492561939
+        },
+        "central_northeast": {
+          "rmse": 9.838587610160268,
+          "mae": 3.2531185150146484,
+          "skill_vs_baseline": 0.138799985029038,
+          "baseline_rmse": 11.424277100705817
+        },
+        "northeast": {
+          "rmse": "insufficient data",
+          "mae": "insufficient data",
+          "skill_vs_baseline": "insufficient data"
+        },
+        "south_peninsular": {
+          "rmse": 9.770555652449966,
+          "mae": 2.8557896614074707,
+          "skill_vs_baseline": 0.17375550081775404,
+          "baseline_rmse": 11.825259547410143
+        },
+        "western_ghats": {
+          "rmse": 6.251805748812528,
+          "mae": 2.0531563758850098,
+          "skill_vs_baseline": 0.3312420054503904,
+          "baseline_rmse": 9.348382822732384
+        },
+        "thar_arid": {
+          "rmse": 13.569410192968261,
+          "mae": 2.912796974182129,
+          "skill_vs_baseline": -0.321611349576592,
+          "baseline_rmse": 10.267322687048297
+        },
+        "himalayan": {
+          "rmse": 12.737244391459296,
+          "mae": 3.780407428741455,
+          "skill_vs_baseline": -0.5303869988509096,
+          "baseline_rmse": 8.322891138661692
+        },
+        "tamilnadu_ne": {
+          "rmse": 5.650080958273243,
+          "mae": 2.109797716140747,
+          "skill_vs_baseline": 0.5547413495177145,
+          "baseline_rmse": 12.689435572230462
+        }
+      }
+    }
+  },
+  {
+    "kind": "checkpoint_saved",
+    "ts": 1786014964.11114,
+    "payload": {
+      "epoch": 1,
+      "zone_weighted_rmse": 8.590621581954364,
+      "weights_path": "L:\\MausamSetu\\climate_twin\\train\\registry\\models\\india\\ph1_proof\\weights.pt",
+      "meta_path": "L:\\MausamSetu\\climate_twin\\train\\registry\\models\\india\\ph1_proof\\meta.json"
+    }
+  },
+  {
+    "kind": "tier3",
+    "ts": 1786014993.6047056,
+    "payload": {
+      "epoch": 1,
+      "runtime_s": 29.4943
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786014993.7060382,
+    "payload": {
+      "epoch": 2,
+      "batch": 93,
+      "total_batches": 184,
+      "train_loss": 61.77635192871094,
+      "lr": 0.001,
+      "grad_norm": 31.2297306060791,
+      "elapsed": 129.23333319998346
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786014993.7661316,
+    "payload": {
+      "epoch": 2,
+      "batch": 94,
+      "total_batches": 184,
+      "train_loss": 84.38714599609375,
+      "lr": 0.001,
+      "grad_norm": 31.889805793762207,
+      "elapsed": 129.29428289999487
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786014993.8337407,
+    "payload": {
+      "epoch": 2,
+      "batch": 95,
+      "total_batches": 184,
+      "train_loss": 69.60004425048828,
+      "lr": 0.001,
+      "grad_norm": 32.412482579549156,
+      "elapsed": 129.36189079994801
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786014993.93077,
+    "payload": {
+      "epoch": 2,
+      "batch": 96,
+      "total_batches": 184,
+      "train_loss": 89.28947448730469,
+      "lr": 0.001,
+      "grad_norm": 31.995291709899902,
+      "elapsed": 129.4589028999908
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786014994.0064328,
+    "payload": {
+      "epoch": 2,
+      "batch": 97,
+      "total_batches": 184,
+      "train_loss": 78.58416748046875,
+      "lr": 0.001,
+      "grad_norm": 32.06846389770508,
+      "elapsed": 129.53417729999637
+    }
+  },
+  {
+    "kind": "tier1",
+    "ts": 1786014997.9355638,
+    "payload": {
+      "tier": "tier1",
+      "rmse": 9.714289970743593,
+      "runtime_s": 0.0802
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786014998.035625,
+    "payload": {
+      "epoch": 2,
+      "batch": 98,
+      "total_batches": 184,
+      "train_loss": 81.34552001953125,
+      "lr": 0.001,
+      "grad_norm": 32.6579221089681,
+      "elapsed": 133.56212449999293
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786014998.1293306,
+    "payload": {
+      "epoch": 2,
+      "batch": 99,
+      "total_batches": 184,
+      "train_loss": 92.42732238769531,
+      "lr": 0.001,
+      "grad_norm": 33.357292720249724,
+      "elapsed": 133.65641759999562
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786014998.2252462,
+    "payload": {
+      "epoch": 2,
+      "batch": 100,
+      "total_batches": 184,
+      "train_loss": 95.13812255859375,
+      "lr": 0.001,
+      "grad_norm": 33.234463691711426,
+      "elapsed": 133.75327709998237
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786014998.3363204,
+    "payload": {
+      "epoch": 2,
+      "batch": 101,
+      "total_batches": 184,
+      "train_loss": 81.35274505615234,
+      "lr": 0.001,
+      "grad_norm": 33.28054724799262,
+      "elapsed": 133.86400819994742
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786014998.4358659,
+    "payload": {
+      "epoch": 2,
+      "batch": 102,
+      "total_batches": 184,
+      "train_loss": 80.44297790527344,
+      "lr": 0.001,
+      "grad_norm": 33.23255577087402,
+      "elapsed": 133.96343740000157
+    }
+  },
+  {
+    "kind": "tier1",
+    "ts": 1786015003.249047,
+    "payload": {
+      "tier": "tier1",
+      "rmse": 9.662413731853738,
+      "runtime_s": 0.0954
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786015003.416346,
+    "payload": {
+      "epoch": 2,
+      "batch": 103,
+      "total_batches": 184,
+      "train_loss": 70.46829223632812,
+      "lr": 0.001,
+      "grad_norm": 33.16743191805753,
+      "elapsed": 138.9437706999597
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786015003.5321476,
+    "payload": {
+      "epoch": 2,
+      "batch": 104,
+      "total_batches": 184,
+      "train_loss": 77.42437744140625,
+      "lr": 0.001,
+      "grad_norm": 33.6004638671875,
+      "elapsed": 139.05857299995841
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786015003.6371758,
+    "payload": {
+      "epoch": 2,
+      "batch": 105,
+      "total_batches": 184,
+      "train_loss": 77.03203582763672,
+      "lr": 0.001,
+      "grad_norm": 33.810971186711235,
+      "elapsed": 139.1644334999728
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786015003.742461,
+    "payload": {
+      "epoch": 2,
+      "batch": 106,
+      "total_batches": 184,
+      "train_loss": 69.09774017333984,
+      "lr": 0.001,
+      "grad_norm": 33.99170194353376,
+      "elapsed": 139.26883659994928
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786015003.847479,
+    "payload": {
+      "epoch": 2,
+      "batch": 107,
+      "total_batches": 184,
+      "train_loss": 72.23222351074219,
+      "lr": 0.001,
+      "grad_norm": 33.87193374633789,
+      "elapsed": 139.37412120000226
+    }
+  },
+  {
+    "kind": "tier1",
+    "ts": 1786015007.8836298,
+    "payload": {
+      "tier": "tier1",
+      "rmse": 9.707059128238257,
+      "runtime_s": 0.0866
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786015008.016477,
+    "payload": {
+      "epoch": 2,
+      "batch": 108,
+      "total_batches": 184,
+      "train_loss": 60.281429290771484,
+      "lr": 0.001,
+      "grad_norm": 33.773167848587036,
+      "elapsed": 143.54344569996465
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786015008.2081134,
+    "payload": {
+      "epoch": 2,
+      "batch": 109,
+      "total_batches": 184,
+      "train_loss": 83.21188354492188,
+      "lr": 0.001,
+      "grad_norm": 34.11687110452091,
+      "elapsed": 143.73481909994734
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786015008.2819228,
+    "payload": {
+      "epoch": 2,
+      "batch": 110,
+      "total_batches": 184,
+      "train_loss": 68.62037658691406,
+      "lr": 0.001,
+      "grad_norm": 34.094379636976456,
+      "elapsed": 143.80903819995
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786015008.3936012,
+    "payload": {
+      "epoch": 2,
+      "batch": 111,
+      "total_batches": 184,
+      "train_loss": 87.61469268798828,
+      "lr": 0.001,
+      "grad_norm": 34.53669598228053,
+      "elapsed": 143.9203192999703
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786015008.468551,
+    "payload": {
+      "epoch": 2,
+      "batch": 112,
+      "total_batches": 184,
+      "train_loss": 69.77162170410156,
+      "lr": 0.001,
+      "grad_norm": 34.74877738952637,
+      "elapsed": 143.9957094999845
+    }
+  },
+  {
+    "kind": "tier1",
+    "ts": 1786015012.517537,
+    "payload": {
+      "tier": "tier1",
+      "rmse": 9.657726361511278,
+      "runtime_s": 0.0927
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786015012.5863676,
+    "payload": {
+      "epoch": 2,
+      "batch": 113,
+      "total_batches": 184,
+      "train_loss": 72.57697296142578,
+      "lr": 0.001,
+      "grad_norm": 34.91934985206241,
+      "elapsed": 148.11287589999847
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786015012.696438,
+    "payload": {
+      "epoch": 2,
+      "batch": 114,
+      "total_batches": 184,
+      "train_loss": 83.3553695678711,
+      "lr": 0.001,
+      "grad_norm": 34.8860464963046,
+      "elapsed": 148.2236362999538
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786015012.8115726,
+    "payload": {
+      "epoch": 2,
+      "batch": 115,
+      "total_batches": 184,
+      "train_loss": 46.567222595214844,
+      "lr": 0.001,
+      "grad_norm": 35.125041132387906,
+      "elapsed": 148.338420199987
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786015012.9180696,
+    "payload": {
+      "epoch": 2,
+      "batch": 116,
+      "total_batches": 184,
+      "train_loss": 56.59967803955078,
+      "lr": 0.001,
+      "grad_norm": 35.20278390248617,
+      "elapsed": 148.4443970999564
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786015013.0269022,
+    "payload": {
+      "epoch": 2,
+      "batch": 117,
+      "total_batches": 184,
+      "train_loss": 75.83541107177734,
+      "lr": 0.001,
+      "grad_norm": 35.37225677490235,
+      "elapsed": 148.55340999999316
+    }
+  },
+  {
+    "kind": "tier1",
+    "ts": 1786015017.7149742,
+    "payload": {
+      "tier": "tier1",
+      "rmse": 9.556559926853925,
+      "runtime_s": 0.0926
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786015017.8206196,
+    "payload": {
+      "epoch": 2,
+      "batch": 118,
+      "total_batches": 184,
+      "train_loss": 75.96810150146484,
+      "lr": 0.001,
+      "grad_norm": 35.46296413128193,
+      "elapsed": 153.34894039999926
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786015017.9323916,
+    "payload": {
+      "epoch": 2,
+      "batch": 119,
+      "total_batches": 184,
+      "train_loss": 81.51081085205078,
+      "lr": 0.001,
+      "grad_norm": 35.632308394820605,
+      "elapsed": 153.45887269999366
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786015018.0396388,
+    "payload": {
+      "epoch": 2,
+      "batch": 120,
+      "total_batches": 184,
+      "train_loss": 66.8660888671875,
+      "lr": 0.001,
+      "grad_norm": 35.64654064178467,
+      "elapsed": 153.56756959995255
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786015018.1460397,
+    "payload": {
+      "epoch": 2,
+      "batch": 121,
+      "total_batches": 184,
+      "train_loss": 75.6822738647461,
+      "lr": 0.001,
+      "grad_norm": 35.76841512219659,
+      "elapsed": 153.6732129000011
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786015018.2497234,
+    "payload": {
+      "epoch": 2,
+      "batch": 122,
+      "total_batches": 184,
+      "train_loss": 79.66618347167969,
+      "lr": 0.001,
+      "grad_norm": 35.900835037231445,
+      "elapsed": 153.77650669997092
+    }
+  },
+  {
+    "kind": "tier1",
+    "ts": 1786015022.55946,
+    "payload": {
+      "tier": "tier1",
+      "rmse": 9.67866335515825,
+      "runtime_s": 0.1065
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786015022.6595602,
+    "payload": {
+      "epoch": 2,
+      "batch": 123,
+      "total_batches": 184,
+      "train_loss": 55.76609802246094,
+      "lr": 0.001,
+      "grad_norm": 35.899051420150265,
+      "elapsed": 158.18649929994717
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786015022.837992,
+    "payload": {
+      "epoch": 2,
+      "batch": 124,
+      "total_batches": 184,
+      "train_loss": 56.3638801574707,
+      "lr": 0.001,
+      "grad_norm": 35.86444854736328,
+      "elapsed": 158.36466679995647
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786015022.9448116,
+    "payload": {
+      "epoch": 2,
+      "batch": 125,
+      "total_batches": 184,
+      "train_loss": 83.91728210449219,
+      "lr": 0.001,
+      "grad_norm": 35.98952946518407,
+      "elapsed": 158.4715201999643
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786015023.0508056,
+    "payload": {
+      "epoch": 2,
+      "batch": 126,
+      "total_batches": 184,
+      "train_loss": 75.89134979248047,
+      "lr": 0.001,
+      "grad_norm": 36.08956516490263,
+      "elapsed": 158.57729489996564
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786015023.154766,
+    "payload": {
+      "epoch": 2,
+      "batch": 127,
+      "total_batches": 184,
+      "train_loss": 60.57649612426758,
+      "lr": 0.001,
+      "grad_norm": 36.14226935250419,
+      "elapsed": 158.68139849998988
+    }
+  },
+  {
+    "kind": "tier1",
+    "ts": 1786015026.9116285,
+    "payload": {
+      "tier": "tier1",
+      "rmse": 9.66626729760227,
+      "runtime_s": 0.086
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786015027.1195462,
+    "payload": {
+      "epoch": 2,
+      "batch": 128,
+      "total_batches": 184,
+      "train_loss": 61.668495178222656,
+      "lr": 0.001,
+      "grad_norm": 36.211415926615395,
+      "elapsed": 162.6477396999835
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786015027.2271945,
+    "payload": {
+      "epoch": 2,
+      "batch": 129,
+      "total_batches": 184,
+      "train_loss": 62.48383712768555,
+      "lr": 0.001,
+      "grad_norm": 36.289053427206504,
+      "elapsed": 162.75428729999112
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786015027.3257022,
+    "payload": {
+      "epoch": 2,
+      "batch": 130,
+      "total_batches": 184,
+      "train_loss": 61.596763610839844,
+      "lr": 0.001,
+      "grad_norm": 36.246876867193926,
+      "elapsed": 162.8521101999795
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786015027.4312215,
+    "payload": {
+      "epoch": 2,
+      "batch": 131,
+      "total_batches": 184,
+      "train_loss": 59.68996047973633,
+      "lr": 0.001,
+      "grad_norm": 36.38270451472356,
+      "elapsed": 162.95826659997692
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786015027.5368657,
+    "payload": {
+      "epoch": 2,
+      "batch": 132,
+      "total_batches": 184,
+      "train_loss": 62.191131591796875,
+      "lr": 0.001,
+      "grad_norm": 36.470317935943605,
+      "elapsed": 163.06446099997265
+    }
+  },
+  {
+    "kind": "tier1",
+    "ts": 1786015031.5345325,
+    "payload": {
+      "tier": "tier1",
+      "rmse": 9.627547607707696,
+      "runtime_s": 0.0964
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786015031.698282,
+    "payload": {
+      "epoch": 2,
+      "batch": 133,
+      "total_batches": 184,
+      "train_loss": 60.17643356323242,
+      "lr": 0.001,
+      "grad_norm": 36.504413511694935,
+      "elapsed": 167.22469899995485
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786015031.805747,
+    "payload": {
+      "epoch": 2,
+      "batch": 134,
+      "total_batches": 184,
+      "train_loss": 80.76557159423828,
+      "lr": 0.001,
+      "grad_norm": 36.73025376456125,
+      "elapsed": 167.33283319999464
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786015031.884727,
+    "payload": {
+      "epoch": 2,
+      "batch": 135,
+      "total_batches": 184,
+      "train_loss": 66.60053253173828,
+      "lr": 0.001,
+      "grad_norm": 36.87970165873683,
+      "elapsed": 167.41222929995274
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786015031.9683015,
+    "payload": {
+      "epoch": 2,
+      "batch": 136,
+      "total_batches": 184,
+      "train_loss": 58.29930114746094,
+      "lr": 0.001,
+      "grad_norm": 36.95857394825328,
+      "elapsed": 167.4955268999911
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786015032.047057,
+    "payload": {
+      "epoch": 2,
+      "batch": 137,
+      "total_batches": 184,
+      "train_loss": 65.82164001464844,
+      "lr": 0.001,
+      "grad_norm": 37.02371656629774,
+      "elapsed": 167.5745934000006
+    }
+  },
+  {
+    "kind": "tier1",
+    "ts": 1786015036.3946488,
+    "payload": {
+      "tier": "tier1",
+      "rmse": 9.62941757095099,
+      "runtime_s": 0.0994
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786015036.4714172,
+    "payload": {
+      "epoch": 2,
+      "batch": 138,
+      "total_batches": 184,
+      "train_loss": 55.75701904296875,
+      "lr": 0.001,
+      "grad_norm": 37.084690425706945,
+      "elapsed": 171.99868520000018
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786015036.5594354,
+    "payload": {
+      "epoch": 2,
+      "batch": 139,
+      "total_batches": 184,
+      "train_loss": 66.44110870361328,
+      "lr": 0.001,
+      "grad_norm": 37.10573959350586,
+      "elapsed": 172.0859250999638
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786015036.6838622,
+    "payload": {
+      "epoch": 2,
+      "batch": 140,
+      "total_batches": 184,
+      "train_loss": 66.63865661621094,
+      "lr": 0.001,
+      "grad_norm": 37.29351329803467,
+      "elapsed": 172.2106753999833
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786015036.7963214,
+    "payload": {
+      "epoch": 2,
+      "batch": 141,
+      "total_batches": 184,
+      "train_loss": 79.22193145751953,
+      "lr": 0.001,
+      "grad_norm": 37.396226844009085,
+      "elapsed": 172.32278859999496
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786015036.884368,
+    "payload": {
+      "epoch": 2,
+      "batch": 142,
+      "total_batches": 184,
+      "train_loss": 64.0649185180664,
+      "lr": 0.001,
+      "grad_norm": 37.57631622314453,
+      "elapsed": 172.41080319997855
+    }
+  },
+  {
+    "kind": "tier1",
+    "ts": 1786015040.7818348,
+    "payload": {
+      "tier": "tier1",
+      "rmse": 9.711285720140317,
+      "runtime_s": 0.0902
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786015040.955828,
+    "payload": {
+      "epoch": 2,
+      "batch": 143,
+      "total_batches": 184,
+      "train_loss": 63.573760986328125,
+      "lr": 0.001,
+      "grad_norm": 37.69786954393574,
+      "elapsed": 176.4825789000024
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786015041.0243232,
+    "payload": {
+      "epoch": 2,
+      "batch": 144,
+      "total_batches": 184,
+      "train_loss": 44.8344612121582,
+      "lr": 0.001,
+      "grad_norm": 37.69011981670673,
+      "elapsed": 176.55225409998093
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786015041.1739354,
+    "payload": {
+      "epoch": 2,
+      "batch": 145,
+      "total_batches": 184,
+      "train_loss": 69.44905090332031,
+      "lr": 0.001,
+      "grad_norm": 37.802952460522924,
+      "elapsed": 176.70198650000384
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786015041.3347018,
+    "payload": {
+      "epoch": 2,
+      "batch": 146,
+      "total_batches": 184,
+      "train_loss": 63.7689094543457,
+      "lr": 0.001,
+      "grad_norm": 38.025059947261106,
+      "elapsed": 176.8622703999863
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786015041.4415216,
+    "payload": {
+      "epoch": 2,
+      "batch": 147,
+      "total_batches": 184,
+      "train_loss": 65.91944885253906,
+      "lr": 0.001,
+      "grad_norm": 38.331424782492896,
+      "elapsed": 176.96867839997867
+    }
+  },
+  {
+    "kind": "tier1",
+    "ts": 1786015045.39696,
+    "payload": {
+      "tier": "tier1",
+      "rmse": 9.591528756755316,
+      "runtime_s": 0.0825
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786015045.49378,
+    "payload": {
+      "epoch": 2,
+      "batch": 148,
+      "total_batches": 184,
+      "train_loss": 57.83375549316406,
+      "lr": 0.001,
+      "grad_norm": 38.39362982341221,
+      "elapsed": 181.0216284999624
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786015045.5951722,
+    "payload": {
+      "epoch": 2,
+      "batch": 149,
+      "total_batches": 184,
+      "train_loss": 45.93667221069336,
+      "lr": 0.001,
+      "grad_norm": 38.42129683912846,
+      "elapsed": 181.12209099996835
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786015045.703194,
+    "payload": {
+      "epoch": 2,
+      "batch": 150,
+      "total_batches": 184,
+      "train_loss": 44.598182678222656,
+      "lr": 0.001,
+      "grad_norm": 38.50574144823798,
+      "elapsed": 181.2306680000038
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786015045.8112342,
+    "payload": {
+      "epoch": 2,
+      "batch": 151,
+      "total_batches": 184,
+      "train_loss": 66.94865417480469,
+      "lr": 0.001,
+      "grad_norm": 38.66289791818392,
+      "elapsed": 181.33767139998963
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786015045.9177573,
+    "payload": {
+      "epoch": 2,
+      "batch": 152,
+      "total_batches": 184,
+      "train_loss": 59.000492095947266,
+      "lr": 0.001,
+      "grad_norm": 38.77356541951497,
+      "elapsed": 181.44455349998316
+    }
+  },
+  {
+    "kind": "tier1",
+    "ts": 1786015049.8207324,
+    "payload": {
+      "tier": "tier1",
+      "rmse": 9.584766827130382,
+      "runtime_s": 0.0873
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786015049.9306843,
+    "payload": {
+      "epoch": 2,
+      "batch": 153,
+      "total_batches": 184,
+      "train_loss": 64.84405517578125,
+      "lr": 0.001,
+      "grad_norm": 38.96817829569832,
+      "elapsed": 185.4572852999554
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786015050.0483763,
+    "payload": {
+      "epoch": 2,
+      "batch": 154,
+      "total_batches": 184,
+      "train_loss": 54.30739974975586,
+      "lr": 0.001,
+      "grad_norm": 39.05300891014837,
+      "elapsed": 185.57515190000413
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786015050.1551995,
+    "payload": {
+      "epoch": 2,
+      "batch": 155,
+      "total_batches": 184,
+      "train_loss": 56.4446907043457,
+      "lr": 0.001,
+      "grad_norm": 39.12326279897538,
+      "elapsed": 185.6819034999935
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786015050.2366734,
+    "payload": {
+      "epoch": 2,
+      "batch": 156,
+      "total_batches": 184,
+      "train_loss": 50.973697662353516,
+      "lr": 0.001,
+      "grad_norm": 39.161757946014404,
+      "elapsed": 185.7636428999831
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786015050.330344,
+    "payload": {
+      "epoch": 2,
+      "batch": 157,
+      "total_batches": 184,
+      "train_loss": 62.01353454589844,
+      "lr": 0.001,
+      "grad_norm": 39.32493649996244,
+      "elapsed": 185.8570593999466
+    }
+  },
+  {
+    "kind": "tier1",
+    "ts": 1786015054.007327,
+    "payload": {
+      "tier": "tier1",
+      "rmse": 9.63847372782578,
+      "runtime_s": 0.0807
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786015054.161774,
+    "payload": {
+      "epoch": 2,
+      "batch": 158,
+      "total_batches": 184,
+      "train_loss": 62.18056869506836,
+      "lr": 0.001,
+      "grad_norm": 39.4672816883434,
+      "elapsed": 189.68913689994952
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786015054.2588327,
+    "payload": {
+      "epoch": 2,
+      "batch": 159,
+      "total_batches": 184,
+      "train_loss": 59.82502365112305,
+      "lr": 0.001,
+      "grad_norm": 39.609307872715284,
+      "elapsed": 189.7853758999845
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786015054.3597307,
+    "payload": {
+      "epoch": 2,
+      "batch": 160,
+      "total_batches": 184,
+      "train_loss": 44.0120849609375,
+      "lr": 0.001,
+      "grad_norm": 39.67601776123047,
+      "elapsed": 189.88796779996483
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786015054.4604282,
+    "payload": {
+      "epoch": 2,
+      "batch": 161,
+      "total_batches": 184,
+      "train_loss": 48.738590240478516,
+      "lr": 0.001,
+      "grad_norm": 39.761522818302765,
+      "elapsed": 189.9873818999622
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786015054.5696301,
+    "payload": {
+      "epoch": 2,
+      "batch": 162,
+      "total_batches": 184,
+      "train_loss": 39.40216064453125,
+      "lr": 0.001,
+      "grad_norm": 39.7727303641183,
+      "elapsed": 190.09655679995194
+    }
+  },
+  {
+    "kind": "tier1",
+    "ts": 1786015058.5310628,
+    "payload": {
+      "tier": "tier1",
+      "rmse": 9.64816943349084,
+      "runtime_s": 0.091
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786015058.6406345,
+    "payload": {
+      "epoch": 2,
+      "batch": 163,
+      "total_batches": 184,
+      "train_loss": 43.65525436401367,
+      "lr": 0.001,
+      "grad_norm": 39.791916538292256,
+      "elapsed": 194.16708970000036
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786015058.8730414,
+    "payload": {
+      "epoch": 2,
+      "batch": 164,
+      "total_batches": 184,
+      "train_loss": 45.696388244628906,
+      "lr": 0.001,
+      "grad_norm": 40.02471399307251,
+      "elapsed": 194.39943519997178
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786015058.9756875,
+    "payload": {
+      "epoch": 2,
+      "batch": 165,
+      "total_batches": 184,
+      "train_loss": 64.37364959716797,
+      "lr": 0.001,
+      "grad_norm": 40.16682021258629,
+      "elapsed": 194.5024107999634
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786015059.1444962,
+    "payload": {
+      "epoch": 2,
+      "batch": 166,
+      "total_batches": 184,
+      "train_loss": 53.32998275756836,
+      "lr": 0.001,
+      "grad_norm": 40.177945420548724,
+      "elapsed": 194.67100029997528
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786015059.2571123,
+    "payload": {
+      "epoch": 2,
+      "batch": 167,
+      "total_batches": 184,
+      "train_loss": 49.38254928588867,
+      "lr": 0.001,
+      "grad_norm": 40.364694112141926,
+      "elapsed": 194.78413379995618
+    }
+  },
+  {
+    "kind": "tier1",
+    "ts": 1786015064.1699195,
+    "payload": {
+      "tier": "tier1",
+      "rmse": 9.671622204229196,
+      "runtime_s": 0.0933
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786015064.2645743,
+    "payload": {
+      "epoch": 2,
+      "batch": 168,
+      "total_batches": 184,
+      "train_loss": 44.294742584228516,
+      "lr": 0.001,
+      "grad_norm": 40.462336690802324,
+      "elapsed": 199.79160389996832
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786015064.3710215,
+    "payload": {
+      "epoch": 2,
+      "batch": 169,
+      "total_batches": 184,
+      "train_loss": 47.04058074951172,
+      "lr": 0.001,
+      "grad_norm": 40.572316751851666,
+      "elapsed": 199.8974602999515
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786015064.4759762,
+    "payload": {
+      "epoch": 2,
+      "batch": 170,
+      "total_batches": 184,
+      "train_loss": 53.41855239868164,
+      "lr": 0.001,
+      "grad_norm": 40.747328587067436,
+      "elapsed": 200.002405599982
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786015064.5801241,
+    "payload": {
+      "epoch": 2,
+      "batch": 171,
+      "total_batches": 184,
+      "train_loss": 46.881595611572266,
+      "lr": 0.001,
+      "grad_norm": 40.86898436727403,
+      "elapsed": 200.10721549997106
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786015064.6853669,
+    "payload": {
+      "epoch": 2,
+      "batch": 172,
+      "total_batches": 184,
+      "train_loss": 41.142333984375,
+      "lr": 0.001,
+      "grad_norm": 40.94879283905029,
+      "elapsed": 200.21234869997716
+    }
+  },
+  {
+    "kind": "tier1",
+    "ts": 1786015068.8180654,
+    "payload": {
+      "tier": "tier1",
+      "rmse": 9.58527130447546,
+      "runtime_s": 0.0889
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786015068.9203322,
+    "payload": {
+      "epoch": 2,
+      "batch": 173,
+      "total_batches": 184,
+      "train_loss": 58.270652770996094,
+      "lr": 0.001,
+      "grad_norm": 41.11583851001881,
+      "elapsed": 204.44765149999876
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786015069.020696,
+    "payload": {
+      "epoch": 2,
+      "batch": 174,
+      "total_batches": 184,
+      "train_loss": 46.33636474609375,
+      "lr": 0.001,
+      "grad_norm": 41.301074702565266,
+      "elapsed": 204.54767790000187
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786015069.1390538,
+    "payload": {
+      "epoch": 2,
+      "batch": 175,
+      "total_batches": 184,
+      "train_loss": 46.965492248535156,
+      "lr": 0.001,
+      "grad_norm": 41.437174050204725,
+      "elapsed": 204.66542939998908
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786015069.2449024,
+    "payload": {
+      "epoch": 2,
+      "batch": 176,
+      "total_batches": 184,
+      "train_loss": 58.386146545410156,
+      "lr": 0.001,
+      "grad_norm": 41.56630561465309,
+      "elapsed": 204.77165169996442
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786015069.3575547,
+    "payload": {
+      "epoch": 2,
+      "batch": 177,
+      "total_batches": 184,
+      "train_loss": 36.46866989135742,
+      "lr": 0.001,
+      "grad_norm": 41.64074410831227,
+      "elapsed": 204.88423279998824
+    }
+  },
+  {
+    "kind": "tier1",
+    "ts": 1786015073.4898384,
+    "payload": {
+      "tier": "tier1",
+      "rmse": 9.586792566037659,
+      "runtime_s": 0.0816
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786015073.6434,
+    "payload": {
+      "epoch": 2,
+      "batch": 178,
+      "total_batches": 184,
+      "train_loss": 33.272605895996094,
+      "lr": 0.001,
+      "grad_norm": 41.64064731154331,
+      "elapsed": 209.17135229997803
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786015073.8046296,
+    "payload": {
+      "epoch": 2,
+      "batch": 179,
+      "total_batches": 184,
+      "train_loss": 40.12053680419922,
+      "lr": 0.001,
+      "grad_norm": 41.70336966679014,
+      "elapsed": 209.3324094999698
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786015073.9631119,
+    "payload": {
+      "epoch": 2,
+      "batch": 180,
+      "total_batches": 184,
+      "train_loss": 35.37358856201172,
+      "lr": 0.001,
+      "grad_norm": 41.807427796450526,
+      "elapsed": 209.48951609997312
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786015074.0443263,
+    "payload": {
+      "epoch": 2,
+      "batch": 181,
+      "total_batches": 184,
+      "train_loss": 34.91575241088867,
+      "lr": 0.001,
+      "grad_norm": 41.927071003431685,
+      "elapsed": 209.57081109995488
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786015074.1391094,
+    "payload": {
+      "epoch": 2,
+      "batch": 182,
+      "total_batches": 184,
+      "train_loss": 42.718505859375,
+      "lr": 0.001,
+      "grad_norm": 42.06939197116428,
+      "elapsed": 209.6662755999714
+    }
+  },
+  {
+    "kind": "tier1",
+    "ts": 1786015078.841738,
+    "payload": {
+      "tier": "tier1",
+      "rmse": 9.596864062255953,
+      "runtime_s": 0.0873
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786015079.0116549,
+    "payload": {
+      "epoch": 2,
+      "batch": 183,
+      "total_batches": 184,
+      "train_loss": 36.12832260131836,
+      "lr": 0.001,
+      "grad_norm": 42.23288370488764,
+      "elapsed": 214.5381664999877
+    }
+  },
+  {
+    "kind": "progress",
+    "ts": 1786015079.0828805,
+    "payload": {
+      "epoch": 2,
+      "batch": 184,
+      "total_batches": 184,
+      "train_loss": 45.02958297729492,
+      "lr": 0.001,
+      "grad_norm": 42.39368285303531,
+      "elapsed": 214.60957299999427
+    }
+  },
+  {
+    "kind": "tier2",
+    "ts": 1786015084.5992222,
+    "payload": {
+      "epoch": 2,
+      "runtime_s": 1.5889,
+      "per_zone": {
+        "northwest": {
+          "rmse": 8.407727147356963,
+          "mae": 2.5788867473602295,
+          "skill_vs_baseline": 0.1328742587570313,
+          "baseline_rmse": 9.696087600057899
+        },
+        "west_central": {
+          "rmse": 10.722637363640365,
+          "mae": 3.3555824756622314,
+          "skill_vs_baseline": 0.11820151678915525,
+          "baseline_rmse": 12.159963492561939
+        },
+        "central_northeast": {
+          "rmse": 9.636497597237643,
+          "mae": 3.5122764110565186,
+          "skill_vs_baseline": 0.1564895080632911,
+          "baseline_rmse": 11.424277100705817
+        },
+        "northeast": {
+          "rmse": "insufficient data",
+          "mae": "insufficient data",
+          "skill_vs_baseline": "insufficient data"
+        },
+        "south_peninsular": {
+          "rmse": 9.523152268972911,
+          "mae": 3.143038749694824,
+          "skill_vs_baseline": 0.1946771036362933,
+          "baseline_rmse": 11.825259547410143
+        },
+        "western_ghats": {
+          "rmse": 6.12877670449292,
+          "mae": 2.372814893722534,
+          "skill_vs_baseline": 0.3444024682440662,
+          "baseline_rmse": 9.348382822732384
+        },
+        "thar_arid": {
+          "rmse": 13.387450586665054,
+          "mae": 3.035188674926758,
+          "skill_vs_baseline": -0.303889143715395,
+          "baseline_rmse": 10.267322687048297
+        },
+        "himalayan": {
+          "rmse": 12.514536534382598,
+          "mae": 3.910989761352539,
+          "skill_vs_baseline": -0.5036285259397153,
+          "baseline_rmse": 8.322891138661692
+        },
+        "tamilnadu_ne": {
+          "rmse": 5.556864710417031,
+          "mae": 2.3309197425842285,
+          "skill_vs_baseline": 0.5620873222621766,
+          "baseline_rmse": 12.689435572230462
+        }
+      }
+    }
+  },
+  {
+    "kind": "checkpoint_saved",
+    "ts": 1786015084.619016,
+    "payload": {
+      "epoch": 2,
+      "zone_weighted_rmse": 8.440408432641618,
+      "weights_path": "L:\\MausamSetu\\climate_twin\\train\\registry\\models\\india\\ph1_proof\\weights.pt",
+      "meta_path": "L:\\MausamSetu\\climate_twin\\train\\registry\\models\\india\\ph1_proof\\meta.json"
+    }
+  },
+  {
+    "kind": "tier3",
+    "ts": 1786015112.1882212,
+    "payload": {
+      "epoch": 2,
+      "runtime_s": 27.5674
+    }
+  },
+  {
+    "kind": "tier4",
+    "ts": 1786015117.843685,
+    "payload": {
+      "runtime_s": 2.0365,
+      "n_zones": 9
+    }
+  },
+  {
+    "kind": "heatmap_rendered",
+    "ts": 1786015175.9208937,
+    "payload": {
+      "path": "L:\\MausamSetu\\climate_twin\\train\\registry\\models\\india\\ph1_proof\\tier3_heatmap.png",
+      "metric": "rmse",
+      "baseline": "climatology"
+    }
+  },
+  {
+    "kind": "done",
+    "ts": 1786015175.937704,
+    "payload": {
+      "best_zone_weighted_rmse": 8.440408432641618,
+      "best_state_dict_path": "L:\\MausamSetu\\climate_twin\\train\\registry\\models\\india\\ph1_proof\\weights.pt",
+      "heatmap_path": "L:\\MausamSetu\\climate_twin\\train\\registry\\models\\india\\ph1_proof\\tier3_heatmap.png",
+      "n_epochs_run": 2
+    }
+  }
+]

@@ -1,0 +1,173 @@
+{
+  "name": "ph4_smoke",
+  "region": "india",
+  "parent_name": "",
+  "config": {
+    "name": "ph4_smoke",
+    "notes": "Phase 4 end-to-end demo. Not a real model \u2014 just proves the full stack (dataset \u2192 trainer \u2192 tiered validation \u2192 heatmap \u2192 registry) works and produces expected artefacts.",
+    "seed": 42,
+    "deterministic": true,
+    "data": {
+      "region": "india",
+      "train_years": [
+        2018,
+        2022
+      ],
+      "val_years": [
+        2023,
+        2023
+      ],
+      "test_years": [
+        2024,
+        2025
+      ],
+      "variables": [
+        "rain",
+        "tmax",
+        "tmin"
+      ],
+      "include_satellite": false,
+      "manifest_sig_expected": null
+    },
+    "zones": {
+      "membership": "soft",
+      "zone_mask_sig_expected": "242f813af71b",
+      "excluded_zone_keys": []
+    },
+    "model": {
+      "backbone": "convlstm",
+      "hidden": 16,
+      "seq_length": 7,
+      "kernel_size": 3,
+      "dropout": 0.1,
+      "residual_scale": 0.1,
+      "film_conditioning": true,
+      "zone_conditioned_heads": true,
+      "satellite_null_dropout": 0.5,
+      "satellite_channels": [
+        "insat_lst"
+      ]
+    },
+    "loss": {
+      "objective": "hurdle",
+      "rain_occurrence_threshold_mm": 0.1,
+      "zone_weighting": "inverse_variance",
+      "physics_tmax_ge_tmin": 0.02,
+      "physics_spatial_smooth": 0.01,
+      "physics_temporal_smooth": 0.0,
+      "physics_bounds_penalty": 0.005
+    },
+    "optim": {
+      "optimizer": "adamw",
+      "lr": 0.001,
+      "weight_decay": 0.0001,
+      "scheduler": "cosine",
+      "warmup_epochs": 0,
+      "min_lr": 1e-06,
+      "grad_clip": 1.0,
+      "epochs": 3,
+      "batch_size": 4,
+      "gradient_accum": 1,
+      "mixed_precision": "fp32",
+      "sampler_mode": "inverse_frequency"
+    },
+    "validation": {
+      "tier1_every_n_batches": 100,
+      "tier2_every_n_epochs": 1,
+      "tier3_every_n_epochs": 1,
+      "tier4_end_of_round": true,
+      "thresholds_source": "both",
+      "mc_samples": 20,
+      "bootstrap_samples": 100,
+      "min_cells_for_metric": 5
+    },
+    "early_stopping": {
+      "policy": "worst_zone",
+      "monitor": "zone_weighted_rmse",
+      "patience": 5,
+      "min_delta": 0.001
+    }
+  },
+  "zone_mask_sig": "242f813af71b",
+  "zone_stats_sig": "242f813af71b",
+  "manifest_sig": "ab0999487887",
+  "variables": [
+    "rain",
+    "tmax",
+    "tmin"
+  ],
+  "epochs_trained": 3,
+  "best_epoch": 3,
+  "best_zone_weighted_rmse": 6.138095507405312,
+  "final_tier4_summary": {
+    "northwest": {
+      "rmse_ci": {
+        "point": 4.886539072168167,
+        "ci95_lower": 4.683821890602327,
+        "ci95_upper": 5.061522441601946
+      },
+      "vs_pers_winner": "baseline",
+      "vs_clim_winner": "ours"
+    },
+    "west_central": {
+      "rmse_ci": {
+        "point": 7.289992388135474,
+        "ci95_lower": 7.09445828825247,
+        "ci95_upper": 7.447898248699972
+      },
+      "vs_pers_winner": "baseline",
+      "vs_clim_winner": "ours"
+    },
+    "central_northeast": {
+      "rmse_ci": {
+        "point": 6.232255619905573,
+        "ci95_lower": 5.999273734312923,
+        "ci95_upper": 6.417949205922513
+      },
+      "vs_pers_winner": "baseline",
+      "vs_clim_winner": "ours"
+    },
+    "northeast": {
+      "rmse_ci": "insufficient data",
+      "vs_pers_winner": "insufficient data",
+      "vs_clim_winner": "insufficient data"
+    },
+    "south_peninsular": {
+      "rmse_ci": {
+        "point": 5.301097687021311,
+        "ci95_lower": 5.000476664410029,
+        "ci95_upper": 5.583728020273397
+      },
+      "vs_pers_winner": "baseline",
+      "vs_clim_winner": "ours"
+    },
+    "western_ghats": {
+      "rmse_ci": {
+        "point": 3.895612576871424,
+        "ci95_lower": 3.7642038171941334,
+        "ci95_upper": 4.007539017574257
+      },
+      "vs_pers_winner": "baseline",
+      "vs_clim_winner": "ours"
+    },
+    "thar_arid": {
+      "rmse_ci": {
+        "point": 6.03503369878622,
+        "ci95_lower": 4.67527219106646,
+        "ci95_upper": 7.112872757827534
+      },
+      "vs_pers_winner": "baseline",
+      "vs_clim_winner": "ours"
+    },
+    "himalayan": {
+      "rmse_ci": "insufficient data",
+      "vs_pers_winner": "insufficient data",
+      "vs_clim_winner": "insufficient data"
+    },
+    "tamilnadu_ne": {
+      "rmse_ci": "insufficient data",
+      "vs_pers_winner": "insufficient data",
+      "vs_clim_winner": "insufficient data"
+    }
+  }
+}

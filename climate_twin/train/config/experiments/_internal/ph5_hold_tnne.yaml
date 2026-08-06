@@ -1,0 +1,57 @@
+# ph5_hold_tnne.yaml — Phase 5a held-out-zone experiment.
+
+extends: base.yaml
+
+name: ph5_hold_tnne
+notes: >-
+  Held-out zone: tamilnadu_ne (INVERTED seasonality — peaks Oct-Dec).
+  If the model learned this regime only through gradient on TN-NE
+  cells, excluding those cells should degrade skill sharply. If FiLM
+  + climatology carry the signal via soft-membership neighbours, the
+  degradation will be smaller.
+
+seed: 42
+deterministic: true
+
+data:
+  region: india
+  train_years: [2018, 2022]
+  val_years:   [2023, 2023]
+  test_years:  [2024, 2025]
+  variables:   [rain, tmax, tmin]
+
+zones:
+  membership: soft
+  zone_mask_sig_expected: 242f813af71b
+  excluded_zone_keys: [tamilnadu_ne]
+
+model:
+  hidden: 16
+  seq_length: 7
+  dropout: 0.1
+
+optim:
+  epochs: 3
+  batch_size: 4
+  lr: 1.0e-3
+  warmup_epochs: 0
+  scheduler: cosine
+  mixed_precision: fp32
+  sampler_mode: inverse_frequency
+
+loss:
+  physics_spatial_smooth: 0.01
+  physics_temporal_smooth: 0.0
+  physics_tmax_ge_tmin: 0.02
+  physics_bounds_penalty: 0.005
+
+validation:
+  tier1_every_n_batches: 100
+  tier2_every_n_epochs: 1
+  tier3_every_n_epochs: 1
+  bootstrap_samples: 100
+  min_cells_for_metric: 5
+
+early_stopping:
+  patience: 5
+  min_delta: 1.0e-3

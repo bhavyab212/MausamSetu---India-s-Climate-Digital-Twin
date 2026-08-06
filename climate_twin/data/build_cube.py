@@ -436,4 +436,15 @@ def build_all(years: tuple[int, int] = (2018, 2025),
 
 
 if __name__ == "__main__":
-    build_all()
+    import argparse
+    ap = argparse.ArgumentParser(description="Build daily processed cubes for india + cauvery.")
+    ap.add_argument("--years", nargs=2, type=int, metavar=("START", "END"),
+                    default=[2018, 2025], help="inclusive year range for the cube")
+    ap.add_argument("--train-years", nargs=2, type=int, metavar=("START", "END"),
+                    default=None, help="inclusive train-years for norm-stats fit (no leakage)")
+    ap.add_argument("--variables", nargs="+", default=("rain", "tmax", "tmin", "insat_lst"),
+                    help="variables to include in the cube")
+    args = ap.parse_args()
+    yrs = tuple(args.years)
+    trs = tuple(args.train_years) if args.train_years else (yrs[0], yrs[1] - 2)
+    build_all(years=yrs, train_years=trs, variables=tuple(args.variables))

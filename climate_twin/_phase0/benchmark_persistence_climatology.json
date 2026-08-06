@@ -1,0 +1,358 @@
+{
+  "generated_at_ist": "2026-08-06T13:42:12.717352+05:30",
+  "zone_mask_sig": "242f813af71b",
+  "manifest_sig": "ab0999487887",
+  "train_years": [
+    1951,
+    2022
+  ],
+  "test_years": [
+    2024,
+    2025
+  ],
+  "notes": "For each zone \u00d7 variable \u00d7 baseline, RMSE and MAE are computed over all (day \u00d7 cell) pairs in the test window with soft-membership weight > 0.05. Persistence baseline = yesterday's value at same cell. Climatology baseline = per-DOY mean over train years at that cell. This is the honest number-to-beat for Phase 2.",
+  "zones": {
+    "northwest": {
+      "id": 1,
+      "metrics": {
+        "rain": {
+          "n_valid_pairs": 769743,
+          "persistence": {
+            "rmse": 12.150348610878336,
+            "mae": 3.5406408477496516
+          },
+          "climatology": {
+            "rmse": 8.987871735980857,
+            "mae": 2.9540797626806383
+          }
+        },
+        "tmax": {
+          "n_valid_pairs": 758778,
+          "persistence": {
+            "rmse": 2.0421097285524854,
+            "mae": 1.5445246415316045
+          },
+          "climatology": {
+            "rmse": 2.5496935033449954,
+            "mae": 2.009010020834464
+          }
+        },
+        "tmin": {
+          "n_valid_pairs": 758778,
+          "persistence": {
+            "rmse": 1.7137953634791683,
+            "mae": 1.282277374432833
+          },
+          "climatology": {
+            "rmse": 2.1018194212985155,
+            "mae": 1.647461758258871
+          }
+        }
+      }
+    },
+    "west_central": {
+      "id": 2,
+      "metrics": {
+        "rain": {
+          "n_valid_pairs": 883779,
+          "persistence": {
+            "rmse": 14.55006458900092,
+            "mae": 4.6039285253888025
+          },
+          "climatology": {
+            "rmse": 10.988296861947173,
+            "mae": 3.7188505382957575
+          }
+        },
+        "tmax": {
+          "n_valid_pairs": 875738,
+          "persistence": {
+            "rmse": 1.711995656482859,
+            "mae": 1.2916477449464105
+          },
+          "climatology": {
+            "rmse": 2.143174581038585,
+            "mae": 1.6628927634309894
+          }
+        },
+        "tmin": {
+          "n_valid_pairs": 875738,
+          "persistence": {
+            "rmse": 1.4489950789396724,
+            "mae": 1.0379870830131543
+          },
+          "climatology": {
+            "rmse": 1.8980971083259646,
+            "mae": 1.4731420315803962
+          }
+        }
+      }
+    },
+    "central_northeast": {
+      "id": 3,
+      "metrics": {
+        "rain": {
+          "n_valid_pairs": 719304,
+          "persistence": {
+            "rmse": 13.506133939996495,
+            "mae": 4.935817840388538
+          },
+          "climatology": {
+            "rmse": 10.107754724057628,
+            "mae": 4.302606694589525
+          }
+        },
+        "tmax": {
+          "n_valid_pairs": 676906,
+          "persistence": {
+            "rmse": 1.8930049699325548,
+            "mae": 1.417764660603774
+          },
+          "climatology": {
+            "rmse": 2.221812200384254,
+            "mae": 1.7302878272383289
+          }
+        },
+        "tmin": {
+          "n_valid_pairs": 676906,
+          "persistence": {
+            "rmse": 1.5115999266089626,
+            "mae": 1.1138165216745022
+          },
+          "climatology": {
+            "rmse": 1.8871545642012222,
+            "mae": 1.4644901352150361
+          }
+        }
+      }
+    },
+    "northeast": {
+      "id": 4,
+      "metrics": {
+        "rain": {
+          "n_valid_pairs": 377927,
+          "persistence": {
+            "rmse": 17.417117765209863,
+            "mae": 7.1085005663882495
+          },
+          "climatology": {
+            "rmse": 13.733523793331914,
+            "mae": 6.619059816207531
+          }
+        },
+        "tmax": {
+          "n_valid_pairs": 293131,
+          "persistence": {
+            "rmse": 2.1164709734510603,
+            "mae": 1.5901000904123481
+          },
+          "climatology": {
+            "rmse": 2.163588181570669,
+            "mae": 1.6964697392271058
+          }
+        },
+        "tmin": {
+          "n_valid_pairs": 293131,
+          "persistence": {
+            "rmse": 1.1566404156562908,
+            "mae": 0.8846182214526649
+          },
+          "climatology": {
+            "rmse": 1.4112238686740957,
+            "mae": 1.106502984950803
+          }
+        }
+      }
+    },
+    "south_peninsular": {
+      "id": 5,
+      "metrics": {
+        "rain": {
+          "n_valid_pairs": 508776,
+          "persistence": {
+            "rmse": 13.39579808194024,
+            "mae": 4.754894887143336
+          },
+          "climatology": {
+            "rmse": 9.972066329273392,
+            "mae": 3.9389152760597392
+          }
+        },
+        "tmax": {
+          "n_valid_pairs": 501466,
+          "persistence": {
+            "rmse": 1.5411457012996226,
+            "mae": 1.128447867364409
+          },
+          "climatology": {
+            "rmse": 1.8683201241517169,
+            "mae": 1.4032580069578442
+          }
+        },
+        "tmin": {
+          "n_valid_pairs": 501466,
+          "persistence": {
+            "rmse": 1.1432107581164992,
+            "mae": 0.8305624852663721
+          },
+          "climatology": {
+            "rmse": 1.5940315761736155,
+            "mae": 1.2114904637213433
+          }
+        }
+      }
+    },
+    "western_ghats": {
+      "id": 6,
+      "metrics": {
+        "rain": {
+          "n_valid_pairs": 511700,
+          "persistence": {
+            "rmse": 13.970478574221579,
+            "mae": 4.861016390014683
+          },
+          "climatology": {
+            "rmse": 11.35556153943874,
+            "mae": 4.2665551226994465
+          }
+        },
+        "tmax": {
+          "n_valid_pairs": 501466,
+          "persistence": {
+            "rmse": 1.273882905277673,
+            "mae": 0.9511943480576438
+          },
+          "climatology": {
+            "rmse": 1.716961594049679,
+            "mae": 1.2828213273136075
+          }
+        },
+        "tmin": {
+          "n_valid_pairs": 501466,
+          "persistence": {
+            "rmse": 1.113139337284449,
+            "mae": 0.7960159235319184
+          },
+          "climatology": {
+            "rmse": 1.50544629303444,
+            "mae": 1.1295543387033837
+          }
+        }
+      }
+    },
+    "thar_arid": {
+      "id": 7,
+      "metrics": {
+        "rain": {
+          "n_valid_pairs": 212721,
+          "persistence": {
+            "rmse": 10.24511015531418,
+            "mae": 2.3441882629387636
+          },
+          "climatology": {
+            "rmse": 7.625432203757522,
+            "mae": 1.8711088197415637
+          }
+        },
+        "tmax": {
+          "n_valid_pairs": 200294,
+          "persistence": {
+            "rmse": 1.8833978020920226,
+            "mae": 1.414149115997488
+          },
+          "climatology": {
+            "rmse": 2.3598529948933478,
+            "mae": 1.8851975523047158
+          }
+        },
+        "tmin": {
+          "n_valid_pairs": 200294,
+          "persistence": {
+            "rmse": 1.5750871416372765,
+            "mae": 1.152063971162308
+          },
+          "climatology": {
+            "rmse": 2.0620482697704383,
+            "mae": 1.6454935874559957
+          }
+        }
+      }
+    },
+    "himalayan": {
+      "id": 8,
+      "metrics": {
+        "rain": {
+          "n_valid_pairs": 452489,
+          "persistence": {
+            "rmse": 10.367892398498094,
+            "mae": 3.2661472184913585
+          },
+          "climatology": {
+            "rmse": 7.856210319840857,
+            "mae": 3.3872995574974434
+          }
+        },
+        "tmax": {
+          "n_valid_pairs": 371707,
+          "persistence": {
+            "rmse": 2.2503887638342244,
+            "mae": 1.6965249804508518
+          },
+          "climatology": {
+            "rmse": 2.926404021157917,
+            "mae": 2.3691629744969642
+          }
+        },
+        "tmin": {
+          "n_valid_pairs": 371983,
+          "persistence": {
+            "rmse": 1.5752362055318347,
+            "mae": 1.190930252101854
+          },
+          "climatology": {
+            "rmse": 2.4839326808951308,
+            "mae": 2.022376819030057
+          }
+        }
+      }
+    },
+    "tamilnadu_ne": {
+      "id": 9,
+      "metrics": {
+        "rain": {
+          "n_valid_pairs": 178364,
+          "persistence": {
+            "rmse": 13.868909873219309,
+            "mae": 4.704853992419442
+          },
+          "climatology": {
+            "rmse": 10.460601243156427,
+            "mae": 4.216780413946551
+          }
+        },
+        "tmax": {
+          "n_valid_pairs": 165206,
+          "persistence": {
+            "rmse": 1.3285814296680245,
+            "mae": 0.9674105994014067
+          },
+          "climatology": {
+            "rmse": 1.523609699207257,
+            "mae": 1.1606692531956635
+          }
+        },
+        "tmin": {
+          "n_valid_pairs": 165206,
+          "persistence": {
+            "rmse": 0.8646261026419026,
+            "mae": 0.6568480546910433
+          },
+          "climatology": {
+            "rmse": 1.0599457844769427,
+            "mae": 0.8261789297185145
+          }
+        }
+      }
+    }
+  }
+}

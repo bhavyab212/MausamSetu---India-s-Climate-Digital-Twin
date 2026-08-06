@@ -1,0 +1,50 @@
+# ph2_smoke.yaml — Phase 2 smoke experiment.
+# Two-epoch determinism check. Small model, small window. NOT for real
+# training — just verifies that the config schema, sampler, FiLM model,
+# and loss all wire up correctly and that two identical runs produce
+# byte-equal weights.
+
+extends: base.yaml
+
+name: ph2_smoke
+notes: >-
+  Phase 2b determinism verification. Two identical short runs must
+  produce identical weight tensors and identical training-loss traces.
+
+seed: 42
+deterministic: true
+
+data:
+  region: india
+  train_years: [2018, 2022]      # tiny window for speed
+  val_years:   [2023, 2023]
+  test_years:  [2024, 2025]
+  variables:   [rain, tmax, tmin]
+  include_satellite: false
+
+model:
+  hidden: 16                     # smaller for speed
+  seq_length: 7
+  dropout: 0.1
+
+optim:
+  epochs: 2
+  batch_size: 2
+  lr: 1.0e-3
+  warmup_epochs: 0
+  scheduler: none                # simplifies determinism check
+  mixed_precision: fp32          # rules out amp non-determinism
+  gradient_accum: 1
+  sampler_mode: inverse_frequency
+
+loss:
+  physics_spatial_smooth: 0.0    # smoothness needs full model, skip for smoke
+  physics_temporal_smooth: 0.0
+
+validation:
+  tier1_every_n_batches: 5
+  tier2_every_n_epochs: 1
+  tier3_every_n_epochs: 999      # skip expensive tier during smoke
+
+early_stopping:
+  patience: 999                  # don't stop early during smoke

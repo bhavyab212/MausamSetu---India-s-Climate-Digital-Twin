@@ -1,0 +1,32 @@
+{
+  "ph4_smoke": {
+    "excluded": [],
+    "zw_rmse": 6.138095507405312,
+    "epochs": 3,
+    "tier2_per_zone": {}
+  },
+  "ph5_hold_tnne": {
+    "excluded": [
+      "tamilnadu_ne"
+    ],
+    "zw_rmse": 6.79058374457888,
+    "epochs": 3,
+    "tier2_per_zone": {}
+  },
+  "ph5_hold_northeast": {
+    "excluded": [
+      "northeast"
+    ],
+    "zw_rmse": 6.911371690922252,
+    "epochs": 3,
+    "tier2_per_zone": {}
+  },
+  "ph5_hold_thar": {
+    "excluded": [
+      "thar_arid"
+    ],
+    "zw_rmse": 5.381737067169951,
+    "epochs": 3,
+    "tier2_per_zone": {}
+  }
+}

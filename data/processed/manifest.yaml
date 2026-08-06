@@ -1,6 +1,6 @@
 generator: climate_twin/data/build_cube.py
-generated_at_ist: '2026-08-06T11:36:01.726135+05:30'
-git_hash: 336284da20c618ec6063e1a18c4f50d00f50d805
+generated_at_ist: '2026-08-06T13:04:43.925540+05:30'
+git_hash: 24320228fc0094767481aa34fd1e091a51962cc2
 master_grid:
   extent_lat:
   - 6.5
@@ -15,11 +15,11 @@ regions_built:
 - india
 - cauvery
 years:
-- 2018
+- 1951
 - 2025
 train_years:
-- 2018
-- 2023
+- 1951
+- 2022
 variables:
 - rain
 - tmax

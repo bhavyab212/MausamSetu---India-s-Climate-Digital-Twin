@@ -1,0 +1,68 @@
+# india_fast.yaml — quicker real training for iteration.
+# 33 years of training (1990-2022) covers modern climatology + IMD's
+# highest-quality later period. bf16 + auto-tuned batch = ~2-3 hours on
+# an RTX 4070 laptop.
+
+extends: base.yaml
+
+name: india_fast
+notes: >-
+  Fast real-training preset. Fewer epochs, narrower history window,
+  identical zone-aware architecture. Use for iteration when india_full
+  is too slow.
+
+seed: 42
+deterministic: true
+
+data:
+  region: india
+  train_years: [1990, 2022]
+  val_years:   [2023, 2023]
+  test_years:  [2024, 2025]
+  variables:   [rain, tmax, tmin]
+
+model:
+  hidden: 32
+  seq_length: 10
+  dropout: 0.15
+  film_conditioning: true
+  zone_conditioned_heads: true
+
+optim:
+  epochs: 30
+  batch_size: 16
+  batch_size_auto: true
+  lr: 1.0e-3
+  weight_decay: 1.0e-4
+  scheduler: cosine
+  warmup_epochs: 2
+  min_lr: 1.0e-6
+  grad_clip: 1.0
+  mixed_precision: bf16
+  mixed_precision_auto: true
+  gradient_accum: 1
+  sampler_mode: inverse_frequency
+  num_workers: 4
+  pin_memory: true
+  prefetch_factor: 4
+  persistent_workers: true
+  intent: fast
+
+loss:
+  physics_spatial_smooth: 0.02
+  physics_temporal_smooth: 0.01
+  physics_tmax_ge_tmin: 0.02
+  physics_bounds_penalty: 0.005
+
+validation:
+  tier1_every_n_batches: 100
+  tier2_every_n_epochs: 1
+  tier3_every_n_epochs: 5
+  bootstrap_samples: 300
+  min_cells_for_metric: 5
+
+early_stopping:
+  policy: worst_zone
+  monitor: zone_weighted_rmse
+  patience: 6
+  min_delta: 1.0e-4

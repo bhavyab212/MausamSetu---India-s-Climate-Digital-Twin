@@ -1,0 +1,25 @@
+starting rebuild at Thu Aug  6 12:56:03 IST 2026
+L:\MausamSetu\climate_twin\data\harmonize.py:30: UserWarning: A NumPy version >=1.22.4 and <2.3.0 is required for this version of SciPy (detected version 2.5.1)
+  from scipy.interpolate import RegularGridInterpolator
+L:\MausamSetu\venv\Lib\site-packages\xarray\coding\times.py:215: SerializationWarning: Ambiguous reference date string: 1-1-1 00:00:00. The first value is assumed to be the year hence will be padded with zeros to remove the ambiguity (the padded reference date string is: 0001-1-1 00:00:00). To remove this message, remove the ambiguity by padding your reference date strings with zeros.
+  ref_date = _ensure_padded_year(ref_date)
+L:\MausamSetu\climate_twin\data\build_cube.py:372: DeprecationWarning: The 'generic' unit for NumPy timedelta is deprecated, and will raise an error in the future. This includes implicit conversion of bare integers (e.g. `+ 1`).Please use a specific unit instead.
+  report["time_monotonic"] = bool(np.all(np.diff(t) > np.timedelta64(0)))
+L:\MausamSetu\venv\Lib\site-packages\xarray\coding\times.py:215: SerializationWarning: Ambiguous reference date string: 1-1-1 00:00:00. The first value is assumed to be the year hence will be padded with zeros to remove the ambiguity (the padded reference date string is: 0001-1-1 00:00:00). To remove this message, remove the ambiguity by padding your reference date strings with zeros.
+  ref_date = _ensure_padded_year(ref_date)
+L:\MausamSetu\climate_twin\data\build_cube.py:372: DeprecationWarning: The 'generic' unit for NumPy timedelta is deprecated, and will raise an error in the future. This includes implicit conversion of bare integers (e.g. `+ 1`).Please use a specific unit instead.
+  report["time_monotonic"] = bool(np.all(np.diff(t) > np.timedelta64(0)))
+[build_all] years=(1951, 2025)  train_years=(1951, 2022)  vars=['rain', 'tmax', 'tmin', 'insat_lst']
+
+=== building india ===
+[india] wrote L:\MausamSetu\data\processed\india.nc  816.64 MB  dims={'time': 27394, 'lat': 129, 'lon': 135}  vars=['rain', 'tmax', 'tmin', 'insat_lst', 'tmax_is_interpolated', 'tmin_is_interpolated', 'mask']
+[india] tmax≥tmin violations: 7
+[india] time monotonic: True  duplicates: 0
+
+=== building cauvery ===
+[cauvery] wrote L:\MausamSetu\data\processed\cauvery.nc  41.69 MB  dims={'time': 27394, 'lat': 129, 'lon': 135}  vars=['rain', 'tmax', 'tmin', 'insat_lst', 'tmax_is_interpolated', 'tmin_is_interpolated', 'mask']
+[cauvery] tmax≥tmin violations: 0
+[cauvery] time monotonic: True  duplicates: 0
+
+[manifest] L:\MausamSetu\data\processed\manifest.yaml
+[cauvery⊂india spot-check] {'sample_time': '1988-07-02', 'sample_var': 'rain', 'cauvery_cells_checked': 113, 'max_abs_diff': 0.0, 'identical': True}

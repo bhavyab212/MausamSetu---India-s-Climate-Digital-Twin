@@ -1,0 +1,60 @@
+{
+  "tier": "tier2",
+  "per_zone": {
+    "northwest": {
+      "rmse": 8.173084166086152,
+      "mae": 2.8650949001312256,
+      "skill_vs_baseline": 0.15707401756174855,
+      "baseline_rmse": 9.696087600057899
+    },
+    "west_central": {
+      "rmse": 10.658248306713416,
+      "mae": 3.6727399826049805,
+      "skill_vs_baseline": 0.12349668539441738,
+      "baseline_rmse": 12.159963492561939
+    },
+    "central_northeast": {
+      "rmse": 9.778576001962781,
+      "mae": 4.2406721115112305,
+      "skill_vs_baseline": 0.1440529745765149,
+      "baseline_rmse": 11.424277100705817
+    },
+    "northeast": {
+      "rmse": 12.138548487307782,
+      "mae": 6.295760631561279,
+      "skill_vs_baseline": 0.08879589765698881,
+      "baseline_rmse": 13.321437487052028
+    },
+    "south_peninsular": {
+      "rmse": 9.881628384683466,
+      "mae": 3.7911434173583984,
+      "skill_vs_baseline": 0.16436266408650224,
+      "baseline_rmse": 11.825259547410143
+    },
+    "western_ghats": {
+      "rmse": 9.465170628525753,
+      "mae": 3.787475824356079,
+      "skill_vs_baseline": -0.012492835178869344,
+      "baseline_rmse": 9.348382822732384
+    },
+    "thar_arid": {
+      "rmse": 9.057222602258962,
+      "mae": 2.0784199237823486,
+      "skill_vs_baseline": 0.11785936038767098,
+      "baseline_rmse": 10.267322687048297
+    },
+    "himalayan": {
+      "rmse": 7.300777653333761,
+      "mae": 3.251461982727051,
+      "skill_vs_baseline": 0.12280750382279837,
+      "baseline_rmse": 8.322891138661692
+    },
+    "tamilnadu_ne": {
+      "rmse": 10.384076761860628,
+      "mae": 4.009060859680176,
+      "skill_vs_baseline": 0.1816754415314481,
+      "baseline_rmse": 12.689435572230462
+    }
+  },
+  "runtime_s": 0.9335
+}

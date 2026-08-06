@@ -1,0 +1,20 @@
+# holdout_northeast.yaml — Phase-5 generalisation test.
+# Trains with Northeast zone excluded (zero loss weight on those cells).
+# Skill on Northeast at eval time quantifies zero-shot generalisation
+# to a wet-tail regime the model never received gradient from.
+
+extends: india_fast.yaml
+
+name: holdout_northeast
+notes: >-
+  Generalisation test: exclude Northeast from the loss. Model still
+  sees the zone's FiLM membership (structural knowledge) but no
+  gradient. Report per-zone RMSE on Northeast at eval.
+
+zones:
+  membership: soft
+  zone_mask_sig_expected: 242f813af71b
+  excluded_zone_keys: [northeast]
+
+optim:
+  intent: holdout_ne
