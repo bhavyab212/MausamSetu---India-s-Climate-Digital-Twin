@@ -1,0 +1,38 @@
+# Demo scenario 01 — the reference Short-Term run.
+# Vidarbha paddy, historical analogs, all defaults from Part 6.
+# Any change to this scenario's headline number requires bumping the
+# scenario_version and updating the one-pager acceptance tolerance.
+scenario_id: "01_agri_vidarbha_paddy_kharif_shortterm_baseline"
+scenario_title: "Vidarbha paddy — Short Term baseline"
+scenario_version: "v1"
+status: "shipping"
+
+horizon: short_term
+sector: agriculture
+region_kind: bbox
+region_id: vidarbha
+method: analog
+method_caveat_ack: false
+crops_selected: ["paddy_kharif", "bajra_kharif", "arhar_kharif"]
+sow_dates: ["2020-06-15"]
+irrigation: rainfed
+include_fallow: true
+season: "2024-25"
+analog_spec_id: "vidarbha_JJAS_default"
+analog_target_year: 2020
+analog_k: 10
+analog_weighting: "inv_distance"
+analog_bucketing: "tercile"
+perturbation_rain_scale: 1.0
+perturbation_tmax_shift: 0.0
+perturbation_tmin_shift: 0.0
+show_baseline_overlay: true
+show_provenance: false
+
+expected_headline:
+  description: >
+    Recommendation card shows a best-EV decision (typically bajra_kharif
+    or paddy_kharif) with q10/q50/q90 net revenue in ₹/ha, a nonzero
+    delta_vs_baseline, and a "Confidence: Fair" line (Vidarbha JJAS 2020
+    is not a strong-match year in the training record).
+  best_decision_kinds: ["crop"]

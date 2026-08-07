@@ -1,0 +1,34 @@
+# Demo scenario 07 — Long-Term two-SSP comparison + adaptations.
+# Vidarbha, 2050 horizon, SSP1-2.6 vs SSP5-8.5, evaluating three
+# adaptations (irrigation, heat-tolerant wheat cultivar, raised bunds).
+# The LT payoff matrix shows NPV per adaptation × SSP; Hawkins-Sutton
+# decomposition renders in the uncertainty panel.
+scenario_id: "07_agri_longterm_vidarbha_ssp126_vs_ssp585_2050"
+scenario_title: "Vidarbha adaptations — SSP1-2.6 vs SSP5-8.5 at 2050"
+scenario_version: "v1"
+status: "shipping"
+
+horizon: long_term
+sector: agriculture
+region_kind: bbox
+region_id: vidarbha
+method: analog
+season: "2024-25"
+
+lt:
+  ssps: ["ssp126", "ssp585"]
+  horizon: 2050
+  downscale_method: "qdm"
+  models: null
+  adaptations:
+    - supplemental_irrigation_20mm_weekly
+    - heat_tolerant_wheat_variant
+    - raised_bunds_flood_protection
+
+expected_headline:
+  description: >
+    LT payoff heatmap has 3 adaptation rows × 2 SSP columns; NPV_08
+    values differ across SSPs (higher NPV under SSP5-8.5 because
+    counterfactual damages are larger). Recommendation card names
+    the best-NPV adaptation using "under {ssp} … would be" verbs.
+  status_note: "illustrative until NEX_GDDP_ROOT is set"

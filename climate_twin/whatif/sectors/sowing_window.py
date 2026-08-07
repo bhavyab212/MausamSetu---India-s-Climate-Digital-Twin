@@ -1,6 +1,12 @@
 """
 whatif.sectors.sowing_window — sowing-date optimiser.
 
+Primary sources: this module composes machinery from Parts 2 and 3
+whose citations appear in place — FAO Irrigation & Drainage Paper 56
+(Allen et al. 1998) for the water balance, FAO-33 (Doorenbos & Kassam
+1979) for the multi-stage yield-response formulation, and Hargreaves
+& Samani 1985 for the reference ET0 used inside the L2 loop.
+
 Runs the full L2+L3 chain (water balance → multi-stage FAO-33 yield)
 for every candidate sowing date, across the three forecast quantiles
 (q10/q50/q90) independently, and reports:

@@ -136,8 +136,9 @@ def recommend(pm: PayoffMatrix) -> dict:
     mm = minimax_regret(pm)
 
     i_star = int(np.argmax(ev))
-    delta = ev[i_star] - float((pm.baseline_payoff @ pm.state_weights())[np.newaxis].mean(axis=0))
-    # Simpler baseline EV: weight the baseline_payoff row-avg (states w)
+    # Baseline EV: probability-weighted mean of the column-mean baseline
+    # (which is the same value across rows since baseline is the
+    # climatology counterpart for the cell, not the decision).
     baseline_ev = float(pm.baseline_payoff.mean(axis=0) @ pm.state_weights())
     delta = float(ev[i_star]) - baseline_ev
 

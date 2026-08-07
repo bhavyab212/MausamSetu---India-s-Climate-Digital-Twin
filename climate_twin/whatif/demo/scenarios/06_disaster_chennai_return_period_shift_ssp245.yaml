@@ -1,0 +1,36 @@
+# Demo scenario 06 — Long-Term return-period shift.
+# Chennai Rx1day under SSP2-4.5 at 2050 horizon. The old 1971-2000
+# 100-year 1-day rainfall event would become a shorter-return-period
+# event under the SSP2-4.5 20-yr window centred on 2050 (2041-2060).
+scenario_id: "06_disaster_chennai_return_period_shift_ssp245"
+scenario_title: "Chennai Rx1day — return-period shift under SSP2-4.5 (2050)"
+scenario_version: "v1"
+status: "shipping"
+
+horizon: long_term
+sector: disaster                  # placeholder — the yield sector is
+                                   # not the primary consumer here; the
+                                   # LT panel reads the same drivers and
+                                   # emits the return-period statement.
+region_kind: bbox
+region_id: chennai
+method: analog                     # not used in LT tab; retained for
+                                   # WhatIfState compatibility
+season: "2024-25"
+
+# LT-specific fields (read by whatif.ui.panels.long_term):
+lt:
+  ssps: ["ssp245"]
+  horizon: 2050
+  downscale_method: "qdm"
+  models: null                     # default 10-GCM ensemble
+  variable: "rx1day"
+
+expected_headline:
+  description: >
+    "The 1971-2000 100-year 1-day rainfall event would become a
+    1-in-N-year event by 2050 under SSP2-4.5" where N is model-median
+    across the 10-GCM ensemble (typically 20-40, region-dependent).
+    Real N requires NEX-GDDP on disk; the demo panel renders an
+    illustrative-with-caveat card until the raster mounts.
+  status_note: "illustrative until NEX_GDDP_ROOT is set"

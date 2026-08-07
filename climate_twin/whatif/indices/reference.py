@@ -1,6 +1,10 @@
 """
 whatif.indices.reference — reference period + climatology utilities.
 
+Primary source: WMO-No. 1203 (2017) "Guidelines on the Calculation of
+Climate Normals" — the 40-year WMO-standard reference window that
+pins TRAIN_YEARS in this file.
+
 Statistical indices (SPI, SPEI, r95p, return levels, IMD heatwave normals)
 need a fixed reference climatology. Two rules govern this file:
 

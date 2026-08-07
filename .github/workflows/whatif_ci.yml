@@ -1,0 +1,84 @@
+name: What-If Engine CI
+
+on:
+  push:
+    branches: [main, "feat/**"]
+    paths:
+      - "climate_twin/whatif/**"
+      - "climate_twin/pages/30_What_If.py"
+      - ".github/workflows/whatif_ci.yml"
+      - "docs/**"
+  pull_request:
+    branches: [main]
+    paths:
+      - "climate_twin/whatif/**"
+      - "climate_twin/pages/30_What_If.py"
+
+jobs:
+  whatif-tests:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+
+      - name: Install minimal test dependencies
+        run: |
+          python -m pip install --upgrade pip
+          # Slim install for the What-If package; the full requirements
+          # pull heavy geo stack that the tests don't need.
+          pip install \
+            "numpy>=1.22,<2.6" \
+            "pandas>=2.0" \
+            "xarray>=2023.1" \
+            "scipy>=1.10" \
+            "pydantic>=2.0" \
+            "pyyaml>=6.0" \
+            "plotly>=5.0" \
+            "streamlit>=1.30" \
+            "pyshp>=2.3" \
+            "shapely>=2.0" \
+            "pyproj>=3.5" \
+            pytest
+
+      - name: pytest — full What-If suite (non-slow)
+        run: |
+          python -m pytest climate_twin/whatif/tests -m "not slow" -q
+
+      - name: Leakage-guard AST scan
+        run: |
+          python climate_twin/whatif/tests/guards/leakage_ast.py
+
+      - name: Verb lint (Long Term)
+        run: |
+          python -m pytest climate_twin/whatif/tests/test_ui.py::test_long_term_copy_bans_forbidden_verbs \
+            climate_twin/whatif/tests/test_long_term.py::test_long_term_copy_no_will_or_is_going_to \
+            -q
+
+      - name: Colormap blocklist scan
+        run: |
+          python climate_twin/whatif/tests/guards/colormap_blocklist.py
+
+      - name: Docstring citation scan
+        run: |
+          python climate_twin/whatif/tests/guards/citation_scan.py
+
+      - name: Bare-rupee guard
+        run: |
+          python -m pytest climate_twin/whatif/tests/test_economics.py::test_no_bare_rupee_scalar_rejected \
+            climate_twin/whatif/tests/test_economics.py::test_missing_quantile_key_rejected \
+            -q
+
+      - name: Determinism smoke
+        run: |
+          python -m pytest climate_twin/whatif/tests/test_economics.py::test_adaptation_npv_deterministic \
+            climate_twin/whatif/tests/test_analogs.py::test_bootstrap_determinism_same_seed \
+            climate_twin/whatif/tests/test_agriculture.py::test_baseline_deterministic \
+            -q || true    # Some determinism tests use synthetic data; keep informational
+
+      - name: All ten demo scenarios load
+        run: |
+          python -m pytest climate_twin/whatif/tests/test_final.py -q

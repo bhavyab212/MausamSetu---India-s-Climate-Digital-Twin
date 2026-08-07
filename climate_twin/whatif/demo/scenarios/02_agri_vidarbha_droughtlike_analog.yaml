@@ -1,0 +1,35 @@
+# Demo scenario 02 — target features force a low-rain analog bucket.
+# Recommendation typically switches from paddy to bajra (drought-tolerant).
+# Narrative surfaces 1972 / 1987 / 2002 as matching years.
+scenario_id: "02_agri_vidarbha_droughtlike_analog"
+scenario_title: "Vidarbha drought-like analog — switch to bajra"
+scenario_version: "v1"
+status: "shipping"
+
+horizon: short_term
+sector: agriculture
+region_kind: bbox
+region_id: vidarbha
+method: analog
+method_caveat_ack: false
+crops_selected: ["paddy_kharif", "bajra_kharif", "arhar_kharif"]
+sow_dates: ["2020-06-15"]
+irrigation: rainfed
+include_fallow: true
+season: "2024-25"
+analog_spec_id: "vidarbha_JJAS_default"
+analog_target_year: 2015          # a below-normal year in the record
+analog_k: 10
+analog_weighting: "softmax"        # sharpen the low-rain bucket
+analog_bucketing: "tercile"
+perturbation_rain_scale: 1.0
+perturbation_tmax_shift: 0.0
+perturbation_tmin_shift: 0.0
+
+expected_headline:
+  description: >
+    Payoff heatmap shows bajra dominating paddy in the low-rain
+    column; recommendation card reads "switch from paddy to bajra"
+    with a large downside_reduction figure. Analog narrative highlights
+    1972/1987/2002-type years as the closest matches.
+  best_decision_kinds: ["crop"]

@@ -1,0 +1,30 @@
+# Demo scenario 10 — dev-only stress test.
+# Exercises the dirty-tree export block. Not user-facing; reachable
+# only when the page is loaded with ?dev=1. The scenario itself is a
+# copy of Scenario 01 but with a marker that trips the export-blocked
+# banner in the save/load/export panel.
+scenario_id: "10_stress_test_dirty_tree"
+scenario_title: "Dev-only — export-blocked dirty-tree stress test"
+scenario_version: "v1"
+status: "dev-only"
+
+horizon: short_term
+sector: agriculture
+region_kind: bbox
+region_id: vidarbha
+method: analog
+method_caveat_ack: false
+crops_selected: ["paddy_kharif"]
+sow_dates: ["2020-06-15"]
+irrigation: rainfed
+include_fallow: false
+season: "2024-25"
+
+stress:
+  simulate_dirty_tree: true            # ← test hook
+  simulate_stale_ensemble: false
+
+expected_headline:
+  description: >
+    Save/load/export panel refuses the export with EXPORT_BLOCKED_DIRTY
+    banner. The rest of the tab renders normally.

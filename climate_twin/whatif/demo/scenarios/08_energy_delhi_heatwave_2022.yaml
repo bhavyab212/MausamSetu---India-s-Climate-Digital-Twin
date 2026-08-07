@@ -1,0 +1,25 @@
+# Demo scenario 08 — deferred to the energy sector release.
+# Ship the YAML with an explicit status so the UI can render a
+# "sector deferred" card instead of a false-positive result.
+scenario_id: "08_energy_delhi_heatwave_2022"
+scenario_title: "Delhi 2022 heatwave — energy sector"
+scenario_version: "v1"
+status: "deferred"                  # ← flags the UI to render a stub
+
+horizon: short_term
+sector: energy
+region_kind: bbox
+region_id: delhi
+season: "2024-25"
+
+deferral:
+  reason: >
+    The energy-sector runner (Kc × ET0 analogue for demand load) lands
+    in the next release. Placeholder YAML preserved so the demo
+    dropdown lists the intended scenario and the roadmap entry is
+    visible to reviewers.
+  planned_release: "Part 9"
+  status_ui: >
+    Selecting this scenario shows an st.info banner:
+    "The Energy sector runner is scheduled for Part 9. Load a shipped
+    scenario (01-07 or 09-10) for a working demo."

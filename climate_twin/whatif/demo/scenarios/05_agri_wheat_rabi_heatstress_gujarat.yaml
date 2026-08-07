@@ -1,0 +1,34 @@
+# Demo scenario 05 — wheat rabi flowering heat stress.
+# Under observed 2022 conditions in Gujarat, the flowering-stage heat
+# penalty kicks in. Recommendation card highlights the heat-tolerant
+# cultivar adaptation from the LT registry (Part 7) as the natural
+# response — the ST tab pins this in the narrative even though the
+# adaptation itself is applied in the LT tab.
+scenario_id: "05_agri_wheat_rabi_heatstress_gujarat"
+scenario_title: "Gujarat wheat rabi — flowering heat stress 2022"
+scenario_version: "v1"
+status: "shipping"
+
+horizon: short_term
+sector: agriculture
+region_kind: bbox
+region_id: gujarat
+method: analog
+method_caveat_ack: false
+crops_selected: ["wheat_rabi"]
+sow_dates: ["2021-11-15"]           # rabi sowing
+irrigation: supplemental
+include_fallow: false
+season: "2024-25"
+analog_spec_id: "gujarat_JF_default"
+analog_target_year: 2022             # the flowering-heat year
+analog_k: 10
+analog_weighting: "softmax"
+analog_bucketing: "per_year"
+
+expected_headline:
+  description: >
+    Yield card reports heat_stress_days > 0 during flowering; ST
+    recommendation notes the heat-tolerant wheat cultivar adaptation
+    as a natural LT response. Long-Term tab activates for follow-up.
+  best_decision_kinds: ["crop"]

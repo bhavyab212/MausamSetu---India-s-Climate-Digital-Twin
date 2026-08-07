@@ -15,6 +15,10 @@ Two public entry points:
 from __future__ import annotations
 
 from .card import export_scenario_card
+from .one_pager import ONE_PAGER_VERSION, render_one_pager
 from .payoff_render import payoff_heatmap, format_inr
 
-__all__ = ["payoff_heatmap", "format_inr", "export_scenario_card"]
+__all__ = [
+    "payoff_heatmap", "format_inr", "export_scenario_card",
+    "render_one_pager", "ONE_PAGER_VERSION",
+]

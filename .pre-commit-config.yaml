@@ -1,0 +1,27 @@
+# Pre-commit hooks that mirror the CI checks locally.
+# Install: `pip install pre-commit && pre-commit install` from repo root.
+# The point is not new formatting: it is to make CI failures happen fast.
+
+repos:
+  - repo: local
+    hooks:
+      - id: whatif-leakage-guard
+        name: whatif · leakage AST scan
+        entry: python climate_twin/whatif/tests/guards/leakage_ast.py
+        language: system
+        pass_filenames: false
+        files: ^climate_twin/whatif/
+
+      - id: whatif-colormap-blocklist
+        name: whatif · colormap blocklist scan
+        entry: python climate_twin/whatif/tests/guards/colormap_blocklist.py
+        language: system
+        pass_filenames: false
+        files: ^climate_twin/whatif/(ui|report)/
+
+      - id: whatif-citation-scan
+        name: whatif · docstring citation scan
+        entry: python climate_twin/whatif/tests/guards/citation_scan.py
+        language: system
+        pass_filenames: false
+        files: ^climate_twin/whatif/(indices|biophysical|sectors|economics|drivers)/

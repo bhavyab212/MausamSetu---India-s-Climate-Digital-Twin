@@ -1,0 +1,32 @@
+# Demo scenario 09 — the shipping-negative-result artifact.
+# The HistoricalFrequencyRule (Part 4) is guaranteed by construction
+# to fail V(forecast) > 0 for the shipped preventive-irrigation setup:
+# it applies climatology's own event rate as a forecast probability
+# and, under a hard-0.5 threshold, ends up firing the opposite
+# strategy to climatology's optimum. V ≤ 0 is REAL and it SHIPS.
+scenario_id: "09_backtest_failed_rule"
+scenario_title: "Backtest fails — HistoricalFrequency rule vs dry-spell setup"
+scenario_version: "v1"
+status: "shipping"
+
+horizon: short_term
+sector: agriculture
+region_kind: all_india
+region_id: all_india
+method: analog
+season: "2024-25"
+
+backtest:
+  rule: "historical_frequency"
+  setup: "preventive_irrigation_if_dry_spell_forecast"
+  years: [2011, 2022]                    # VALID_YEARS
+  seed: 42
+
+expected_headline:
+  description: >
+    Backtest card header goes RED with the tag
+    "Rule failed — does not beat climatology" and reports V(forecast)
+    ≤ 0. Reliability diagram is still rendered. This is a shipping
+    artifact (Rule 3 of Part 8): a tool that never shows a failure is
+    hiding one.
+  best_decision_kinds: []

@@ -1,0 +1,31 @@
+# Demo scenario 04 — Method-1 delta perturbation.
+# Rain scaled by 0.80 uniformly; caveat acknowledged. The tab renders
+# the physical-inconsistency banner prominently even though the run
+# completes.
+scenario_id: "04_agri_perturbation_rain_minus_20pct"
+scenario_title: "Method 1 delta perturbation — rain × 0.80"
+scenario_version: "v1"
+status: "shipping"
+
+horizon: short_term
+sector: agriculture
+region_kind: bbox
+region_id: vidarbha
+method: perturbation
+method_caveat_ack: true          # required before Run activates
+crops_selected: ["paddy_kharif", "bajra_kharif"]
+sow_dates: ["2020-06-15"]
+irrigation: rainfed
+include_fallow: true
+season: "2024-25"
+perturbation_rain_scale: 0.80
+perturbation_tmax_shift: 0.0
+perturbation_tmin_shift: 0.0
+
+expected_headline:
+  description: >
+    Perturbation caveat banner is displayed above the results. Rain
+    scaled to 0.80 of observed; sector runner produces a payoff matrix
+    where paddy's downside is worse than bajra's. Export refused until
+    caveat_ack was true (already set here).
+  best_decision_kinds: ["crop"]

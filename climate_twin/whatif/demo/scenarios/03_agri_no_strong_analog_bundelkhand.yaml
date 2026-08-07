@@ -1,0 +1,34 @@
+# Demo scenario 03 — the no-strong-analog case.
+# A target intentionally chosen so the analog pool has no strong/fair
+# matches. The no-strong-analog banner (Rule 10) fires — this scenario
+# ships as a *feature*, not a bug. Demonstrates that the tool refuses
+# to hide a poor match behind a plausible-looking closest analog.
+scenario_id: "03_agri_no_strong_analog_bundelkhand"
+scenario_title: "Bundelkhand — no strong historical analog"
+scenario_version: "v1"
+status: "shipping"
+
+horizon: short_term
+sector: agriculture
+region_kind: bbox
+region_id: bundelkhand
+method: analog
+method_caveat_ack: false
+crops_selected: ["paddy_kharif", "bajra_kharif", "arhar_kharif"]
+sow_dates: ["2022-06-15"]
+irrigation: rainfed
+include_fallow: true
+season: "2024-25"
+analog_spec_id: "bundelkhand_JJAS_default"
+analog_target_year: 2022
+analog_k: 10
+analog_weighting: "inv_distance"
+analog_bucketing: "tercile"
+
+expected_headline:
+  description: >
+    Analog narrative renders the fallback banner ("No strong or fair
+    historical analog exists for this target in the training record").
+    Recommendation card confidence line reads "Confidence: Low".
+    Cards list the closest matches marked "poor" explicitly.
+  best_decision_kinds: ["crop", "fallow"]
