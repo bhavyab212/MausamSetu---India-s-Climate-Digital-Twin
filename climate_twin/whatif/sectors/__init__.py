@@ -206,6 +206,134 @@ def _lazy_value_agri():
     return value_agriculture
 
 
+def _run_analog_bucket_cell(dec, st, driver_spec, levers: dict) -> Any:
+    """Analog-bucket cell runner: for each analog year in the bucket,
+    run the sector against observed IMD data for that year (with the
+    sow_date shifted into that calendar year), collect Ya samples,
+    then produce an EconomicOutcome whose q10/q50/q90 come from the
+    empirical distribution across analog years.
+
+    This is the *whole point* of Method 2: analog forecast = weighted
+    average of the observed outcomes of similar past years."""
+    from dataclasses import replace as _replace
+    from datetime import date as _date
+
+    import numpy as _np
+
+    from ..economics.prices import load_prices
+    from ..economics.valuation import EconomicOutcome, value_agriculture
+
+    years = list(st.analog_years or ())
+    if not years:
+        # Empty bucket → surface a zero-weight cell without exploding
+        ps = load_prices(levers["crop"])
+        cost = float(ps.cost_of_cultivation_inr_per_ha)
+        zero = {"q10": 0.0, "q50": 0.0, "q90": 0.0}
+        return EconomicOutcome(
+            crop=levers["crop"], season=levers["season"],
+            region_kind="district",
+            region_id=str(driver_spec.region.id or driver_spec.region.kind),
+            gross_revenue_inr_per_ha=zero,
+            cost_inr_per_ha={"q10": cost, "q50": cost, "q90": cost},
+            net_revenue_inr_per_ha={"q10": -cost, "q50": -cost, "q90": -cost},
+            baseline_net_inr_per_ha={"q10": -cost, "q50": -cost, "q90": -cost},
+            delta_vs_baseline={},
+            price_source="msp",
+            provenance={"decision_kind": "analog_bucket_empty",
+                         "n_analog_years": 0},
+        )
+
+    if dec.kind == "fallow":
+        ps = load_prices(levers["crop"])
+        cost = float(ps.cost_of_cultivation_inr_per_ha) * 0.10
+        return EconomicOutcome(
+            crop=levers["crop"], season=levers["season"],
+            region_kind="district",
+            region_id=str(driver_spec.region.id or driver_spec.region.kind),
+            gross_revenue_inr_per_ha={"q10": 0.0, "q50": 0.0, "q90": 0.0},
+            cost_inr_per_ha={"q10": cost, "q50": cost, "q90": cost},
+            net_revenue_inr_per_ha={"q10": -cost, "q50": -cost, "q90": -cost},
+            baseline_net_inr_per_ha={"q10": -cost, "q50": -cost, "q90": -cost},
+            delta_vs_baseline={},
+            price_source="msp",
+            provenance={"decision_kind": "fallow-in-analog-bucket",
+                         "analog_years": years},
+        )
+
+    # For each analog year: build a shifted driver spec and run the
+    # sector with observed data for that year. We reuse the same
+    # sow_date month/day, only the year changes.
+    sow_iso = levers.get("sow_date") or driver_spec.start.isoformat()
+    sow_ref = _date.fromisoformat(sow_iso)
+
+    crop = load_crop(levers["crop"])
+    # Duration = crop.total_days
+    dur = int(crop.total_days)
+    ya_samples: list[float] = []
+    ya_baseline_samples: list[float] = []
+    for y in years:
+        # Skip leap-day edge case: if sow_ref is Feb 29 in a non-leap year
+        try:
+            sow_y = _date(int(y), sow_ref.month, sow_ref.day)
+        except ValueError:
+            sow_y = _date(int(y), sow_ref.month, 28)
+        end_y = _date.fromordinal(sow_y.toordinal() + dur - 1)
+        year_spec = _replace(driver_spec, dates=(sow_y, end_y), var="rain")
+        year_levers = dict(levers)
+        year_levers["sow_date"] = sow_y.isoformat()
+        # Analog scenarios use pristine observed data — strip
+        # perturbation-style overrides that would otherwise scale rain
+        # / shift tmax. Analog bucketing IS the state definition; we
+        # must not double-perturb.
+        year_levers.pop("overrides", None)
+        try:
+            result = run_agriculture_scenario(year_spec, year_levers)
+        except Exception:
+            continue
+        yg = result.get("yield_grid")
+        yb = result.get("yield_baseline")
+        if yg is None or yb is None:
+            continue
+        ya_samples.append(float(_np.nanmean(yg["Ya"].values)))
+        ya_baseline_samples.append(float(_np.nanmean(yb["Ya"].values)))
+
+    if not ya_samples:
+        raise RuntimeError(
+            f"analog-bucket runner produced no valid Ya samples for "
+            f"years {years} — check driver availability"
+        )
+
+    ya_arr = _np.asarray(ya_samples, dtype=_np.float64)
+    yb_mean = float(_np.mean(ya_baseline_samples)) if ya_baseline_samples else float(_np.mean(ya_arr))
+    # Empirical q10/q50/q90 from the *observed* outcomes of the bucket's
+    # analog years. This is the whole point of Method 2.
+    yq = {
+        "q10": float(_np.percentile(ya_arr, 10)),
+        "q50": float(_np.percentile(ya_arr, 50)),
+        "q90": float(_np.percentile(ya_arr, 90)),
+    }
+
+    ps = load_prices(levers["crop"])
+    from dataclasses import replace as _replace2
+    # No shadow-multipliers here: analog states don't perturb prices
+    shadow_ps = ps
+    eo = value_agriculture(
+        yield_qdict=yq,
+        baseline_ya_t_ha=yb_mean,
+        crop=crop,
+        price_set=shadow_ps,
+        season=levers["season"],
+        region_kind="district",
+        region_id=str(driver_spec.region.id or driver_spec.region.kind),
+    )
+    eo.provenance.update({
+        "analog_bucket_years": [int(y) for y in years],
+        "n_analog_years_effective": len(ya_samples),
+        "ya_samples_t_ha": [float(x) for x in ya_arr],
+    })
+    return eo
+
+
 SECTOR_REGISTRY: dict[str, SectorSpec] = {
     "agriculture": SectorSpec(
         version=AGRICULTURE_VERSION,
@@ -268,6 +396,10 @@ def run_decision_scenario(
             "season": season,
             "overrides": st.perturbation_dict(),
         }
+        # ── Analog-bucket path: iterate observed years empirically ──
+        pert_kind = str(st.perturbation_dict().get("_kind", ""))
+        if pert_kind == "analog_bucket" and st.analog_years:
+            return _run_analog_bucket_cell(dec, st, driver_spec, levers)
         # Some Decisions are "fallow" or "skip" — return a zero-yield
         # outcome without running the whole chain.
         if dec.kind == "fallow":

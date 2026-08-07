@@ -516,6 +516,233 @@ def _render_agriculture_diagnostic():
         cols[3].metric("MPE", f"{s.get('mpe_pct', float('nan')):.1f} %")
 
 
+def _render_analogs_diagnostic():
+    """L5 diagnostic — analog engine over Vidarbha, JJAS window.
+
+    Two flavours are rendered side-by-side:
+      * Method 2 (analogs)      — the "strong" flavour. Historical
+                                   years similar to a target year in a
+                                   physically-motivated feature vector,
+                                   with distance + quality tier badges.
+      * Method 1 (perturbation) — the delta-change sensitivity strip.
+                                   Ships the physical-inconsistency
+                                   caveat banner as required by Rule 4.
+
+    The target year is a fixed 2020 (observed) — Part 6 will replace
+    this with the live forecast when the ensemble → forecast adapter
+    lands.
+    """
+    from datetime import date as _date
+
+    import plotly.graph_objects as go
+
+    from climate_twin.whatif.config.region import RegionSpec
+    from climate_twin.whatif.drivers.analog_features import (
+        DEFAULT_FEATURES,
+        AnalogSpec,
+        build_feature_matrix,
+    )
+    from climate_twin.whatif.drivers.analog_outcomes import _compute_weights
+    from climate_twin.whatif.drivers.analogs import (
+        build_analog_pool,
+        find_analogs,
+        target_from_year,
+    )
+    from climate_twin.whatif.drivers.perturbation import (
+        CaveatRequiredError,
+        PerturbationSpec,
+        apply_perturbation,
+    )
+
+    region = RegionSpec(kind="bbox", bbox=(18.0, 76.0, 22.0, 82.0))
+    spec = AnalogSpec(
+        region=region,
+        window="JJAS",
+        features=DEFAULT_FEATURES,
+        metric="mahalanobis",
+    )
+
+    # 1) Feature matrix — heavy on first call (walks 40 years of the
+    # cube). Cached to CACHE_DIR/analog_features/ so subsequent calls
+    # are ~O(ms). Gate on a button so the page doesn't recompute on
+    # every rerun.
+    st.caption(
+        "Region: Vidarbha bbox (18–22 °N, 76–82 °E). Window: JJAS. "
+        "Feature vector: rain_total, rx5day, cdd, tmax_anom, tmin_anom, "
+        "onset_offset, spi3_regional. Metric: Mahalanobis (χ² tiers "
+        "on df=7)."
+    )
+    target_year = st.number_input(
+        "Target year (observed)", value=2020, min_value=2011, max_value=2022,
+        step=1, key="analog_target_year",
+    )
+    k = int(st.slider("k analogs", 3, 20, 10, key="analog_k"))
+    weighting = st.selectbox(
+        "weighting", ["uniform", "inv_distance", "softmax"],
+        index=1, key="analog_weighting",
+    )
+
+    do_run = st.button("Compute analogs (may take ~30 s first time)",
+                         key="analog_go")
+    if not do_run:
+        st.info("Click **Compute analogs** to run the feature builder + "
+                 "retrieval. Results are cached after the first run.")
+        return
+
+    with st.spinner("Building feature matrix over TRAIN_YEARS + target…"):
+        # Exclude the target year and everything after it (Rule 1).
+        excl = tuple(range(int(target_year),
+                            spec.train_years[1] + 20))
+        # Build a pool that has TRAIN_YEARS only.
+        pool = build_analog_pool(
+            spec, exclude_years=excl, pool_years=spec.train_years,
+        )
+
+    if not pool.years():
+        st.warning(
+            "Analog pool is empty — feature construction dropped every "
+            "candidate year (missing data in TRAIN_YEARS window). "
+            "Investigate the cube coverage."
+        )
+        return
+
+    with st.spinner(f"Computing target features for {int(target_year)}…"):
+        try:
+            target = target_from_year(int(target_year), spec)
+        except Exception as e:
+            st.error(f"target_from_year failed — {type(e).__name__}: {e}")
+            return
+
+    matches = find_analogs(target, pool, k=k)
+    if not matches:
+        st.warning("No analog matches returned.")
+        return
+
+    # 1) Analog table
+    st.markdown("**Top-k analog matches**")
+    rows = []
+    for m in matches:
+        rows.append({
+            "Year": m.year,
+            "Distance": f"{m.distance:.2f}",
+            "Quality": m.quality,
+            "rain_total_std": f"{float(m.features_analog['rain_total_std']):+.2f}",
+            "tmax_mean_anom": f"{float(m.features_analog['tmax_mean_anom']):+.2f} °C",
+            "onset_offset_days": f"{float(m.features_analog['onset_offset_days']):+.1f} d",
+        })
+    df_a = pd.DataFrame(rows)
+    st.dataframe(df_a, use_container_width=True, hide_index=True)
+
+    strong = [m for m in matches if m.quality == "strong"]
+    fair = [m for m in matches if m.quality == "fair"]
+    poor = [m for m in matches if m.quality == "poor"]
+    st.caption(
+        f"{len(strong)} strong, {len(fair)} fair, {len(poor)} poor. "
+        "Rule 7: never lie about analog count — poor matches are "
+        "shown, not hidden. Van den Dool 1994 warns that at seasonal "
+        "horizons in a 40-year record, strong analogs are scarce."
+    )
+    narrative = ", ".join(f"{m.year} (d={m.distance:.2f}, {m.quality})"
+                            for m in matches[:3])
+    st.info(f"This year most resembles: {narrative}.")
+
+    # 2) Weight distribution
+    st.markdown("---")
+    st.markdown(f"**Weight distribution — {weighting}**")
+    weights_by_year = _compute_weights(matches, weighting, 1.0)
+    years_sorted = sorted(weights_by_year.keys())
+    fig_w = go.Figure(go.Bar(
+        x=[str(y) for y in years_sorted],
+        y=[weights_by_year[y] for y in years_sorted],
+        marker_color="#3b7ad9",
+    ))
+    fig_w.update_layout(
+        title=dict(text=f"weight w_i per analog year — {weighting}",
+                   x=0.02, font=dict(size=13)),
+        xaxis=dict(title="analog year"), yaxis=dict(title="weight"),
+        height=280, margin=dict(l=8, r=8, t=42, b=8),
+        paper_bgcolor="rgba(0,0,0,0)", plot_bgcolor="rgba(0,0,0,0)",
+    )
+    st.plotly_chart(fig_w, use_container_width=True)
+
+    # 3) Delta-perturbation sensitivity strip (Method 1)
+    st.markdown("---")
+    st.markdown("**Delta-perturbation sensitivity strip (Method 1)**")
+    st.warning(
+        "⚠️ Method 1 perturbation — physically inconsistent by "
+        "construction (Räisänen & Räty 2013). Prefer analogs (Method 2) "
+        "for reported scenarios."
+    )
+    rain_scales = [0.7, 0.8, 0.9, 1.0, 1.1, 1.2, 1.3]
+    tmax_shifts = [0.0, 1.0, 2.0]
+    # Build a base dataset from observed data for the target-year JJAS
+    from climate_twin.whatif.config.region import apply_region
+    from climate_twin.whatif.drivers.historical import get_historical
+
+    with st.spinner("Loading target-year JJAS observed base…"):
+        start = _date(int(target_year), 6, 1)
+        end = _date(int(target_year), 9, 30)
+        rain_o = apply_region(get_historical("rain", start, end), region)
+        tmax_o = apply_region(get_historical("tmax", start, end), region)
+        tmin_o = apply_region(get_historical("tmin", start, end), region)
+    base_ds = xr.Dataset({"rain": rain_o, "tmax": tmax_o, "tmin": tmin_o},
+                          attrs={"source_chain": f"observed-JJAS-{int(target_year)}"})
+
+    grid = np.full((len(tmax_shifts), len(rain_scales)), np.nan, dtype=np.float64)
+    for i, shift in enumerate(tmax_shifts):
+        for j, rs in enumerate(rain_scales):
+            try:
+                out = apply_perturbation(
+                    base_ds,
+                    PerturbationSpec(
+                        rain_scale=float(rs), tmax_shift_c=float(shift),
+                        caveat_acknowledged=True,     # UI has shown the caveat
+                    ),
+                )
+                # Cheap summary: mean rainfall × Δtmax as a proxy metric —
+                # the sector-level ₹/ha response would be Part-6 heavy.
+                grid[i, j] = float(np.nanmean(out["rain"].values))
+            except CaveatRequiredError:
+                grid[i, j] = float("nan")
+    fig_p = go.Figure(go.Heatmap(
+        z=grid,
+        x=[f"× {v:.1f}" for v in rain_scales],
+        y=[f"+{v:.0f} °C" for v in tmax_shifts],
+        colorscale="RdBu",
+        colorbar=dict(title="mean rain (mm/d)", thickness=12),
+    ))
+    fig_p.update_layout(
+        title=dict(text="Perturbation strip — mean JJAS rain response",
+                   x=0.02, font=dict(size=13)),
+        xaxis=dict(title="rain_scale"),
+        yaxis=dict(title="tmax_shift"),
+        height=240, margin=dict(l=8, r=8, t=42, b=8),
+        paper_bgcolor="rgba(0,0,0,0)", plot_bgcolor="rgba(0,0,0,0)",
+    )
+    st.plotly_chart(fig_p, use_container_width=True)
+    st.caption(
+        "This strip is diagnostic only. The Part-6 UI will replace it "
+        "with a decision-level Δ net-revenue heatmap driven by the "
+        "sector runner, still gated behind the caveat."
+    )
+
+    # 4) Provenance drill-down extension
+    st.markdown("---")
+    st.markdown("**Provenance drill-down — Part 5**")
+    lines = [
+        f"drivers.analog_features   {spec.version}  sig={spec.signature()}",
+        f"drivers.analogs           analogs-v1",
+        f"drivers.analog_outcomes   analog-outcomes-v1",
+        f"drivers.perturbation      perturbation-v1 (Method 1)",
+        f"drivers.state_builder     state-builder-v1",
+        f"analog metric             {spec.metric}",
+        f"analog window             {spec.window}",
+        f"pool size (train-only)    {len(pool.years())} years",
+        f"excluded from pool        {list(excl)[:5]}{'…' if len(excl) > 5 else ''}",
+    ]
+    st.code("\n".join(lines), language="text")
+
+
 def _render_decisions_diagnostic():
     """L4 diagnostic — payoff matrix over three decisions × three climate
     states, using observed IMD data for 2020, then the decision-layer
@@ -844,6 +1071,13 @@ with _tab_short:
             _render_decisions_diagnostic()
         except Exception as e:
             st.error(f"❌ decisions diagnostic failed — {type(e).__name__}: {e}")
+
+        st.divider()
+        st.markdown("#### L5 — Analogs (diagnostic)")
+        try:
+            _render_analogs_diagnostic()
+        except Exception as e:
+            st.error(f"❌ analogs diagnostic failed — {type(e).__name__}: {e}")
 
 with _tab_long:
     st.info("Coming online in Part 6.")

@@ -141,6 +141,10 @@ def build_payoff_matrix(
     prov: list[dict] = []
 
     region_id = region.id or ""
+    # If any state is an analog_bucket with non-empty analog_years, we
+    # switch to the analog-aware runner (defined below) which averages
+    # per-year observed outcomes empirically. Callers that don't want
+    # this behaviour override run_cell explicitly.
     for i, dec in enumerate(decisions):
         for j, st in enumerate(states):
             out = run_cell(dec, st)
