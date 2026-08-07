@@ -30,9 +30,10 @@ TZ = "Asia/Kolkata"
 # ── Unit labels — every displayed number must include one ─────────
 UNITS = {
     # gauge / cube
-    "rain": "mm",
-    "tmax": "°C",
-    "tmin": "°C",
+    "rain":  "mm",
+    "tmax":  "°C",
+    "tmin":  "°C",
+    "tmean": "°C",
     # indices
     "et0":  "mm/day",
     "spi":  "σ",
