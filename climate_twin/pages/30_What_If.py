@@ -516,6 +516,252 @@ def _render_agriculture_diagnostic():
         cols[3].metric("MPE", f"{s.get('mpe_pct', float('nan')):.1f} %")
 
 
+def _render_decisions_diagnostic():
+    """L4 diagnostic — payoff matrix over three decisions × three climate
+    states, using observed IMD data for 2020, then the decision-layer
+    utilities: recommendation, cost-loss value curve, walk-forward
+    backtest, tornado, provenance drill-down.
+    """
+    from datetime import date as _date
+
+    from climate_twin.whatif.config.region import RegionSpec
+    from climate_twin.whatif.drivers.driver import DriverSpec
+    from climate_twin.whatif.economics import (
+        SHIPPED_SETUPS,
+        ClimateState,
+        Decision,
+        HistoricalFrequencyRule,
+        OnsetAnomalyRule,
+        expected_value_with_uncertainty,
+        prices_registry_sha256,
+        prices_registry_version,
+        recommend,
+        synthesise_history,
+        tornado,
+        value_curve,
+        walk_forward_backtest,
+    )
+    from climate_twin.whatif.report import format_inr, payoff_heatmap
+    from climate_twin.whatif.sectors import run_decision_scenario
+
+    region = RegionSpec(kind="bbox", bbox=(18.0, 76.0, 22.0, 82.0))
+    sow_iso = "2020-06-15"
+
+    # Driver spec anchors the sector runner (rain, tmax, tmin will be
+    # pulled from historical for these dates + region)
+    driver_spec = DriverSpec(
+        mode="historical",
+        var="rain",                       # sector runner replaces per-var
+        dates=(_date(2020, 6, 1), _date(2020, 11, 30)),
+        region=region,
+    )
+
+    decisions = [
+        Decision(label="Paddy sow 2020-06-15",  kind="crop",
+                 params=(("crop", "paddy_kharif"), ("sow_date", sow_iso))),
+        Decision(label="Bajra sow 2020-06-15",  kind="crop",
+                 params=(("crop", "bajra_kharif"), ("sow_date", sow_iso))),
+        Decision(label="Fallow",                 kind="fallow",
+                 params=(("crop", "paddy_kharif"),)),
+    ]
+    states = [
+        ClimateState(label="rain × 0.8", weight=0.28,
+                     perturbation=(("rain_scale", 0.8),)),
+        ClimateState(label="rain × 1.0", weight=0.51,
+                     perturbation=(("rain_scale", 1.0),)),
+        ClimateState(label="rain × 1.2", weight=0.21,
+                     perturbation=(("rain_scale", 1.2),)),
+    ]
+
+    with st.spinner("Running L2+L3+L4 across 3 decisions × 3 climate states…"):
+        bundle = run_decision_scenario(
+            decisions, states, region,
+            driver_spec=driver_spec,
+            crop_key="paddy_kharif",
+            season="2024-25",
+            sow_date_iso=sow_iso,
+        )
+
+    pm = bundle["payoff_matrix"]
+
+    # 1) Payoff heatmap
+    st.markdown("**Payoff matrix — net revenue ₹/ha (q50)**")
+    st.plotly_chart(payoff_heatmap(pm), use_container_width=True)
+
+    # 2) Recommendation card
+    rec = bundle["recommendation"]
+    st.markdown("**Recommendation**")
+    c1, c2, c3, c4 = st.columns(4)
+    c1.metric("Best-EV decision", rec["argmax_EV_label"])
+    c2.metric("EV q50", format_inr(rec["EV_q50"]))
+    c3.metric("Worst-case (q50)", format_inr(rec["worst_case_q50"]))
+    c4.metric("Δ vs baseline (EV)", format_inr(rec["delta_vs_baseline_EV"]))
+    st.caption(
+        f"EV band q10 → q90: {format_inr(rec['EV_q10'])} → "
+        f"{format_inr(rec['EV_q90'])}. Minimax-regret pick: "
+        f"**{rec['argmin_maxRegret_label']}** (max regret "
+        f"{format_inr(rec['maxRegret_at_argmin'])}). "
+        f"VaR₁₀ = {format_inr(rec['VaR_10'])}, "
+        f"CVaR₁₀ = {format_inr(rec['CVaR_10'])}. "
+        f"Baseline EV: {format_inr(rec['baseline_EV'])}."
+    )
+    if rec["delta_vs_baseline_EV"] > 0:
+        st.success(
+            f"Beats climatology by {format_inr(rec['delta_vs_baseline_EV'])}/ha "
+            "in expectation."
+        )
+    else:
+        st.warning(
+            f"Does not beat climatology "
+            f"({format_inr(rec['delta_vs_baseline_EV'])}/ha in expectation)."
+        )
+
+    # 3) Cost–loss value curve (synthetic forecast for now — real
+    # ensemble hookup lands in Part 5)
+    st.markdown("---")
+    st.markdown("**Cost–loss value curve** — "
+                "preventive irrigation if dry-spell forecast")
+    hist = synthesise_history(seed=13)
+    setup = SHIPPED_SETUPS["preventive_irrigation_if_dry_spell_forecast"]
+    p_clim = float(hist["event"].mean())
+    # Turn onset_anomaly into a soft forecast probability
+    fcast_prob = (0.35 + 0.05 * hist["onset_anomaly_days"]).clip(0.02, 0.98)
+    vc = value_curve(setup, fcast_prob, hist["event"], p_clim)
+    import plotly.graph_objects as go
+    fig_vc = go.Figure()
+    fig_vc.add_trace(go.Scatter(
+        x=vc.thresholds, y=vc.V, mode="lines+markers",
+        line=dict(color="#2a6bcc", width=2),
+        name="V(p*)",
+    ))
+    fig_vc.add_hline(y=0, line=dict(color="#999", dash="dot"))
+    fig_vc.add_hline(y=1, line=dict(color="#666", dash="dot"))
+    fig_vc.update_layout(
+        title=dict(text=f"Relative economic value V(p*) — "
+                         f"setup={setup.action_id}", font=dict(size=13), x=0.02),
+        xaxis=dict(title="threshold p*"),
+        yaxis=dict(title="V (0 = climatology, 1 = perfect)",
+                     range=[-0.2, 1.05]),
+        height=280, margin=dict(l=8, r=8, t=42, b=8),
+        paper_bgcolor="rgba(0,0,0,0)", plot_bgcolor="rgba(0,0,0,0)",
+    )
+    st.plotly_chart(fig_vc, use_container_width=True)
+    c1, c2, c3, c4 = st.columns(4)
+    c1.metric("V_best", f"{vc.V_best:+.3f}")
+    c2.metric("best threshold", f"{vc.best_threshold:.2f}")
+    c3.metric("Brier", f"{vc.brier:.3f}")
+    c4.metric("BSS vs clim", f"{vc.brier_skill:+.3f}")
+
+    # 4) Walk-forward backtest — publish honestly
+    st.markdown("---")
+    st.markdown("**Walk-forward backtest** — shipped rules over VALID_YEARS")
+    rules_to_show = [HistoricalFrequencyRule(), OnsetAnomalyRule()]
+    rows = []
+    for rule in rules_to_show:
+        try:
+            bt = walk_forward_backtest(
+                rule, setup, hist, write_parquet=False,
+            )
+            rows.append({
+                "rule": rule.rule_id,
+                "V_forecast": bt.V_forecast,
+                "ME_forecast": bt.ME_forecast,
+                "ME_climatology": bt.ME_climatology,
+                "ME_perfect": bt.ME_perfect,
+                "Brier": bt.brier,
+                "BSS": bt.brier_skill,
+                "n_years": len(bt.per_year),
+            })
+        except Exception as e:
+            rows.append({
+                "rule": rule.rule_id, "V_forecast": float("nan"),
+                "error": f"{type(e).__name__}: {e}",
+            })
+    bt_df = pd.DataFrame(rows)
+    st.dataframe(
+        bt_df.style.format({
+            "V_forecast": "{:+.3f}",
+            "ME_forecast": "{:.1f}",
+            "ME_climatology": "{:.1f}",
+            "ME_perfect": "{:.1f}",
+            "Brier": "{:.3f}",
+            "BSS": "{:+.3f}",
+        }),
+        use_container_width=True, hide_index=True,
+    )
+    negatives = [r for r in rows if r.get("V_forecast", 0) is not None
+                 and np.isfinite(r.get("V_forecast", float("nan")))
+                 and r["V_forecast"] <= 0]
+    if negatives:
+        st.info(
+            f"{len(negatives)} rule(s) failed to beat climatology (V ≤ 0). "
+            "Published as-is — hiding negative results would defeat the point."
+        )
+
+    # 5) Tornado on the best-EV decision
+    st.markdown("---")
+    st.markdown("**Tornado — top drivers of net revenue (best-EV decision)**")
+    best_dec = pm.decisions[rec["argmax_EV"]]
+
+    def _scenario_fn(levers):
+        # Fresh call to the sector runner with the passed levers merged
+        # onto the best decision's params + our fixed climate state
+        # (median rain × 1.0).
+        merged = {
+            "crop": best_dec.params_dict().get("crop", "paddy_kharif"),
+            "sow_date": best_dec.params_dict().get("sow_date", sow_iso),
+            "season": "2024-25",
+            "overrides": dict(levers.get("overrides") or {}),
+        }
+        # Anchor climate state on rain*1.0 — a fair comparator
+        merged["overrides"].setdefault("rain_scale", 1.0)
+        from climate_twin.whatif.sectors import run_agriculture_scenario
+        result = run_agriculture_scenario(driver_spec, merged)
+        eo = result.get("economic_outcome")
+        if eo is None:
+            raise RuntimeError("scenario_fn: no economic_outcome returned")
+        return eo
+
+    try:
+        tor = tornado(_scenario_fn, base_levers={}, delta_pct=0.20)
+        st.dataframe(
+            tor.rows.head(5).style.format({
+                "delta_signed": "{:+.2f}",
+                "net_p50_up": "{:.0f}",
+                "net_p50_dn": "{:.0f}",
+                "range": "{:.0f}",
+                "signed_range": "{:+.0f}",
+            }),
+            use_container_width=True, hide_index=True,
+        )
+        st.info(tor.sentence())
+    except Exception as e:
+        st.warning(
+            f"tornado skipped — {type(e).__name__}: {e}. "
+            "This is fine: the tornado depends on the sector runner "
+            "picking up every override key. Details will be robust "
+            "once Part 5's ensemble driver lands."
+        )
+
+    # 6) Provenance drill-down
+    st.markdown("---")
+    st.markdown("**Provenance drill-down**")
+    prov_sample = pm.provenance[0]["valuation"] if pm.provenance else {}
+    lines = [
+        f"code_hash            : (from scenarios/provenance.py)",
+        f"prices_registry.ver  : {prices_registry_version()}",
+        f"prices_registry.sha  : {prices_registry_sha256()}",
+        f"valuation.version    : {prov_sample.get('valuation_version', '?')}",
+        f"MSP season           : {prov_sample.get('msp_season', '?')}",
+        f"MSP ₹/qt             : {prov_sample.get('msp_inr_per_qt', '?')}",
+        f"cost ₹/ha            : {prov_sample.get('cost_of_cultivation_inr_per_ha', '?')}",
+        f"discounts (mois+trn) : "
+        f"{prov_sample.get('moisture_discount_pct', 0) + prov_sample.get('transport_marketing_pct', 0):.3f}",
+        f"crop registry sha    : {prov_sample.get('crop_registry_sha256', '?')}",
+    ]
+    st.code("\n".join(lines), language="text")
+
+
 def _render_registry_table():
     from climate_twin.whatif.indices import INDEX_REGISTRY
 
@@ -591,6 +837,13 @@ with _tab_short:
             _render_agriculture_diagnostic()
         except Exception as e:
             st.error(f"❌ agriculture diagnostic failed — {type(e).__name__}: {e}")
+
+        st.divider()
+        st.markdown("#### L4 — Decisions (diagnostic)")
+        try:
+            _render_decisions_diagnostic()
+        except Exception as e:
+            st.error(f"❌ decisions diagnostic failed — {type(e).__name__}: {e}")
 
 with _tab_long:
     st.info("Coming online in Part 6.")

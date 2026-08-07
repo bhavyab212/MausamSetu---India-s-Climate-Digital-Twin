@@ -1,5 +1,5 @@
 """
-whatif.sectors — L3, sector aggregators over biophysical outputs.
+whatif.sectors — L3 sector aggregators + L4 economics handlers.
 
 Sector modules compose L1 + L2 outputs into a district / basin level
 summary tuned to end-user questions. Every sector emits a summary
@@ -39,15 +39,16 @@ from .validation_apy import apy_available, get_last_validation, run_validation
 
 @dataclass(frozen=True)
 class SectorSpec:
-    """Registry entry describing one L3 sector."""
+    """Registry entry describing one L3 sector + its L4 economics handler."""
     version: str
     entry: Callable[..., Any]
     required_layers: tuple[str, ...]
     required_data: tuple[str, ...]
+    economics: Callable[..., Any] | None = None      # Part 4: L4 handler
 
 
 def run_agriculture_scenario(driver_spec, levers: dict | None = None) -> dict[str, Any]:
-    """Run L0 → L1 (ET0) → L2 (water balance) → L3 (yield) for one crop.
+    """Run L0 → L1 (ET0) → L2 (water balance) → L3 (yield) → optional L4.
 
     Parameters
     ----------
@@ -58,6 +59,13 @@ def run_agriculture_scenario(driver_spec, levers: dict | None = None) -> dict[st
         ``irrigation``     — IrrigationSchedule or None
         ``candidate_sows`` — list of ISO date strings for the
                              sowing-window optimiser (optional)
+        ``season``         — MSP season, e.g., "2024-25". If present,
+                             an L4 EconomicOutcome is attached under
+                             key ``economic_outcome`` and the ``crop``
+                             key must exist in prices.yaml.
+        ``price_perturbation`` — dict of scalar biases the sector
+                             applies to numbers before valuation
+                             (used by tornado / decision scenarios).
 
     Returns
     -------
@@ -65,7 +73,8 @@ def run_agriculture_scenario(driver_spec, levers: dict | None = None) -> dict[st
 
         crop, sow_date, water_balance, yield_grid, yield_baseline,
         sowing_window (only if candidate_sows was provided),
-        provenance (crop.registry_sha256, agri version, wb version)
+        economic_outcome (only if season was provided),
+        provenance
     """
     from datetime import date as _date
 
@@ -91,26 +100,42 @@ def run_agriculture_scenario(driver_spec, levers: dict | None = None) -> dict[st
     tmax = load_driver(tmax_spec)
     tmin = load_driver(tmin_spec)
 
+    # Apply climate-state perturbations if present (used by decision
+    # scenarios). Every perturbation is a scalar multiplier or shift.
+    overrides = dict(levers.get("overrides", {}) or {})
+    if "rain_scale" in overrides:
+        rain = rain * float(overrides["rain_scale"])
+        rain.attrs.setdefault("perturbation", "").__class__
+        rain.attrs["perturbation"] = f"rain*={overrides['rain_scale']}"
+    if "rain_pct" in overrides:
+        rain = rain * (1.0 + float(overrides["rain_pct"]))
+        rain.attrs["perturbation"] = f"rain*={1.0 + overrides['rain_pct']:.3f}"
+    if "tmax_shift_c" in overrides:
+        tmax = tmax + float(overrides["tmax_shift_c"])
+        tmax.attrs["perturbation"] = f"tmax+={overrides['tmax_shift_c']}"
+
     et0 = et0_hargreaves(tmax, tmin)
     wb = water_balance(crop, rain, et0, sow, driver_spec.region,
                         irrigation=irrigation)
     y_grid = yield_water_limited(crop, wb, tmax=tmax)
     y_base = yield_baseline(crop, driver_spec.region, sow)
 
-    out = {
+    prov = {
+        "crop_registry_version": crop.registry_version,
+        "crop_registry_sha256": crop.registry_sha256,
+        "agriculture_version": AGRICULTURE_VERSION,
+        "water_balance_version": wb.attrs.get("version", ""),
+        "soil_source": wb.attrs.get("soil_source", ""),
+        "soil_warning": wb.attrs.get("soil_warning", ""),
+    }
+    out: dict[str, Any] = {
         "crop": crop.key,
         "sow_date": sow.isoformat(),
         "water_balance": wb,
         "yield_grid": y_grid,
         "yield_baseline": y_base,
-        "provenance": {
-            "crop_registry_version": crop.registry_version,
-            "crop_registry_sha256": crop.registry_sha256,
-            "agriculture_version": AGRICULTURE_VERSION,
-            "water_balance_version": wb.attrs.get("version", ""),
-            "soil_source": wb.attrs.get("soil_source", ""),
-            "soil_warning": wb.attrs.get("soil_warning", ""),
-        },
+        "overrides_applied": overrides,
+        "provenance": prov,
     }
 
     cand = levers.get("candidate_sows") or []
@@ -121,7 +146,64 @@ def run_agriculture_scenario(driver_spec, levers: dict | None = None) -> dict[st
             crop, driver_spec.region, bundle, cand_dates,
             irrigation=irrigation,
         )
+
+    # ── L4 economics (optional) ──
+    season = levers.get("season")
+    if season:
+        from ..economics.valuation import value_agriculture
+        from ..economics.prices import load_prices
+        import numpy as _np
+        price_set = load_prices(crop.key)
+        # Apply overrides that touch the ₹ side directly. These are
+        # simple biases used by the tornado; they never mutate the
+        # price registry on disk.
+        cost_override = float(price_set.cost_of_cultivation_inr_per_ha)
+        msp_multiplier = 1.0
+        ymax_multiplier = 1.0
+        if "cost_pct" in overrides:
+            cost_override = cost_override * (1.0 + float(overrides["cost_pct"]))
+        if "msp_pct" in overrides:
+            msp_multiplier = 1.0 + float(overrides["msp_pct"])
+        if "ymax_pct" in overrides:
+            ymax_multiplier = 1.0 + float(overrides["ymax_pct"])
+
+        ya_mean = float(_np.nanmean(y_grid["Ya"].values)) * ymax_multiplier
+        yb_mean = float(_np.nanmean(y_base["Ya"].values)) * ymax_multiplier
+        # Degenerate q10/q50/q90 today; Part 5 supplies genuine
+        # quantile drivers that will differentiate them.
+        yq = {"q10": ya_mean, "q50": ya_mean, "q90": ya_mean}
+
+        # Apply price-multiplier by re-instantiating a shadow PriceSet
+        from dataclasses import replace as _replace
+        shadow_ps = _replace(
+            price_set,
+            msp_by_season={
+                k: v * msp_multiplier for k, v in price_set.msp_by_season.items()
+            },
+            cost_of_cultivation_inr_per_ha=cost_override,
+        )
+        eo = value_agriculture(
+            yield_qdict=yq,
+            baseline_ya_t_ha=yb_mean,
+            crop=crop,
+            price_set=shadow_ps,
+            season=str(season),
+            region_kind="district",
+            region_id=str(driver_spec.region.id or driver_spec.region.kind),
+        )
+        out["economic_outcome"] = eo
+        out["provenance"]["prices_registry_version"] = price_set.registry_version
+        out["provenance"]["prices_registry_sha256"] = price_set.registry_sha256
+        out["provenance"]["msp_season"] = str(season)
+        out["provenance"]["valuation_version"] = eo.provenance["valuation_version"]
+
     return out
+
+
+# Lazy import to avoid a circular import at package load time.
+def _lazy_value_agri():
+    from ..economics.valuation import value_agriculture
+    return value_agriculture
 
 
 SECTOR_REGISTRY: dict[str, SectorSpec] = {
@@ -129,9 +211,113 @@ SECTOR_REGISTRY: dict[str, SectorSpec] = {
         version=AGRICULTURE_VERSION,
         entry=run_agriculture_scenario,
         required_layers=("driver", "et0_hargreaves", "gdd"),
-        required_data=("crops.yaml", "soil.awc"),
+        required_data=("crops.yaml", "soil.awc", "prices.yaml"),
+        economics=_lazy_value_agri,
     ),
 }
+
+
+def run_decision_scenario(
+    decisions: list,           # list[Decision] from economics.payoff
+    states: list,              # list[ClimateState] from economics.payoff
+    region,                    # RegionSpec
+    *,
+    driver_spec,               # DriverSpec — the historical anchor for the run
+    crop_key: str = "paddy_kharif",
+    season: str = "2024-25",
+    sow_date_iso: str | None = None,
+) -> dict[str, Any]:
+    """Assemble a full decision scenario: build a PayoffMatrix by running
+    ``run_agriculture_scenario`` per (decision, state), then compute
+    ranking / regret / minimax / VaR / CVaR summaries.
+
+    Each Decision.params must supply ``sow_date`` (ISO) and may supply
+    ``crop``, ``irrigation`` overrides. Each ClimateState carries a
+    ``perturbation`` dict that lands in the sector runner's ``overrides``
+    key.
+
+    Returns
+    -------
+    dict::
+
+        payoff_matrix, recommendation (dict), expected_value,
+        regret_matrix, minimax_regret, worst_case,
+        var_10, cvar_10, stochastic_dominance,
+        provenance (list of per-cell records)
+    """
+    from ..economics.decision import (
+        expected_value,
+        expected_value_with_uncertainty,
+        minimax_regret,
+        recommend,
+        regret_matrix,
+        stochastic_dominance,
+        var_cvar,
+        worst_case,
+    )
+    from ..economics.payoff import build_payoff_matrix
+    from ..economics.valuation import EconomicOutcome
+    import numpy as _np
+
+    def _run_cell(dec, st) -> "EconomicOutcome":
+        # Merge params + perturbation → levers dict
+        params = dec.params_dict()
+        levers: dict[str, Any] = {
+            "crop": params.get("crop", crop_key),
+            "sow_date": params.get("sow_date", sow_date_iso),
+            "season": season,
+            "overrides": st.perturbation_dict(),
+        }
+        # Some Decisions are "fallow" or "skip" — return a zero-yield
+        # outcome without running the whole chain.
+        if dec.kind == "fallow":
+            from ..economics.prices import load_prices
+            ps = load_prices(levers["crop"])
+            cost = float(ps.cost_of_cultivation_inr_per_ha) * 0.10  # keeper-cost only
+            return EconomicOutcome(
+                crop=levers["crop"],
+                season=season,
+                region_kind="district",
+                region_id=str(region.id or region.kind),
+                gross_revenue_inr_per_ha={"q10": 0.0, "q50": 0.0, "q90": 0.0},
+                cost_inr_per_ha={"q10": cost, "q50": cost, "q90": cost},
+                net_revenue_inr_per_ha={"q10": -cost, "q50": -cost, "q90": -cost},
+                baseline_net_inr_per_ha={"q10": -cost, "q50": -cost, "q90": -cost},
+                delta_vs_baseline={},
+                price_source="msp",
+                provenance={
+                    "decision_kind": "fallow",
+                    "prices_registry_version": ps.registry_version,
+                    "prices_registry_sha256": ps.registry_sha256,
+                    "note": "fallow: no revenue, 10% keeper-cost booked",
+                },
+            )
+        result = run_agriculture_scenario(driver_spec, levers)
+        eo = result.get("economic_outcome")
+        if eo is None:
+            raise RuntimeError(
+                f"decision {dec.label}: sector runner returned no "
+                "economic_outcome (missing season lever?)"
+            )
+        return eo
+
+    pm = build_payoff_matrix(decisions, states, region, run_cell=_run_cell)
+
+    ev_bands = expected_value_with_uncertainty(pm)
+    var_arr, cvar_arr = var_cvar(pm, alpha=0.10)
+    return {
+        "payoff_matrix": pm,
+        "recommendation": recommend(pm),
+        "expected_value": expected_value(pm),
+        "expected_value_bands": ev_bands,
+        "regret_matrix": regret_matrix(pm),
+        "minimax_regret": minimax_regret(pm),
+        "worst_case": worst_case(pm),
+        "var_10": var_arr,
+        "cvar_10": cvar_arr,
+        "stochastic_dominance": stochastic_dominance(pm),
+        "provenance": pm.provenance,
+    }
 
 
 def run(*, sector: str, driver, indices, biophysical, levers) -> dict[str, Any]:
@@ -157,7 +343,8 @@ def run(*, sector: str, driver, indices, biophysical, levers) -> dict[str, Any]:
 
 
 __all__ = [
-    "SectorSpec", "SECTOR_REGISTRY", "run", "run_agriculture_scenario",
+    "SectorSpec", "SECTOR_REGISTRY", "run",
+    "run_agriculture_scenario", "run_decision_scenario",
     "Crop", "load_crop", "list_crops", "registry_version", "registry_sha256",
     "AGRICULTURE_VERSION", "yield_water_limited", "yield_baseline",
     "to_district", "DistrictRegistry", "ResolutionCeilingError",

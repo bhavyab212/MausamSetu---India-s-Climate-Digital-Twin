@@ -1,0 +1,81 @@
+# climate_twin/whatif/economics/prices.yaml
+#
+# Price registry for the L4 economics layer (Part 4).
+# Every value MUST carry a citation. When any number changes, bump the
+# top-level `version` string; that version flows into every scenario
+# provenance record via prices.py.
+#
+# Sources (short-hand; expanded in each entry's citation block):
+#   CACP      Commission for Agricultural Costs & Prices (Government of India).
+#             Ministry of Agriculture MSP notifications, published season-wise.
+#             https://cacp.dacnet.nic.in
+#   DES-CoC   Directorate of Economics & Statistics, Cost of Cultivation of
+#             Principal Crops in India (latest published series, base year cited).
+#   FMC-Mkt   Regulated mandi convention — moisture discount + transport &
+#             marketing charges. Values are conservative mid-range figures used
+#             by extension services when a live mandi feed isn't available.
+#
+# Live mandi prices (Agmarknet) are optional (lever `use_mandi_prices=True`)
+# and NOT drawn from this file — see load_agmarknet_series() in prices.py.
+
+version: "prices-v1"
+
+# ─── Paddy (Kharif) ───────────────────────────────────────────────────
+paddy_kharif:
+  msp_inr_per_qt:
+    "2024-25": 2320                # CACP notification 2024-25 (common paddy)
+    "2023-24": 2183                # CACP notification 2023-24
+    "2022-23": 2040
+  cost_of_cultivation_inr_per_ha:
+    default: 62000                 # DES-CoC 2019-20 base, adjusted 8%/yr CPI
+  moisture_discount_pct: 0.05      # FMC-Mkt convention
+  transport_marketing_pct: 0.03    # FMC-Mkt convention
+  citation:
+    msp:   "CACP MSP notifications, common paddy, kharif MSP order"
+    cost:  "DES Cost of Cultivation of Principal Crops 2019-20 base + CPI-AL adj."
+    misc:  "FMC-Mkt mandi convention (moisture + transport pct)"
+
+# ─── Wheat (Rabi) ─────────────────────────────────────────────────────
+wheat_rabi:
+  msp_inr_per_qt:
+    "2024-25": 2275
+    "2023-24": 2125
+    "2022-23": 2015
+  cost_of_cultivation_inr_per_ha:
+    default: 48000
+  moisture_discount_pct: 0.04
+  transport_marketing_pct: 0.03
+  citation:
+    msp:   "CACP MSP notifications, wheat rabi MSP order"
+    cost:  "DES Cost of Cultivation of Principal Crops 2019-20 base + CPI-AL adj."
+    misc:  "FMC-Mkt mandi convention"
+
+# ─── Pearl Millet / Bajra (Kharif) ────────────────────────────────────
+bajra_kharif:
+  msp_inr_per_qt:
+    "2024-25": 2625
+    "2023-24": 2500
+    "2022-23": 2350
+  cost_of_cultivation_inr_per_ha:
+    default: 22000
+  moisture_discount_pct: 0.04
+  transport_marketing_pct: 0.04
+  citation:
+    msp:   "CACP MSP notifications, bajra kharif MSP order"
+    cost:  "DES Cost of Cultivation of Principal Crops 2019-20 base + CPI-AL adj."
+    misc:  "FMC-Mkt mandi convention"
+
+# ─── Pigeon Pea / Arhar (Kharif) ──────────────────────────────────────
+arhar_kharif:
+  msp_inr_per_qt:
+    "2024-25": 7550
+    "2023-24": 7000
+    "2022-23": 6600
+  cost_of_cultivation_inr_per_ha:
+    default: 40000
+  moisture_discount_pct: 0.04
+  transport_marketing_pct: 0.05
+  citation:
+    msp:   "CACP MSP notifications, arhar (tur) kharif MSP order"
+    cost:  "DES Cost of Cultivation of Principal Crops 2019-20 base + CPI-AL adj."
+    misc:  "FMC-Mkt mandi convention"
