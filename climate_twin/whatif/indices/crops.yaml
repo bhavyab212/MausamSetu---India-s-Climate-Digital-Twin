@@ -1,0 +1,45 @@
+# Named-crop GDD parameters for `whatif.indices.gdd.gdd_for_crop`.
+# Every entry MUST carry a citation. Do not add crops without one.
+
+wheat:
+  t_base_c: 0.0
+  t_cap_c:  30.0
+  source: >-
+    Porter & Gawith (1999), 'Temperatures and the growth and development of wheat',
+    Eur. J. Agron. 10, 23-36. India-context: ICAR-IIWBR wheat agronomy manual.
+
+rice:
+  t_base_c: 10.0
+  t_cap_c:  35.0
+  source: >-
+    Yoshida (1981), 'Fundamentals of Rice Crop Science', IRRI. India-context:
+    ICAR-NRRI Cuttack basmati/kharif rice manuals.
+
+maize:
+  t_base_c: 10.0
+  t_cap_c:  30.0
+  source: >-
+    NDAWN (North Dakota State University) growing-degree-day guide; also
+    McMaster & Wilhelm 1997.
+
+sugarcane:
+  t_base_c: 12.0
+  t_cap_c:  38.0
+  source: >-
+    Bonnett et al. (2006), 'Sugarcane growth and development', Field Crops
+    Research 92, 261-278.
+
+cotton:
+  t_base_c: 15.6
+  t_cap_c:  32.2
+  source: >-
+    Wanjura et al. (1990), USDA-ARS cotton development thresholds
+    (60 °F base = 15.6 °C, 90 °F cap = 32.2 °C).
+
+soybean:
+  t_base_c: 10.0
+  t_cap_c:  30.0
+  source: >-
+    Setiyono et al. (2007), 'Understanding and modeling the effect of
+    temperature and daylength on soybean phenology', Field Crops
+    Research 100, 257-271.
