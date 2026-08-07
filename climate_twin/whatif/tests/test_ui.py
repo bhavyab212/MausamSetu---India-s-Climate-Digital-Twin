@@ -37,32 +37,34 @@ from climate_twin.whatif.ui.state import (
 
 
 # ─── STEP 14.1 — Copy ban: long_term must not say predict / forecast ─
-def test_long_term_copy_bans_predict_and_forecast():
-    """Rule 9: Long Term is a scenario tab, not a forecast tab. The
-    copy library refuses "predict" / "forecast" strings entirely."""
-    import inspect
-    src = inspect.getsource(copy_long_term)
-    # Strip the module docstring (it explains WHY those words are banned)
-    banned = ("predict", "forecast")
-    # Look at every string literal defined at module scope
+def test_long_term_copy_bans_forbidden_verbs():
+    """Part 7 Rule 1 (§9c): none of ``predict`` / ``forecast`` / ``will``
+    / ``is going to`` may appear in long_term copy. The regex uses word
+    boundaries so ``William`` / ``willing`` wouldn't false-positive
+    (there aren't any today anyway)."""
+    import re
+    banned_patterns = [
+        r"\bpredict",           # covers predict, predicts, prediction
+        r"\bforecast",          # covers forecast, forecasts, forecasting
+        r"\bwill\b",            # bare will as a verb
+        r"\bis going to\b",     # future-tense construction
+    ]
     for name in dir(copy_long_term):
         if name.startswith("_"):
             continue
         obj = getattr(copy_long_term, name)
         if isinstance(obj, str):
-            for b in banned:
-                assert b.lower() not in obj.lower(), (
-                    f"long_term copy string {name!r} contains banned word "
-                    f"{b!r}: {obj!r}"
-                )
+            values = [obj]
         elif isinstance(obj, tuple):
-            for i, s in enumerate(obj):
-                if isinstance(s, str):
-                    for b in banned:
-                        assert b.lower() not in s.lower(), (
-                            f"long_term copy tuple {name}[{i}] contains "
-                            f"banned word {b!r}: {s!r}"
-                        )
+            values = [s for s in obj if isinstance(s, str)]
+        else:
+            continue
+        for i, s in enumerate(values):
+            for pat in banned_patterns:
+                assert not re.search(pat, s, flags=re.IGNORECASE), (
+                    f"long_term copy {name}[{i}] contains banned "
+                    f"pattern {pat!r}: {s!r}"
+                )
 
 
 def test_context_copy_has_devanagari_branding():

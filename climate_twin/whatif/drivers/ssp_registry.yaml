@@ -1,0 +1,74 @@
+# climate_twin/whatif/drivers/ssp_registry.yaml
+#
+# Shared Socioeconomic Pathways × Radiative-forcing scenarios shipped
+# with the What-If Long-Term tab. Narratives paraphrased from IPCC
+# AR6 WG1 SPM (2021) with page references.
+#
+# Global warming ranges are the "assessed likely range" from AR6 WG1
+# SPM Table SPM.1 for the 2081-2100 window vs the 1850-1900 baseline.
+
+version: "ssp-registry-v1"
+
+scenarios:
+  - id: ssp126
+    label: "SSP1-2.6 · sustainability"
+    forcing_2100_Wm2: 2.6
+    global_warming_2081_2100_C: [1.3, 2.4]
+    narrative: >
+      A sustainability-oriented pathway with strong mitigation. Net-zero
+      CO2 achieved after 2050. Radiative forcing peaks and declines to
+      2.6 W/m2 by 2100. Assessed likely global warming range at
+      2081-2100: 1.3-2.4 C above the 1850-1900 baseline.
+    citation: "IPCC AR6 WG1 SPM Table SPM.1; Riahi et al. 2017 Global Env. Change"
+
+  - id: ssp245
+    label: "SSP2-4.5 · middle-of-the-road"
+    forcing_2100_Wm2: 4.5
+    global_warming_2081_2100_C: [2.1, 3.5]
+    narrative: >
+      A middle-of-the-road pathway with moderate mitigation.
+      Emissions decline slowly from mid-century. Radiative forcing
+      stabilises at 4.5 W/m2 by 2100. Assessed likely global warming
+      range at 2081-2100: 2.1-3.5 C above the 1850-1900 baseline.
+      This is the pathway most consistent with current stated policies.
+    citation: "IPCC AR6 WG1 SPM Table SPM.1; Fricko et al. 2017"
+
+  - id: ssp370
+    label: "SSP3-7.0 · regional rivalry"
+    forcing_2100_Wm2: 7.0
+    global_warming_2081_2100_C: [2.8, 4.6]
+    narrative: >
+      A high-emissions pathway with limited mitigation, driven by
+      regional rivalry and slow technological progress. Radiative
+      forcing reaches 7.0 W/m2 by 2100. Assessed likely global warming
+      range at 2081-2100: 2.8-4.6 C above the 1850-1900 baseline.
+      Off by default in the UI; enable via the Advanced toggle.
+    citation: "IPCC AR6 WG1 SPM Table SPM.1; Fujimori et al. 2017"
+
+  - id: ssp585
+    label: "SSP5-8.5 · fossil-fuelled development"
+    forcing_2100_Wm2: 8.5
+    global_warming_2081_2100_C: [3.3, 5.7]
+    narrative: >
+      A very high-emissions pathway driven by fossil-fuelled economic
+      development. Radiative forcing reaches 8.5 W/m2 by 2100.
+      Assessed likely global warming range at 2081-2100: 3.3-5.7 C
+      above the 1850-1900 baseline. Included as the high-end
+      sensitivity scenario, not as a most-likely outcome.
+    citation: "IPCC AR6 WG1 SPM Table SPM.1; Kriegler et al. 2017"
+
+# Default UI display: three of the four scenarios by default.
+default_display:
+  - ssp126
+  - ssp245
+  - ssp585
+
+# ssp370 is included in the registry but off by default. Users must
+# tick an "Advanced" toggle to enable it — this discourages cherry-
+# picking the middle-high scenario for headlines.
+
+# Baseline reference period for delta / QDM anchoring.
+# IPCC AR6 uses 1995-2014 globally; Indian regional literature commonly
+# uses 1971-2000. The engine uses 1971-2000 and states this on every
+# projection panel (Rule 4).
+baseline_period: [1971, 2000]

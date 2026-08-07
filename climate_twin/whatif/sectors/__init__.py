@@ -474,9 +474,113 @@ def run(*, sector: str, driver, indices, biophysical, levers) -> dict[str, Any]:
     }
 
 
+class RepresentationMismatch(RuntimeError):
+    """Raised when a Long-Term multi-model ensemble is fed into the
+    Short-Term three-pass q10/q50/q90 codepath. Part-7 Rule (§9c):
+    the two uncertainty representations don't mix — a Long-Term run
+    surfaces a ``model`` dim, a Short-Term run surfaces q10/q50/q90
+    on the ``quantile`` attribute. Mixing them silently would be a
+    category error."""
+
+
+@dataclass
+class LongTermResult:
+    """Result of a Long-Term scenario run.
+
+    ``sector_out`` and ``economics`` carry an extra ``model`` dim (one
+    per GCM in the ensemble). Consumers summarise across the model dim
+    via ensemble mean, spread, and agreement counts — never by picking
+    a single model.
+    """
+    scenario_id: str
+    year_center: int
+    region: object
+    sector: str
+    sector_out: Any = None
+    economics: Any = None
+    provenance: dict = None
+    version: str = "long-term-v1"
+
+
+def run_long_term_scenario(
+    scenario_id: str,
+    target_center_year: int,
+    sector: str,
+    region,
+    adaptations: list[str] | None = None,
+) -> LongTermResult:
+    """Compose a Long-Term scenario end-to-end.
+
+    Contract:
+        * Uses NEX-GDDP × downscale × sector runner → multi-model stack.
+        * Adaptation NPV is computed via the L4 pipeline over the
+          multi-model ensemble.  Rule 3: uncertainty is decomposed
+          before reporting.
+
+    Today's Part-7 scaffold prepares the plumbing.  Actual sector-
+    runner-over-model-dim inference is data-heavy (needs NEX-GDDP on
+    disk); we surface a provenance record that includes the SSP,
+    downscaling method, adaptation ids, and cost-completeness
+    verdicts, and defer the heavy pass to the UI when data is
+    available. This behaviour mirrors Part 3's soil-default banner:
+    the pipeline never fabricates numbers when the raster isn't there.
+    """
+    from ..drivers.ssp import (
+        SSP_REGISTRY_VERSION,
+        baseline_period,
+        load_scenario,
+        window_for_center,
+        registry_sha256 as _ssp_sha,
+    )
+
+    if sector != "agriculture":
+        raise NotImplementedError(
+            f"Long-Term sector {sector!r} lands in a later part. "
+            "Agriculture is the shipped sector for Part 7."
+        )
+    ssp = load_scenario(scenario_id)
+    window = window_for_center(target_center_year)
+
+    # Cost-completeness gate for selected adaptations
+    from .adaptations import load_adaptation
+    adaptation_verdicts = {}
+    for a in adaptations or []:
+        try:
+            opt = load_adaptation(a)
+            adaptation_verdicts[a] = {
+                "cost_complete": bool(opt.cost_complete),
+                "effective_years": int(opt.effective_years),
+                "capex_inr_per_ha": float(opt.capex_inr_per_ha),
+                "capex_citation": opt.capex_citation,
+            }
+        except KeyError:
+            adaptation_verdicts[a] = {"error": "unknown adaptation id"}
+
+    prov = {
+        "scenario_id": scenario_id,
+        "scenario_label": ssp.label,
+        "target_center_year": int(target_center_year),
+        "window_20yr": list(window),
+        "baseline_period": list(baseline_period()),
+        "ssp_registry_version": SSP_REGISTRY_VERSION,
+        "ssp_registry_sha256": _ssp_sha(),
+        "representation": "multi_model_ensemble",
+        "adaptations_selected": list(adaptations or []),
+        "adaptation_verdicts": adaptation_verdicts,
+    }
+    return LongTermResult(
+        scenario_id=scenario_id,
+        year_center=int(target_center_year),
+        region=region, sector=sector,
+        sector_out=None, economics=None,
+        provenance=prov,
+    )
+
+
 __all__ = [
     "SectorSpec", "SECTOR_REGISTRY", "run",
     "run_agriculture_scenario", "run_decision_scenario",
+    "run_long_term_scenario", "LongTermResult", "RepresentationMismatch",
     "Crop", "load_crop", "list_crops", "registry_version", "registry_sha256",
     "AGRICULTURE_VERSION", "yield_water_limited", "yield_baseline",
     "to_district", "DistrictRegistry", "ResolutionCeilingError",

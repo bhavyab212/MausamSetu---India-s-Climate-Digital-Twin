@@ -10,7 +10,10 @@ from .analogs import render_analog_narrative
 from .backtest import render_backtest_card
 from .context import render_context_strip
 from .levers import render_levers
-from .long_term_shell import render_long_term_tab
+# Part 7: the live Long-Term panel replaces the Part-6 shell.
+# The shell is kept alongside for reference / rollback but no longer
+# wired into pages/30_What_If.py.
+from .long_term import render_long_term_tab
 from .payoff import render_payoff_matrix
 from .provenance import render_provenance_drawer
 from .recommendation import render_recommendation

@@ -89,6 +89,34 @@ def load_driver(spec: DriverSpec) -> xr.DataArray:
     if spec.mode == "analog":
         raise NotImplementedError("analog driver arrives in Part 5.")
     if spec.mode == "ssp":
-        raise NotImplementedError("SSP driver arrives in Part 7.")
+        # Long-Term multi-model driver. Extras must supply
+        # scenario, year_center; downscaling method is optional
+        # (default 'qdm').
+        from .ssp import load_ssp_driver
+        extras = spec.extras_dict()
+        scenario_id = extras.get("scenario") or extras.get("scenario_id")
+        year_center = extras.get("year_center")
+        if not scenario_id or not year_center:
+            raise ValueError(
+                "DriverSpec(mode='ssp') requires "
+                "extras={'scenario': 'ssp245', 'year_center': 2050}"
+            )
+        models = extras.get("models")
+        da = load_ssp_driver(
+            scenario_id=str(scenario_id),
+            year_center=int(year_center),
+            region=spec.region,
+            variable=spec.var,
+            models=list(models) if models else None,
+        )
+        # Note: SSP driver returns (model, time, lat, lon); the
+        # engine's load_driver contract promises xr.DataArray, so
+        # the caller must be aware. The dedicated
+        # run_long_term_scenario orchestrator handles the model dim.
+        da.attrs["driver_mode"] = "ssp"
+        da.attrs["scenario"] = str(scenario_id)
+        da.attrs["year_center"] = int(year_center)
+        da.attrs["representation"] = "multi_model_ensemble"
+        return da
 
     raise ValueError(f"unknown DriverSpec.mode={spec.mode!r}")

@@ -1,0 +1,79 @@
+# climate_twin/whatif/sectors/adaptations.yaml
+#
+# Adaptation option registry for the Long-Term tab.
+# Every option must ship with (a) a biophysical effect describing how
+# it changes the sector run, (b) a cited capex + opex, and (c) an
+# effective-years horizon. Uncited numbers must carry TODO(cited-cost)
+# and are skipped by the default NPV run.
+#
+# Sources per option are cited inline. When an option is added, the
+# registry SHA-256 lands in every LT scenario's provenance record.
+
+version: "adaptations-v1"
+
+options:
+  supplemental_irrigation_20mm_weekly:
+    common_name: "Supplemental irrigation, 20 mm/week during dry spells"
+    sector: "agriculture"
+    applies_to_crops: ["paddy_kharif", "wheat_rabi", "bajra_kharif"]
+    biophysical_effect: >
+      Raises ETa toward ETc during Ks<1 periods.  Applied by injecting
+      an IrrigationSchedule(interval_days=7, depth_mm=20) into
+      whatif.biophysical.water_balance.
+    capex_inr_per_ha:
+      value: 12000
+      citation: "TERI 2019, Table 4 — Punjab drip retrofit unit cost"
+    opex_inr_per_ha_per_yr:
+      value: 3500
+      citation: "TERI 2019 §3.4 — energy + water charge for weekly irrigation"
+    effective_years: 15
+    co2_kg_per_ha_per_yr: 0
+    side_effects: "Groundwater drawdown — flag in provenance"
+
+  heat_tolerant_wheat_variant:
+    common_name: "Heat-tolerant wheat cultivar (e.g., HDCSW-18)"
+    sector: "agriculture"
+    applies_to_crops: ["wheat_rabi"]
+    biophysical_effect: >
+      Raises crop.t_flower_stress_c by 2 C via a crop-record overlay.
+      The agriculture sector's yield_water_limited() reads the
+      overlayed value when computing the flowering heat penalty.
+    capex_inr_per_ha:
+      value: 800
+      citation: "ICAR 2022 seed rate note — HDCSW-18 seed premium"
+    opex_inr_per_ha_per_yr:
+      value: 0
+      citation: "no recurring cost; annual re-purchase already in seed"
+    effective_years: 1
+    co2_kg_per_ha_per_yr: 0
+
+  raised_bunds_flood_protection:
+    common_name: "Raised bunds for kharif flood protection"
+    sector: "agriculture"
+    applies_to_crops: ["paddy_kharif"]
+    biophysical_effect: >
+      Reduces flood-loss probability by 40 % for rainfall events below
+      the 50-yr return period.  Applied post-yield: multiplies Ya by
+      (1 - 0.4 * flood_hazard_reduction).
+    capex_inr_per_ha:
+      value: 22000
+      citation: "TERI 2019 Table 6 — Odisha bund construction cost"
+    opex_inr_per_ha_per_yr:
+      value: 800
+      citation: "TERI 2019 §4.2 — annual bund maintenance"
+    effective_years: 25
+    co2_kg_per_ha_per_yr: 0
+
+  storage_evening_solar_shift:
+    common_name: "Add 4-hour battery to residential PV"
+    sector: "energy"
+    applies_to: "district-level PV fleet"
+    biophysical_effect: >
+      Shifts 30 % of PV generation to evening peak; recomputes coal
+      displacement in the energy sector runner (Part 7 stretch).
+    capex_inr_per_kwh:
+      value: 18000
+      citation: "MNRE 2024 tender average, Li-ion 4-hr battery"
+    opex_pct_of_capex_per_yr: 0.02
+    effective_years: 12
+    co2_kg_per_ha_per_yr: 0

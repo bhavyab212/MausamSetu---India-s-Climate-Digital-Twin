@@ -1,0 +1,87 @@
+# climate_twin/whatif/drivers/nex_gddp_catalog.yaml
+#
+# NEX-GDDP-CMIP6 model catalog. Ten-GCM ensemble chosen for CMIP6
+# India-region evaluation quality.  Selection follows:
+#
+#   Almazroui et al. 2020, "Projected Changes in Temperature and
+#   Precipitation Climatology of South Asia CORDEX Region", Earth
+#   Systems and Environment 4, 297–320. §5 model performance
+#   ranking over the South Asia domain.
+#
+#   Thrasher et al. 2022, "NASA Global Daily Downscaled Projections,
+#   CMIP6", Sci. Data 9:262 — source dataset (0.25° daily, bias-
+#   adjusted). Hosted on AWS Open Data under s3://nex-gddp-cmip6/.
+#
+# One model per major CMIP6 modelling family is included; substitutions
+# from the original Almazroui ranking are documented in
+# docs/nex_gddp_model_selection.md (to be authored once the recon is
+# formalised).
+
+version: "nexgddp-cmip6-v1"
+
+# ── Model list, one per family ───────────────────────────────────────
+models:
+  - id: ACCESS-ESM1-5
+    family: ACCESS
+    institution: CSIRO
+    citation: "Ziehn et al. 2020, J. Southern Hemisphere Earth Systems"
+  - id: CanESM5
+    family: CanESM
+    institution: CCCma
+    citation: "Swart et al. 2019, GMD"
+  - id: CNRM-ESM2-1
+    family: CNRM
+    institution: CNRM-CERFACS
+    citation: "Séférian et al. 2019, JAMES"
+  - id: EC-Earth3
+    family: EC-Earth
+    institution: EC-Earth consortium
+    citation: "Doescher et al. 2022, GMD"
+  - id: GFDL-ESM4
+    family: GFDL
+    institution: NOAA-GFDL
+    citation: "Dunne et al. 2020, JAMES"
+  - id: IPSL-CM6A-LR
+    family: IPSL
+    institution: IPSL
+    citation: "Boucher et al. 2020, JAMES"
+  - id: MIROC6
+    family: MIROC
+    institution: MIROC consortium
+    citation: "Tatebe et al. 2019, GMD"
+  - id: MPI-ESM1-2-HR
+    family: MPI
+    institution: MPI-M
+    citation: "Müller et al. 2018, JAMES"
+  - id: MRI-ESM2-0
+    family: MRI
+    institution: MRI
+    citation: "Yukimoto et al. 2019, JMSJ"
+  - id: UKESM1-0-LL
+    family: UKESM
+    institution: UKMO-NIWA
+    citation: "Sellar et al. 2019, JAMES"
+
+# ── Coverage per model × SSP ────────────────────────────────────────
+# For each model, list the periods available on NEX-GDDP-CMIP6.
+# "historical" always spans 1950-2014; SSPs span 2015-2100.
+coverage:
+  default:
+    historical: [1950, 2014]
+    ssp126:     [2015, 2100]
+    ssp245:     [2015, 2100]
+    ssp370:     [2015, 2100]
+    ssp585:     [2015, 2100]
+
+# ── Storage roots ────────────────────────────────────────────────────
+# Cloud (default) — AWS Open Data, no credentials required.
+# Local mirror — set NEX_GDDP_ROOT in config.paths for offline use.
+storage:
+  s3_bucket: "nex-gddp-cmip6"
+  s3_prefix: "NEX-GDDP-CMIP6"
+  aws_open_data_page: "https://registry.opendata.aws/nasanex/"
+
+# Path template for NEX-GDDP files. Actual filenames follow:
+#   {var}_day_{model}_{scenario}_{run}_{grid}_{year}.nc
+# where {run} is typically r1i1p1f1 and {grid} is gn.
+path_template: "{prefix}/{scenario}/{model}/{run}/{var}/{var}_day_{model}_{scenario}_{run}_gn_{year}.nc"
