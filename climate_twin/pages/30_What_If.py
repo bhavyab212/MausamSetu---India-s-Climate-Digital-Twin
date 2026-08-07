@@ -310,6 +310,212 @@ def _render_spi3_map():
     )
 
 
+def _render_agriculture_diagnostic():
+    """Agriculture sector — paddy over Vidarbha, sow 2020-06-15.
+
+    Runs the full L0→L2→L3 chain on the observed IMD driver as a
+    three-fold synthetic quantile bundle, then displays:
+        * a map of Ya (t/ha) on the master grid;
+        * a district (states-fallback) table of Ya/Ymax;
+        * a q10/q50/q90 expected-yield table;
+        * a ranked sowing-window DataFrame;
+        * a Validation card with the latest APY comparison, or a
+          "not-yet-ingested" banner if APY isn't on disk.
+    """
+    from datetime import date as _date
+
+    from climate_twin.whatif.biophysical.water_balance import water_balance
+    from climate_twin.whatif.config.region import RegionSpec
+    from climate_twin.whatif.drivers.historical import get_historical
+    from climate_twin.whatif.indices.et0_hargreaves import et0_hargreaves
+    from climate_twin.whatif.sectors import (
+        DistrictRegistry,
+        apy_available,
+        build_deterministic_bundle,
+        get_last_validation,
+        optimize_sowing_window,
+        to_district,
+        yield_water_limited,
+    )
+    from climate_twin.whatif.sectors.crops import load_crop, list_crops
+
+    st.caption(
+        "Region: Vidarbha (bbox 18–22 °N, 76–82 °E — falls back to the "
+        "declared bbox because a district shapefile isn't bundled yet). "
+        "Crop: paddy_kharif. Sow date: 2020-06-15. Driver: observed IMD "
+        "rain / tmax / tmin over the crop's full duration."
+    )
+    st.caption(
+        f"Registered crops: {', '.join(list_crops())}"
+    )
+
+    crop = load_crop("paddy_kharif")
+    sow = _date(2020, 6, 15)
+    end = sow.fromordinal(sow.toordinal() + crop.total_days - 1)
+
+    region = RegionSpec(kind="bbox", bbox=(18.0, 76.0, 22.0, 82.0))
+
+    with st.spinner(f"Loading IMD rain/tmax/tmin over {sow.isoformat()} → {end.isoformat()}…"):
+        rain = get_historical("rain", sow, end)
+        tmax = get_historical("tmax", sow, end)
+        tmin = get_historical("tmin", sow, end)
+
+    # Restrict to the Vidarbha bbox
+    from climate_twin.whatif.config.region import apply_region
+    rain = apply_region(rain, region)
+    tmax = apply_region(tmax, region)
+    tmin = apply_region(tmin, region)
+
+    with st.spinner("ET0 (Hargreaves) → water balance → yield…"):
+        et0 = et0_hargreaves(tmax, tmin)
+        wb = water_balance(crop, rain, et0, sow, region, irrigation=None)
+        yg = yield_water_limited(crop, wb, tmax=tmax)
+
+    # ── Provenance banner ──
+    warn = wb.attrs.get("soil_warning") or ""
+    if warn:
+        st.warning(f"⚠️ {warn}")
+    st.code(
+        "\n".join([
+            f"crop:               {crop.key} ({crop.common_name})",
+            f"crop.registry:      {crop.registry_version}  sha={crop.registry_sha256}",
+            f"agriculture.version: {yg.attrs.get('version', '?')}",
+            f"water_balance.ver:  {wb.attrs.get('version', '?')}",
+            f"soil.source:        {wb.attrs.get('soil_source', '?')} ({wb.attrs.get('soil_source_version', '?')})",
+            f"quantile:           {yg.attrs.get('quantile', '?')}",
+            f"source_chain:       {yg.attrs.get('source_chain', '?')}",
+        ]), language="text",
+    )
+
+    # ── Ya map ──
+    st.markdown("**Ya — absolute yield (t/ha) on the master grid**")
+    fig = _map_from_da(
+        yg["Ya"],
+        title=f"Paddy Ya — sow {sow.isoformat()} (Vidarbha bbox)",
+        unit="t/ha",
+        colorscale="YlGn",
+        vmin=0.0, vmax=float(crop.ymax_t_per_ha),
+    )
+    st.plotly_chart(fig, use_container_width=True)
+
+    fin = np.isfinite(yg["Ya"].values)
+    if fin.any():
+        arr = yg["Ya"].values[fin]
+        cols = st.columns(4)
+        cols[0].metric("mean Ya", f"{float(arr.mean()):.2f} t/ha")
+        cols[1].metric("p10 Ya", f"{float(np.percentile(arr, 10)):.2f} t/ha")
+        cols[2].metric("p90 Ya", f"{float(np.percentile(arr, 90)):.2f} t/ha")
+        cols[3].metric("mean Ya/Ymax", f"{float(np.nanmean(yg['Ya_over_Ymax'].values)):.2f}")
+
+    # ── District (states-fallback) table ──
+    st.markdown("---")
+    st.markdown("**Ya/Ymax by zone (states-as-districts fallback)**")
+    try:
+        # Build a zone-based fallback registry, then intersect each mask
+        # with the yield grid's (lat, lon) subset.
+        reg_full = DistrictRegistry.states_fallback()
+        # Subset each zone mask to the yield_ds axis
+        target_lat = yg["lat"].values
+        target_lon = yg["lon"].values
+        lat_axis = rain["lat"].values          # source master grid — same as awc
+        lon_axis = rain["lon"].values          # (already subset to bbox)
+        # For states-fallback we need masks on the *yield* grid, so
+        # slice by matching indices.
+        from climate_twin.regions import get_zones
+        Z = get_zones()
+        hard = Z.hard_mask                     # (129, 135) on master grid
+
+        # Build lat/lon → index maps for the master grid
+        from climate_twin.whatif.config.region import master_axes
+        m_lat, m_lon = master_axes()
+        lat_idx = [int(np.argmin(np.abs(m_lat - la))) for la in target_lat]
+        lon_idx = [int(np.argmin(np.abs(m_lon - lo))) for lo in target_lon]
+        lat_idx = np.array(lat_idx)
+        lon_idx = np.array(lon_idx)
+        sub_hard = hard[np.ix_(lat_idx, lon_idx)]
+
+        mapping = {}
+        for zone in Z.zones:
+            m = (sub_hard == zone.id)
+            if m.any():
+                mapping[(zone.key, zone.key)] = m
+        reg = DistrictRegistry(mapping=mapping)
+        reg.min_area_km2 = DistrictRegistry.MIN_DISTRICT_AREA_KM2
+        df_dist = to_district(yg, reg)
+        st.dataframe(
+            df_dist.style.format({
+                "Ya_t_per_ha": "{:.2f}",
+                "Ya_over_Ymax": "{:.2f}",
+                "valid_frac": "{:.2f}",
+            }),
+            use_container_width=True, hide_index=True,
+        )
+    except Exception as e:
+        st.info(
+            f"Zone-fallback aggregation unavailable ({type(e).__name__}: {e}). "
+            "A proper district shapefile will replace this in Part 4."
+        )
+
+    # ── q10/q50/q90 expected-yield triple ──
+    st.markdown("---")
+    st.markdown("**Sowing-window optimiser — Ey across q10/q50/q90**")
+    st.caption(
+        "The observed driver is played back through the pipeline as a "
+        "three-quantile bundle. Once forecast ensembles are wired in "
+        "Part 5, q10 / q50 / q90 will differ; today they collapse to "
+        "the observed series."
+    )
+    from datetime import date as _dc
+    candidates = [
+        _date(2020, 6, 1),  _date(2020, 6, 6),  _date(2020, 6, 11),
+        _date(2020, 6, 16), _date(2020, 6, 21), _date(2020, 6, 26),
+        _date(2020, 7, 1),  _date(2020, 7, 6),  _date(2020, 7, 11),
+    ]
+    try:
+        # For the optimiser we need each sow date's crop-duration window
+        # fully in the driver. Re-load a wider driver here.
+        latest_end = max(_date.fromordinal(d.toordinal() + crop.total_days - 1)
+                         for d in candidates)
+        rain2 = apply_region(get_historical("rain", candidates[0], latest_end), region)
+        tmax2 = apply_region(get_historical("tmax", candidates[0], latest_end), region)
+        tmin2 = apply_region(get_historical("tmin", candidates[0], latest_end), region)
+        bundle = build_deterministic_bundle(rain2, tmax2, tmin2)
+        with st.spinner(f"Optimising over {len(candidates)} candidate sow dates…"):
+            ranked = optimize_sowing_window(crop, region, bundle, candidates)
+        st.dataframe(
+            ranked.style.format({
+                "Ey": "{:.2f}", "Ey_over_Ymax": "{:.2f}",
+                "p_good_year": "{:.2f}",
+                "Ya_q10": "{:.2f}", "Ya_q50": "{:.2f}", "Ya_q90": "{:.2f}",
+                "worst_case_Ya": "{:.2f}",
+                "heat_stress_days_flower_q50": "{:.1f}",
+                "baseline_Ya": "{:.2f}",
+                "value_vs_baseline": "{:+.2f}",
+            }),
+            use_container_width=True, hide_index=True,
+        )
+    except Exception as e:
+        st.error(f"❌ sowing-window optimiser failed — {type(e).__name__}: {e}")
+
+    # ── Validation card ──
+    st.markdown("---")
+    st.markdown("**Validation — APY comparison**")
+    v = get_last_validation("paddy_kharif")
+    if not v["ok"]:
+        st.info(
+            "APY snapshot not yet ingested — model unvalidated.\n\n"
+            f"reason: {v['reason']}"
+        )
+    else:
+        st.success(f"APY validation from `{v['parquet_path']}`")
+        cols = st.columns(4)
+        s = v["scores"]
+        cols[0].metric("districts", v["n_districts"])
+        cols[1].metric("Pearson r", f"{s.get('pearson_r', float('nan')):.2f}")
+        cols[2].metric("RMSE", f"{s.get('rmse_t_ha', float('nan')):.2f} t/ha")
+        cols[3].metric("MPE", f"{s.get('mpe_pct', float('nan')):.1f} %")
+
+
 def _render_registry_table():
     from climate_twin.whatif.indices import INDEX_REGISTRY
 
@@ -378,6 +584,13 @@ with _tab_short:
             _render_registry_table()
         except Exception as e:
             st.error(f"❌ registry table failed — {type(e).__name__}: {e}")
+
+        st.divider()
+        st.markdown("#### L3 — Agriculture (diagnostic)")
+        try:
+            _render_agriculture_diagnostic()
+        except Exception as e:
+            st.error(f"❌ agriculture diagnostic failed — {type(e).__name__}: {e}")
 
 with _tab_long:
     st.info("Coming online in Part 6.")

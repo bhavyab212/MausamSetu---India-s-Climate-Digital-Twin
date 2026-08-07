@@ -1,0 +1,118 @@
+# climate_twin/whatif/sectors/crops.yaml
+#
+# Crop parameter registry for the What-If agriculture sector (Part 3).
+# All numbers in this file MUST carry a citation. When you change a
+# value, bump the top-level `version` string; that version flows into
+# every scenario's provenance record via crops.py.
+#
+# Sources (short-hand; expanded in each entry's `citation` block):
+#   FAO-56  Allen, Pereira, Raes, Smith (1998). Crop Evapotranspiration.
+#           FAO Irrigation & Drainage Paper 56.  Tables 11 (stage lengths),
+#           12 (Kc values), 22 (root depths + depletion fractions).
+#   FAO-33  Doorenbos & Kassam (1979). Yield Response to Water.
+#           FAO Irrigation & Drainage Paper 33.  Ky per crop / stage.
+#   ICAR    Indian Council of Agricultural Research; DES (Directorate of
+#           Economics & Statistics, DoAg&Fw).  Regional Ymax anchors.
+#   Wheeler Wheeler et al. 2000, Agriculture, Ecosystems & Environment
+#           (heat stress at flowering / grain-fill in wheat & rice).
+#
+# Version is the ONLY id that appears in provenance -- bump it whenever
+# any downstream number here changes.
+
+version: "crops-v1"
+
+# ─── Paddy (Kharif, transplanted, tropical India) ──────────────────────
+paddy_kharif:
+  common_name: "Paddy (Kharif)"
+  citation:
+    kc:     "FAO-56 Table 12; rice, paddy"
+    ky:     "FAO-33 (Doorenbos & Kassam 1979) Table; paddy overall & per-stage"
+    stages: "FAO-56 Table 11; rice, tropical, wet-season sowing"
+    root:   "FAO-56 Table 22; rice root depth 0.5-1.0 m"
+    depletion: "FAO-56 Table 22; rice p = 0.20 (wetland)"
+    ymax:   "ICAR-CRRI Cuttack; regional attainable yield anchor ~4.5 t/ha"
+    heat:   "Wheeler et al. 2000; sterility above ~35 C at anthesis"
+  stages_days:      {ini: 30, dev: 30, mid: 60, late: 30}     # total 150 d
+  kc:               {ini: 1.05, mid: 1.20, end: 0.70}
+  ky_overall:       1.10
+  ky_stage:         {ini: 1.00, dev: 1.09, mid: 1.32, late: 0.50}
+  root_depth_m:     {ini: 0.10, max: 0.60}
+  depletion_p:      0.20
+  t_base_c:         10.0
+  t_cap_c:          30.0
+  t_flower_stress_c: 35.0
+  flower_stage:     "mid"
+  ymax_t_per_ha:    4.5
+  msp_inr_per_qt:   2300
+
+# ─── Wheat (Rabi, north-western plains) ────────────────────────────────
+wheat_rabi:
+  common_name: "Wheat (Rabi)"
+  citation:
+    kc:     "FAO-56 Table 12; wheat, winter"
+    ky:     "FAO-33 Table; wheat overall Ky = 1.05, mid Ky ~1.15"
+    stages: "FAO-56 Table 11; wheat, north India rabi season"
+    root:   "FAO-56 Table 22; wheat 1.0-1.5 m"
+    depletion: "FAO-56 Table 22; wheat p = 0.55"
+    ymax:   "ICAR-IIWBR Karnal; north-plains attainable yield anchor ~5.0 t/ha"
+    heat:   "Wheeler et al. 2000; grain-fill sensitivity > 34 C"
+  stages_days:      {ini: 20, dev: 30, mid: 60, late: 30}     # total 140 d
+  kc:               {ini: 0.30, mid: 1.15, end: 0.30}
+  ky_overall:       1.05
+  ky_stage:         {ini: 0.20, dev: 0.60, mid: 1.15, late: 0.40}
+  root_depth_m:     {ini: 0.15, max: 1.20}
+  depletion_p:      0.55
+  t_base_c:         5.0
+  t_cap_c:          30.0
+  t_flower_stress_c: 34.0
+  flower_stage:     "mid"
+  ymax_t_per_ha:    5.0
+  msp_inr_per_qt:   2275
+
+# ─── Pearl millet / Bajra (Kharif, semi-arid India) ────────────────────
+bajra_kharif:
+  common_name: "Pearl Millet / Bajra (Kharif)"
+  citation:
+    kc:     "FAO-56 Table 12; millet (as pearl-millet proxy)"
+    ky:     "FAO-33 Table; millet overall Ky = 1.05"
+    stages: "FAO-56 Table 11; millet, semi-arid kharif"
+    root:   "FAO-56 Table 22; millet 1.0-2.0 m"
+    depletion: "FAO-56 Table 22; millet p = 0.55 (deep rooting, drought tolerant)"
+    ymax:   "ICAR-AICRP on Pearl Millet; attainable yield ~2.5 t/ha"
+    heat:   "Bidinger et al. 1987; pearl millet tolerates ~40 C at flowering"
+  stages_days:      {ini: 15, dev: 25, mid: 40, late: 25}     # total 105 d
+  kc:               {ini: 0.35, mid: 1.00, end: 0.30}
+  ky_overall:       1.05
+  ky_stage:         {ini: 0.30, dev: 0.70, mid: 1.05, late: 0.30}
+  root_depth_m:     {ini: 0.15, max: 1.50}
+  depletion_p:      0.55
+  t_base_c:         10.0
+  t_cap_c:          35.0
+  t_flower_stress_c: 40.0
+  flower_stage:     "mid"
+  ymax_t_per_ha:    2.5
+  msp_inr_per_qt:   2500
+
+# ─── Pigeon pea / Arhar (Kharif) ───────────────────────────────────────
+arhar_kharif:
+  common_name: "Pigeon Pea / Arhar (Kharif)"
+  citation:
+    kc:     "FAO-56 Table 12; pulses (pigeon pea proxy)"
+    ky:     "FAO-33 Table; pulses overall Ky ~1.15; sensitive at flowering"
+    stages: "FAO-56 Table 11; pulses / pigeon pea long-duration"
+    root:   "FAO-56 Table 22; pulses / pigeon pea 1.0-1.5 m"
+    depletion: "FAO-56 Table 22; pulses p = 0.50"
+    ymax:   "ICAR-IIPR Kanpur; attainable yield anchor ~1.8 t/ha"
+    heat:   "ICRISAT literature; flowering sensitive above ~35 C"
+  stages_days:      {ini: 25, dev: 45, mid: 60, late: 30}     # total 160 d
+  kc:               {ini: 0.40, mid: 1.15, end: 0.35}
+  ky_overall:       1.15
+  ky_stage:         {ini: 0.40, dev: 0.80, mid: 1.20, late: 0.40}
+  root_depth_m:     {ini: 0.20, max: 1.30}
+  depletion_p:      0.50
+  t_base_c:         10.0
+  t_cap_c:          32.0
+  t_flower_stress_c: 35.0
+  flower_stage:     "mid"
+  ymax_t_per_ha:    1.8
+  msp_inr_per_qt:   7000
