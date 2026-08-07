@@ -61,7 +61,8 @@ def _render_zone_map_png(sig: str, out_path: Path) -> Path:
 
 @st.cache_data(show_spinner=False)
 def _zone_map_png(sig: str) -> str:
-    out = Path(__file__).resolve().parents[2] / "regions" / "qc" / f"zones_mini_{sig}.png"
+    # parents: [0]=dashboards, [1]=ui, [2]=train, [3]=climate_twin
+    out = Path(__file__).resolve().parents[3] / "regions" / "qc" / f"zones_mini_{sig}.png"
     if not out.exists():
         _render_zone_map_png(sig, out)
     return str(out)

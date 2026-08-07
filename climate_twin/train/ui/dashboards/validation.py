@@ -305,8 +305,9 @@ def _render_deep_table(res: dict) -> None:
     mask = (Z.hard_mask > 0).astype(np.float32)
     months = res["months"]
 
-    # Load percentile thresholds from Phase-1 stats
-    stats_path = Path(__file__).resolve().parents[2] / "regions" / "zone_stats.json"
+    # Load percentile thresholds from Phase-1 stats.
+    # From validation.py: parents[0]=dashboards, [1]=ui, [2]=train, [3]=climate_twin
+    stats_path = Path(__file__).resolve().parents[3] / "regions" / "zone_stats.json"
     stats = json.loads(stats_path.read_text(encoding="utf-8"))
     zp = {
         zkey: {

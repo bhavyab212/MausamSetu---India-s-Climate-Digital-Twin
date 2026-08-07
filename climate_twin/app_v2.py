@@ -212,7 +212,301 @@ def load_artifacts(region="india"):
                 sens = None
     return rain, temp, mask, sens
 
-# ── Region selector (global sidebar, above everything) ────────────────────────
+# ── Vertical navigation (sidebar, top) ────────────────────────────────────────
+_TAB_LABELS = [
+    "Home", "Explorer", "±1°C What-If",
+    "Model Comparison", "Zone Projections",
+    "Climate Spirals", "Deep Analytics",
+    "🔥 Training", "🔍 Validation", "🤖 RL Agent",
+]
+# Icons only for labels that don't already start with an emoji.
+_TAB_ICONS = {
+    "Home":              "🏠",
+    "Explorer":          "🌐",
+    "±1°C What-If":      "❓",
+    "Model Comparison":  "🧭",
+    "Zone Projections":  "🗺",
+    "Climate Spirals":   "🌀",
+    "Deep Analytics":    "📊",
+    "🔥 Training":       "",
+    "🔍 Validation":     "",
+    "🤖 RL Agent":       "",
+}
+
+# ── Glassmorphic global theme (injected ONCE per session for speed) ─────────
+# NOTE: backdrop-filter is expensive (browser must blur the background behind
+# every element on every paint). Removed on all hot elements — flat translucent
+# cards read similarly and cost 10-100× less to paint.
+if not st.session_state.get("_mausam_css_injected"):
+    st.session_state["_mausam_css_injected"] = True
+    st.markdown(
+    """
+    <style>
+    /* ═════════════════════════════ APP BACKGROUND ═════════════════════════════ */
+    .stApp {
+        background:
+            radial-gradient(ellipse at 20% -10%, rgba(244, 163, 74, 0.08) 0%, transparent 45%),
+            radial-gradient(ellipse at 90% 100%, rgba(138, 180, 248, 0.06) 0%, transparent 45%),
+            linear-gradient(180deg, #050912 0%, #0a0f1e 100%);
+    }
+    .main .block-container { padding-top: 2rem; padding-bottom: 3rem; }
+
+    /* ═════════════════════════════ HEADINGS ═══════════════════════════════════ */
+    h1, h2, h3, h4 { letter-spacing: 0.3px; color: #F0F3F8; }
+    h1 { text-shadow: 0 0 30px rgba(244, 163, 74, 0.15); }
+
+    /* ═════════════════════════════ METRIC TILES ═══════════════════════════════ */
+    /* Flat translucent card — no blur, no hover transform. */
+    div[data-testid="stMetric"] {
+        background: rgba(255, 255, 255, 0.035);
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        border-radius: 12px;
+        padding: 14px 16px;
+    }
+    div[data-testid="stMetricValue"] {
+        color: #FFD9A8 !important;
+        font-weight: 600 !important;
+    }
+    div[data-testid="stMetricLabel"] {
+        color: rgba(229, 233, 240, 0.6) !important;
+        font-size: 0.82em !important;
+        letter-spacing: 0.5px;
+        text-transform: uppercase;
+    }
+
+    /* ═════════════════════════════ BUTTONS ════════════════════════════════════ */
+    .stButton > button, .stDownloadButton > button {
+        background: rgba(255, 255, 255, 0.04);
+        border: 1px solid rgba(255, 255, 255, 0.12);
+        color: #E5E9F0;
+        border-radius: 10px;
+        padding: 8px 18px;
+        font-weight: 500;
+    }
+    .stButton > button:hover, .stDownloadButton > button:hover {
+        background: rgba(244, 163, 74, 0.12);
+        border-color: rgba(244, 163, 74, 0.45);
+        color: #FFD9A8;
+    }
+    .stButton > button[kind="primary"] {
+        background: linear-gradient(95deg,
+                    rgba(244, 163, 74, 0.85) 0%,
+                    rgba(255, 175, 100, 0.80) 100%);
+        border: 1px solid rgba(244, 163, 74, 0.7);
+        color: #0a0f1e;
+        font-weight: 700;
+        box-shadow: 0 4px 24px rgba(244, 163, 74, 0.25);
+    }
+    .stButton > button[kind="primary"]:hover {
+        background: linear-gradient(95deg,
+                    rgba(255, 175, 100, 0.95) 0%,
+                    rgba(255, 195, 130, 0.90) 100%);
+        color: #050912;
+    }
+    .stButton > button:disabled { opacity: 0.4; cursor: not-allowed; }
+
+    /* ═════════════════════════════ EXPANDERS ══════════════════════════════════ */
+    details[data-testid="stExpander"] {
+        background: rgba(255, 255, 255, 0.03);
+        border: 1px solid rgba(255, 255, 255, 0.08) !important;
+        border-radius: 12px !important;
+        margin: 8px 0;
+    }
+    details[data-testid="stExpander"] summary {
+        padding: 12px 16px !important;
+        border-radius: 12px !important;
+    }
+
+    /* ═════════════════════════════ TABS ═══════════════════════════════════════ */
+    div[data-testid="stTabs"] button[role="tab"] {
+        background: rgba(255, 255, 255, 0.03);
+        border: 1px solid rgba(255, 255, 255, 0.06);
+        border-radius: 10px 10px 0 0;
+        padding: 10px 20px;
+        color: rgba(229, 233, 240, 0.65);
+        margin-right: 4px;
+    }
+    div[data-testid="stTabs"] button[role="tab"][aria-selected="true"] {
+        background: rgba(244, 163, 74, 0.12);
+        border-color: rgba(244, 163, 74, 0.4);
+        border-bottom: 2px solid rgba(244, 163, 74, 0.9);
+        color: #FFD9A8;
+        font-weight: 600;
+    }
+
+    /* ═════════════════════════════ ALERTS ═════════════════════════════════════ */
+    div[data-testid="stAlert"] {
+        background: rgba(255, 255, 255, 0.035);
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        border-radius: 12px;
+        padding: 12px 16px !important;
+        border-left: 3px solid rgba(244, 163, 74, 0.7) !important;
+    }
+
+    /* ═════════════════════════════ DATAFRAMES / TABLES ═══════════════════════ */
+    div[data-testid="stDataFrame"], div[data-testid="stTable"] {
+        background: rgba(255, 255, 255, 0.02);
+        border: 1px solid rgba(255, 255, 255, 0.06);
+        border-radius: 10px;
+        padding: 4px;
+    }
+
+    /* ═════════════════════════════ CODE / TEXT AREAS ═════════════════════════ */
+    div[data-testid="stCodeBlock"], .stTextInput textarea, .stTextArea textarea {
+        background: rgba(5, 9, 18, 0.6) !important;
+        border: 1px solid rgba(255, 255, 255, 0.08) !important;
+        border-radius: 10px !important;
+    }
+
+    /* ═════════════════════════════ FORM INPUTS ═══════════════════════════════ */
+    .stTextInput input, .stNumberInput input, .stTextArea textarea,
+    div[data-baseweb="select"] > div {
+        background: rgba(255, 255, 255, 0.04) !important;
+        border: 1px solid rgba(255, 255, 255, 0.12) !important;
+        border-radius: 8px !important;
+        color: #E5E9F0 !important;
+    }
+    .stTextInput input:focus, .stNumberInput input:focus, .stTextArea textarea:focus,
+    div[data-baseweb="select"] > div:focus-within {
+        border-color: rgba(244, 163, 74, 0.5) !important;
+        box-shadow: 0 0 0 2px rgba(244, 163, 74, 0.15) !important;
+    }
+    label { color: rgba(229, 233, 240, 0.75) !important; }
+
+    /* ═════════════════════════════ SLIDER ═════════════════════════════════════ */
+    div[data-testid="stSlider"] div[role="slider"] {
+        background: #F4A34A !important;
+        box-shadow: 0 0 12px rgba(244, 163, 74, 0.5) !important;
+    }
+
+    /* ═════════════════════════════ PROGRESS ═══════════════════════════════════ */
+    div[data-testid="stProgress"] > div > div > div > div {
+        background: linear-gradient(90deg, #F4A34A 0%, #FFD9A8 100%) !important;
+        box-shadow: 0 0 10px rgba(244, 163, 74, 0.4);
+    }
+    div[data-testid="stProgress"] > div > div {
+        background: rgba(255, 255, 255, 0.06) !important;
+        border-radius: 6px;
+    }
+
+    /* ═════════════════════════════ TOAST ══════════════════════════════════════ */
+    div[data-testid="stToast"] {
+        background: rgba(15, 22, 41, 0.95) !important;
+        border: 1px solid rgba(244, 163, 74, 0.3) !important;
+    }
+
+    /* ═════════════════════════════ SCROLLBAR ══════════════════════════════════ */
+    ::-webkit-scrollbar { width: 10px; height: 10px; }
+    ::-webkit-scrollbar-track { background: rgba(255, 255, 255, 0.02); }
+    ::-webkit-scrollbar-thumb {
+        background: rgba(244, 163, 74, 0.25);
+        border-radius: 6px;
+    }
+    ::-webkit-scrollbar-thumb:hover { background: rgba(244, 163, 74, 0.45); }
+
+    /* ═════════════════════════════ SIDEBAR (from earlier) ═════════════════════ */
+    section[data-testid="stSidebar"] > div:first-child {
+        background: linear-gradient(160deg,
+                    rgba(15, 22, 41, 0.92) 0%,
+                    rgba(10, 15, 30, 0.90) 100%);
+        border-right: 1px solid rgba(244, 163, 74, 0.12);
+    }
+    /* Header block */
+    .mausam-brand {
+        background: rgba(255, 255, 255, 0.04);
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        border-radius: 14px;
+        padding: 14px 16px;
+        margin: 4px 0 14px 0;
+    }
+    .mausam-brand .name {
+        font-weight: 700;
+        font-size: 1.05em;
+        letter-spacing: 1.2px;
+        background: linear-gradient(90deg, #F4A34A 0%, #FFC998 100%);
+        -webkit-background-clip: text;
+        background-clip: text;
+        color: transparent;
+    }
+    .mausam-brand .tagline {
+        color: rgba(229, 233, 240, 0.55);
+        font-size: 0.68em;
+        letter-spacing: 0.9px;
+        margin-top: 3px;
+        text-transform: uppercase;
+    }
+    /* Hide the radio circle dot */
+    section[data-testid="stSidebar"] div[role="radiogroup"] > label > div:first-child {
+        display: none !important;
+    }
+    /* Each radio item → flat translucent pill (no blur; sidebar-wide) */
+    section[data-testid="stSidebar"] div[role="radiogroup"] > label {
+        background: rgba(255, 255, 255, 0.04);
+        border: 1px solid rgba(255, 255, 255, 0.06);
+        border-radius: 10px;
+        padding: 10px 14px !important;
+        margin: 3px 0 !important;
+        cursor: pointer;
+    }
+    section[data-testid="stSidebar"] div[role="radiogroup"] > label:hover {
+        background: rgba(244, 163, 74, 0.08);
+        border-color: rgba(244, 163, 74, 0.25);
+        transform: translateX(2px);
+    }
+    /* Active (checked) item — orange accent glass */
+    section[data-testid="stSidebar"] div[role="radiogroup"] > label:has(input:checked) {
+        background: linear-gradient(95deg,
+                    rgba(244, 163, 74, 0.18) 0%,
+                    rgba(244, 163, 74, 0.08) 100%);
+        border: 1px solid rgba(244, 163, 74, 0.45);
+        box-shadow: 0 0 24px rgba(244, 163, 74, 0.15),
+                    inset 0 0 12px rgba(244, 163, 74, 0.06);
+    }
+    section[data-testid="stSidebar"] div[role="radiogroup"] > label:has(input:checked) p {
+        color: #FFD9A8 !important;
+        font-weight: 600;
+    }
+    section[data-testid="stSidebar"] div[role="radiogroup"] > label p {
+        font-size: 0.95em !important;
+        letter-spacing: 0.2px;
+    }
+    /* Section labels */
+    section[data-testid="stSidebar"] h3 {
+        color: rgba(244, 163, 74, 0.85);
+        font-size: 0.78em !important;
+        letter-spacing: 1.5px;
+        text-transform: uppercase;
+        margin-top: 18px !important;
+        margin-bottom: 8px !important;
+    }
+    section[data-testid="stSidebar"] hr {
+        border-color: rgba(255, 255, 255, 0.08);
+        margin: 14px 0;
+    }
+    </style>
+    """,
+        unsafe_allow_html=True,
+    )
+
+with st.sidebar:
+    st.markdown(
+        "<div class='mausam-brand'>"
+        "<div class='name'>MAUSAMSETU</div>"
+        "<div class='tagline'>AI-powered climate digital twin of India</div>"
+        "</div>",
+        unsafe_allow_html=True,
+    )
+    _nav_choice = st.radio(
+        "Navigation",
+        _TAB_LABELS,
+        format_func=lambda k: (f"{_TAB_ICONS.get(k, '•')}  {k}"
+                                 if _TAB_ICONS.get(k) else k),
+        key="active_tab",
+        label_visibility="collapsed",
+    )
+    st.markdown("---")
+
+# ── Region selector (global sidebar, below nav) ───────────────────────────────
 with st.sidebar:
     st.markdown("### 🌍 Region  ·  मौसम सेतु")
     region_key = st.radio(
@@ -1301,30 +1595,10 @@ def build_matplotlib_animation_gif(region, target_year, month_idx, var, speed_ms
 
 
 # ══════════════════════════════════════════════════════════════════════════════
-# TABS
+# TABS — active tab is chosen by the vertical nav in the sidebar (above).
+# Only the ACTIVE section is rendered so the other tab bodies never execute.
 # ══════════════════════════════════════════════════════════════════════════════
-# ══════════════════════════════════════════════════════════════════════════════
-# SECTION SELECTOR — only the ACTIVE section is rendered (st.tabs would execute
-# all 9 bodies every rerun; this executes just the one you're viewing).
-# ══════════════════════════════════════════════════════════════════════════════
-_TAB_LABELS = [
-    "Daily Explorer", "Historical Twin", "±1°C What-If",
-    "Model Comparison", "Zone Projections",
-    "2D Dual Animation", "Climate Spirals", "Deep Analytics",
-    "🔥 Training", "🔍 Validation", "🤖 RL Agent",
-]
-try:
-    _active_tab = st.segmented_control(
-        "Section", _TAB_LABELS, default=_TAB_LABELS[0],
-        key="active_tab", label_visibility="collapsed",
-    )
-except Exception:
-    _active_tab = st.radio(
-        "Section", _TAB_LABELS, horizontal=True,
-        key="active_tab", label_visibility="collapsed",
-    )
-if _active_tab is None:
-    _active_tab = _TAB_LABELS[0]
+_active_tab = st.session_state.get("active_tab") or _TAB_LABELS[0]
 
 # Event-driven cache refresh hint when artifacts changed.
 curr_sig = build_data_signature()
@@ -4048,21 +4322,483 @@ def _render_tab10():
             st.info("No RL policies saved yet. Train one in the 'Train RL Agent' tab above.")
 
 
+# ─────────────────────────────────────────────────────────────────
+# Merged 🌐 Explorer tab — three horizontal sub-tabs.
+#   Explorer  → the existing daily-explorer body (rain + temp maps
+#               for a chosen day; historical or model-predicted).
+#   Compare   → two dates side-by-side + plain-English delta summary.
+#   Animation → the existing 2D dual-animation body.
+# ─────────────────────────────────────────────────────────────────
+def _render_compare_subtab():
+    """Compare rain + temp between two dates. Emits a plain-English
+    'what changed' summary + a per-zone delta table."""
+    import datetime as _dt
+
+    st.markdown("### 🔀 Compare two dates")
+    st.caption(
+        "Pick any two calendar dates in the cube; the panel shows both maps "
+        "side-by-side, computes per-cell + per-zone deltas, and writes a "
+        "layman summary of what changed."
+    )
+
+    region = active_region()
+    info = DS.region_info(region, sig=DS.manifest_sig())
+    yr_lo, yr_hi = info["years"]
+
+    col_a, col_b = st.columns(2)
+    with col_a:
+        st.markdown("**Past date**")
+        _y1 = st.number_input("year", yr_lo, yr_hi, value=yr_lo,
+                                key="cmp_y1", step=1)
+        _m1 = st.number_input("month", 1, 12, value=6, key="cmp_m1", step=1)
+        _d1 = st.number_input("day", 1, 31, value=1, key="cmp_d1", step=1)
+    with col_b:
+        st.markdown("**Future / other date**")
+        _y2 = st.number_input("year", yr_lo, yr_hi, value=yr_hi,
+                                key="cmp_y2", step=1)
+        _m2 = st.number_input("month", 1, 12, value=6, key="cmp_m2", step=1)
+        _d2 = st.number_input("day", 1, 31, value=1, key="cmp_d2", step=1)
+
+    try:
+        date_a = _dt.date(int(_y1), int(_m1), int(_d1))
+        date_b = _dt.date(int(_y2), int(_m2), int(_d2))
+    except ValueError as e:
+        st.error(f"Invalid date: {e}")
+        return
+
+    # Load the two days from the cube (small — one 129×135 slice each).
+    ds = DS.load_region(region)
+    times = ds["time"].values
+    times_dt = pd.to_datetime(times)
+    def _find(dt):
+        i = int(np.abs((times_dt - pd.Timestamp(dt)).total_seconds()).argmin())
+        return i, pd.Timestamp(times_dt[i]).date()
+
+    ia, act_a = _find(date_a)
+    ib, act_b = _find(date_b)
+    if act_a != date_a:
+        st.info(f"Nearest cube date to {date_a} is **{act_a}**")
+    if act_b != date_b:
+        st.info(f"Nearest cube date to {date_b} is **{act_b}**")
+
+    rain_a = ds["rain"].isel(time=ia).values
+    rain_b = ds["rain"].isel(time=ib).values
+    tmax_a = ds["tmax"].isel(time=ia).values
+    tmax_b = ds["tmax"].isel(time=ib).values
+    mask_land = ds["mask"].values > 0
+    ds.close()
+
+    # Side-by-side maps
+    st.markdown("#### Rainfall")
+    r_col_a, r_col_b, r_col_c = st.columns(3)
+    with r_col_a:
+        st.caption(f"{act_a} · rainfall (mm/day)")
+        st.plotly_chart(plotly_annual_rain_map(rain_a, str(act_a)),
+                          use_container_width=True)
+    with r_col_b:
+        st.caption(f"{act_b} · rainfall (mm/day)")
+        st.plotly_chart(plotly_annual_rain_map(rain_b, str(act_b)),
+                          use_container_width=True)
+    with r_col_c:
+        st.caption(f"Δ rain = {act_b} − {act_a}")
+        diff_rain = np.where(mask_land, rain_b - rain_a, np.nan)
+        st.plotly_chart(plotly_sensitivity_map(diff_rain, "Δ rain (mm/day)"),
+                          use_container_width=True)
+
+    st.markdown("#### Temperature (tmax)")
+    t_col_a, t_col_b, t_col_c = st.columns(3)
+    with t_col_a:
+        st.caption(f"{act_a} · tmax (°C)")
+        st.plotly_chart(plotly_annual_temp_map(tmax_a, str(act_a)),
+                          use_container_width=True)
+    with t_col_b:
+        st.caption(f"{act_b} · tmax (°C)")
+        st.plotly_chart(plotly_annual_temp_map(tmax_b, str(act_b)),
+                          use_container_width=True)
+    with t_col_c:
+        st.caption(f"Δ tmax = {act_b} − {act_a}")
+        diff_temp = np.where(mask_land, tmax_b - tmax_a, np.nan)
+        st.plotly_chart(plotly_sensitivity_map(diff_temp, "Δ tmax (°C)"),
+                          use_container_width=True)
+
+    # ── Deltas: per-zone table + plain-English summary ──
+    try:
+        from climate_twin.regions import get_zones
+        Z = get_zones()
+        rows = []
+        for z in Z.zones:
+            k = Z.zone_ids.index(z.id)
+            w = Z.membership[..., k].astype(np.float32)
+            wm = w * mask_land.astype(np.float32)
+            wsum = float(wm.sum())
+            if wsum <= 0:
+                continue
+            r_a = float(np.nansum(np.where(np.isfinite(rain_a), rain_a * wm, 0.0)) / wsum)
+            r_b = float(np.nansum(np.where(np.isfinite(rain_b), rain_b * wm, 0.0)) / wsum)
+            t_a = float(np.nansum(np.where(np.isfinite(tmax_a), tmax_a * wm, 0.0)) / wsum)
+            t_b = float(np.nansum(np.where(np.isfinite(tmax_b), tmax_b * wm, 0.0)) / wsum)
+            rows.append({
+                "zone": z.key,
+                "rain_A (mm)": round(r_a, 2),
+                "rain_B (mm)": round(r_b, 2),
+                "Δ rain": round(r_b - r_a, 2),
+                "tmax_A (°C)": round(t_a, 1),
+                "tmax_B (°C)": round(t_b, 1),
+                "Δ tmax": round(t_b - t_a, 2),
+            })
+        st.markdown("#### Per-zone deltas")
+        import pandas as _pd
+        _df = _pd.DataFrame(rows)
+        st.dataframe(_df, use_container_width=True, hide_index=True)
+
+        # ── Plain-English summary ──
+        def _describe(row: dict) -> str:
+            zk = row["zone"]
+            dr = row["Δ rain"]; dt = row["Δ tmax"]
+            r_word = ("noticeably wetter" if dr > 5 else
+                      "slightly wetter"   if dr > 0.5 else
+                      "about the same"    if abs(dr) <= 0.5 else
+                      "slightly drier"    if dr > -5 else
+                      "noticeably drier")
+            t_word = ("markedly warmer"  if dt > 2 else
+                      "slightly warmer"  if dt > 0.5 else
+                      "about the same"   if abs(dt) <= 0.5 else
+                      "slightly cooler"  if dt > -2 else
+                      "markedly cooler")
+            return (
+                f"**{zk}** — the later day is **{r_word}** "
+                f"({dr:+.1f} mm/day) and **{t_word}** ({dt:+.1f} °C)."
+            )
+
+        st.markdown("#### What changed — in plain English")
+        st.caption(
+            f"Comparing **{act_b}** against **{act_a}** "
+            f"({(act_b - act_a).days:+d} days apart)."
+        )
+        # Highlight the biggest movers
+        biggest_wet = max(rows, key=lambda r: r["Δ rain"], default=None)
+        biggest_dry = min(rows, key=lambda r: r["Δ rain"], default=None)
+        biggest_hot = max(rows, key=lambda r: r["Δ tmax"], default=None)
+        biggest_cold = min(rows, key=lambda r: r["Δ tmax"], default=None)
+        bullets = []
+        if biggest_wet and biggest_wet["Δ rain"] > 0.5:
+            bullets.append(
+                f"🌧 **{biggest_wet['zone']}** got the wettest bump "
+                f"(+{biggest_wet['Δ rain']:.1f} mm/day)."
+            )
+        if biggest_dry and biggest_dry["Δ rain"] < -0.5:
+            bullets.append(
+                f"☀ **{biggest_dry['zone']}** dried out the most "
+                f"({biggest_dry['Δ rain']:.1f} mm/day)."
+            )
+        if biggest_hot and biggest_hot["Δ tmax"] > 0.5:
+            bullets.append(
+                f"🔥 **{biggest_hot['zone']}** heated up the most "
+                f"(+{biggest_hot['Δ tmax']:.1f} °C on tmax)."
+            )
+        if biggest_cold and biggest_cold["Δ tmax"] < -0.5:
+            bullets.append(
+                f"❄ **{biggest_cold['zone']}** cooled the most "
+                f"({biggest_cold['Δ tmax']:.1f} °C on tmax)."
+            )
+        if bullets:
+            for b in bullets:
+                st.markdown("- " + b)
+        else:
+            st.info("Both days look very similar across all 9 zones "
+                     "(no zone shifted by more than 0.5 mm or 0.5 °C).")
+
+        with st.expander("Per-zone plain-English breakdown"):
+            for row in rows:
+                st.markdown("- " + _describe(row))
+    except Exception as _e:
+        st.warning(f"Zone-delta summary unavailable: {type(_e).__name__}: {_e}")
+
+
+# ─────────────────────────────────────────────────────────────────
+# 🏠 HOME — weather-app-style landing page
+# ─────────────────────────────────────────────────────────────────
+def _weather_condition(rain_mm: float, tmax_c: float) -> tuple[str, str]:
+    """Return (label, emoji) rule-based from daily rain + max temp."""
+    r = float(rain_mm) if np.isfinite(rain_mm) else 0.0
+    if r >= 20:  return "Thunderstorm", "⛈️"
+    if r >= 5:   return "Rainy",         "🌧️"
+    if r >= 0.5: return "Light Rain",    "🌦️"
+    if tmax_c is not None and np.isfinite(tmax_c) and tmax_c >= 36:
+        return "Hot & Sunny", "☀️"
+    if r > 0.0:  return "Partly Cloudy", "⛅"
+    return "Sunny", "☀️"
+
+
+def _diurnal_from_daily(tmax: float, tmin: float, hours: int = 24) -> list[float]:
+    """Synthetic 24-hour temperature curve given a daily tmax and tmin.
+
+    Simple cosine: min around 6am, max around 3pm. This is a *display*
+    approximation — the underlying cube is daily-only. Labelled as such
+    in the UI so no one mistakes it for a real hourly forecast.
+    """
+    if not (np.isfinite(tmax) and np.isfinite(tmin)):
+        return [float("nan")] * hours
+    mid = 0.5 * (tmax + tmin)
+    half = 0.5 * (tmax - tmin)
+    out = []
+    for h in range(hours):
+        # cos phase: -1 at h=6 (min), +1 at h=15 (max), then back
+        phase = np.cos((h - 15) / 24.0 * 2 * np.pi)
+        out.append(float(mid + half * phase))
+    return out
+
+
+def _render_tab_home():
+    """A weather-app-style landing page driven by the india.nc cube."""
+    import datetime as _dt
+
+    region = active_region()
+    info = DS.region_info(region, sig=DS.manifest_sig())
+
+    # ── Location + latest cube day ────────────────────────────
+    ds = DS.load_region(region)
+    times = pd.to_datetime(ds["time"].values)
+    latest_idx = int(len(times) - 1)
+    latest_date = times[latest_idx].date()
+
+    # National mean over land cells (no per-city gauge in the cube yet)
+    mask_land = ds["mask"].values > 0
+    rain_grid = ds["rain"].isel(time=latest_idx).values
+    tmax_grid = ds["tmax"].isel(time=latest_idx).values
+    tmin_grid = ds["tmin"].isel(time=latest_idx).values
+
+    def _mean(a):
+        v = a[mask_land & np.isfinite(a)]
+        return float(v.mean()) if v.size else float("nan")
+    rain_now = _mean(rain_grid)
+    tmax_now = _mean(tmax_grid)
+    tmin_now = _mean(tmin_grid)
+
+    # Feels-like heuristic (heat index approx for temp + humidity proxy).
+    # Cube has no humidity — use rain-proxy: wet day → +1.5 °C perceived.
+    feels_like = tmax_now + (1.5 if rain_now > 0.5 else 0.0)
+    cond_label, cond_emoji = _weather_condition(rain_now, tmax_now)
+
+    # Precipitation "chance" — from area fraction of finite land cells with rain>0
+    finite_land = np.isfinite(rain_grid) & mask_land
+    if finite_land.any():
+        precip_pct = int(100 * (rain_grid[finite_land] > 0.1).mean())
+    else:
+        precip_pct = 0
+
+    # ── Hero card ─────────────────────────────────────────────
+    label = DS.REGIONS[region]["label"]
+    stamp = latest_date.strftime("%A, %d %B %Y")
+    hero_left, hero_right = st.columns([1.2, 1], gap="large")
+    with hero_left:
+        st.markdown(
+            f"""
+            <div style="background:rgba(255,255,255,0.035);border:1px solid rgba(255,255,255,0.08);
+                        border-radius:20px;padding:24px 28px;">
+                <div style="color:#8AB4F8;font-size:0.85em;letter-spacing:0.5px;">
+                    📍 <b>{label}</b>
+                </div>
+                <div style="color:rgba(229,233,240,0.55);font-size:0.85em;margin-top:2px;">
+                    {stamp} · {_dt.datetime.now().strftime('%H:%M')} IST
+                </div>
+                <div style="display:flex;align-items:center;gap:16px;margin-top:16px;">
+                    <div style="font-size:4.5em;font-weight:700;color:#F0F3F8;line-height:1;">
+                        {tmax_now:.0f}°<span style="font-size:0.5em;color:rgba(229,233,240,0.55);">C</span>
+                    </div>
+                    <div style="font-size:3em;line-height:1;">{cond_emoji}</div>
+                </div>
+                <div style="font-size:1.4em;font-weight:600;color:#F0F3F8;margin-top:6px;">
+                    {cond_label}
+                </div>
+                <div style="color:rgba(229,233,240,0.6);font-size:0.9em;">
+                    Feels like {feels_like:.0f}°C · Rain {rain_now:.1f} mm today
+                </div>
+                <div style="display:flex;gap:10px;margin-top:16px;">
+                    <div style="background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.08);
+                                border-radius:20px;padding:6px 14px;color:#8AB4F8;font-weight:600;">
+                        Min {tmin_now:.0f}°C
+                    </div>
+                    <div style="background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.08);
+                                border-radius:20px;padding:6px 14px;color:#F4A34A;font-weight:600;">
+                        Max {tmax_now:.0f}°C
+                    </div>
+                </div>
+            </div>
+            """,
+            unsafe_allow_html=True,
+        )
+    with hero_right:
+        st.markdown(
+            """
+            <div style="background:linear-gradient(135deg, rgba(138,180,248,0.15) 0%,
+                        rgba(244,163,74,0.12) 100%);
+                        border:1px solid rgba(255,255,255,0.08);
+                        border-radius:20px;padding:24px;height:100%;
+                        display:flex;flex-direction:column;justify-content:center;
+                        align-items:center;text-align:center;min-height:210px;">
+                <div style="font-size:5em;line-height:1;">🇮🇳</div>
+                <div style="color:#FFD9A8;font-weight:700;font-size:1.15em;margin-top:10px;
+                            letter-spacing:0.5px;">MausamSetu मौसम सेतु</div>
+                <div style="color:rgba(229,233,240,0.7);font-size:0.85em;margin-top:6px;">
+                    Zone-aware climate digital twin<br>
+                    of India — powered by ISRO / IMD data
+                </div>
+            </div>
+            """,
+            unsafe_allow_html=True,
+        )
+
+    # ── Quick stats row (Precipitation / Humidity-proxy / Wind-placeholder) ──
+    st.markdown("")
+    stat_cols = st.columns(4)
+    stat_cols[0].metric("Precipitation chance", f"{precip_pct}%")
+    stat_cols[1].metric("Cells wet today",
+                         f"{int((rain_grid[finite_land] > 0.1).sum()):,}")
+    stat_cols[2].metric("Rain (mean, land)", f"{rain_now:.1f} mm/day")
+    stat_cols[3].metric("Δ tmax vs tmin", f"{(tmax_now - tmin_now):.1f} °C")
+
+    # ── Hourly prediction row (synthetic diurnal — labelled) ──────
+    st.markdown("### Hourly outlook  <span style='color:#6b7280;font-weight:400;font-size:0.7em;'>"
+                 "diurnal reconstruction from daily tmax/tmin — cube is daily-only</span>",
+                 unsafe_allow_html=True)
+    hours = _diurnal_from_daily(tmax_now, tmin_now)
+    labels = [f"{h:02d}" for h in range(24)]
+    # Weather emojis vary through the day: warmer hours → sunnier
+    def _hour_icon(h: int, t: float) -> str:
+        if not np.isfinite(t):
+            return "•"
+        if 6 <= h <= 18:
+            if rain_now >= 5: return "🌧️"
+            if rain_now >= 0.5: return "⛅"
+            return "☀️"
+        return "🌙" if rain_now < 0.5 else "🌧️"
+
+    # Render as a Plotly area chart with the 24 numbers laid out
+    import plotly.graph_objects as go
+    fig = go.Figure(go.Scatter(
+        x=labels, y=hours,
+        mode="lines+markers+text",
+        line=dict(color="#F4A34A", width=3, shape="spline"),
+        fill="tozeroy",
+        fillcolor="rgba(244,163,74,0.15)",
+        marker=dict(size=8, color="#FFD9A8"),
+        text=[f"{v:.0f}°" for v in hours],
+        textposition="top center",
+        textfont=dict(color="#F0F3F8", size=10),
+        hovertemplate="%{x}:00  %{y:.1f} °C<extra></extra>",
+    ))
+    fig.update_layout(
+        height=200, margin=dict(l=8, r=8, t=8, b=8),
+        paper_bgcolor="rgba(0,0,0,0)",
+        plot_bgcolor="rgba(0,0,0,0)",
+        xaxis=dict(showgrid=False, tickfont=dict(color="rgba(229,233,240,0.65)")),
+        yaxis=dict(showgrid=False, showticklabels=False,
+                    range=[min(hours) - 3, max(hours) + 4]),
+    )
+    st.plotly_chart(fig, use_container_width=True, config={"displayModeBar": False})
+
+    # Compact icon strip below
+    icon_cols = st.columns(24)
+    for i, (h, t) in enumerate(zip(range(24), hours)):
+        icon_cols[i].markdown(
+            f"<div style='text-align:center;font-size:0.75em;'>"
+            f"<div style='color:rgba(229,233,240,0.5);'>{h:02d}</div>"
+            f"<div style='font-size:1.4em;'>{_hour_icon(h, t)}</div>"
+            f"</div>",
+            unsafe_allow_html=True,
+        )
+
+    # ── 7-day forecast (from the cube tail) ──────────────────────
+    st.markdown("### 7-day outlook  <span style='color:#6b7280;font-weight:400;font-size:0.7em;'>"
+                 "last 7 days of the cube · national land mean</span>",
+                 unsafe_allow_html=True)
+    n_days = 7
+    tail_start = max(0, latest_idx - n_days + 1)
+    tail_idx = np.arange(tail_start, latest_idx + 1)
+    tail_rain = ds["rain"].isel(time=tail_idx).values
+    tail_tmax = ds["tmax"].isel(time=tail_idx).values
+    tail_tmin = ds["tmin"].isel(time=tail_idx).values
+    tail_times = pd.to_datetime(ds["time"].isel(time=tail_idx).values)
+    ds.close()
+
+    day_cols = st.columns(len(tail_idx))
+    for i, col in enumerate(day_cols):
+        r = _mean(tail_rain[i])
+        tmx = _mean(tail_tmax[i])
+        tmn = _mean(tail_tmin[i])
+        lab, emoji = _weather_condition(r, tmx)
+        dow = tail_times[i].strftime("%a")
+        date_short = tail_times[i].strftime("%d %b")
+        with col:
+            st.markdown(
+                f"""
+                <div style="background:rgba(255,255,255,0.04);
+                            border:1px solid rgba(255,255,255,0.08);
+                            border-radius:14px;padding:12px 10px;text-align:center;
+                            min-height:180px;">
+                    <div style="color:#F0F3F8;font-weight:700;">{dow}</div>
+                    <div style="color:rgba(229,233,240,0.5);font-size:0.75em;">{date_short}</div>
+                    <div style="font-size:2em;margin:8px 0;">{emoji}</div>
+                    <div style="color:#F4A34A;font-weight:700;font-size:1.1em;">{tmx:.0f}°</div>
+                    <div style="color:#8AB4F8;font-size:0.85em;">{tmn:.0f}°</div>
+                    <div style="color:rgba(229,233,240,0.55);font-size:0.7em;margin-top:6px;">
+                        💧 {r:.1f} mm
+                    </div>
+                    <div style="color:rgba(229,233,240,0.5);font-size:0.7em;">{lab}</div>
+                </div>
+                """,
+                unsafe_allow_html=True,
+            )
+
+    st.markdown("")
+    st.caption(
+        f"Data source: `data/processed/{region}.nc` "
+        f"(manifest sig `{DS.manifest_sig()}`) · "
+        f"cube covers {info['years'][0]}–{info['years'][1]}. "
+        f"Hourly values are a **display reconstruction** from daily "
+        f"tmax/tmin; the underlying dataset is daily-only."
+    )
+
+
+def _render_tab_explorer():
+    """Merged Explorer — three horizontal sub-tabs, radio-driven so
+    only the ACTIVE sub-body runs (unlike st.tabs which executes every
+    child on every rerun)."""
+    _SUB = ["🏠 Explorer", "🔀 Compare", "🎞 Animation"]
+    try:
+        sub = st.segmented_control(
+            "Explorer view", _SUB, default=_SUB[0],
+            key="explorer_subtab", label_visibility="collapsed",
+        )
+    except Exception:
+        sub = st.radio(
+            "Explorer view", _SUB, horizontal=True,
+            key="explorer_subtab", label_visibility="collapsed",
+        )
+    st.markdown("---")
+    if sub == _SUB[1]:
+        _render_compare_subtab()
+    elif sub == _SUB[2]:
+        _render_tab6()
+    else:
+        _render_tab1()
+
+
 # ── Render ONLY the active section (its fragment); the others never execute. ──
 _TAB_RENDERERS = {
-    _TAB_LABELS[0]: _render_tab1,
-    _TAB_LABELS[1]: _render_tab2,
-    _TAB_LABELS[2]: _render_tab3,
-    _TAB_LABELS[3]: _render_tab4,
-    _TAB_LABELS[4]: _render_tab5,
-    _TAB_LABELS[5]: _render_tab6,
-    _TAB_LABELS[6]: _render_tab7,
-    _TAB_LABELS[7]: _render_tab8,
-    _TAB_LABELS[8]: _render_tab9,               # 🔥 Training
-    _TAB_LABELS[9]: _render_tab_validation,     # 🔍 Validation
-    _TAB_LABELS[10]: _render_tab10,              # 🤖 RL Agent
+    _TAB_LABELS[0]: _render_tab_home,           # 🏠 Home (weather-app landing)
+    _TAB_LABELS[1]: _render_tab_explorer,       # 🌐 Explorer (merged)
+    _TAB_LABELS[2]: _render_tab3,               # ±1°C What-If
+    _TAB_LABELS[3]: _render_tab4,               # Model Comparison
+    _TAB_LABELS[4]: _render_tab5,               # Zone Projections
+    _TAB_LABELS[5]: _render_tab7,               # Climate Spirals
+    _TAB_LABELS[6]: _render_tab8,               # Deep Analytics
+    _TAB_LABELS[7]: _render_tab9,               # 🔥 Training
+    _TAB_LABELS[8]: _render_tab_validation,     # 🔍 Validation
+    _TAB_LABELS[9]: _render_tab10,              # 🤖 RL Agent
 }
-_TAB_RENDERERS.get(_active_tab, _render_tab1)()
+_TAB_RENDERERS.get(_active_tab, _render_tab_home)()
 
 
 # ── 🐢 Perf panel (sidebar toggle; renders this rerun's timings, slowest first) ──
