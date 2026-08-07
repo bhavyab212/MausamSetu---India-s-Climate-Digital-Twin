@@ -214,7 +214,7 @@ def load_artifacts(region="india"):
 
 # ── Vertical navigation (sidebar, top) ────────────────────────────────────────
 _TAB_LABELS = [
-    "Home", "Explorer", "±1°C What-If",
+    "Home", "Explorer",
     "Model Comparison", "Zone Projections",
     "Climate Spirals", "Deep Analytics",
     "🔥 Training", "🔍 Validation", "🤖 RL Agent",
@@ -223,7 +223,6 @@ _TAB_LABELS = [
 _TAB_ICONS = {
     "Home":              "🏠",
     "Explorer":          "🌐",
-    "±1°C What-If":      "❓",
     "Model Comparison":  "🧭",
     "Zone Projections":  "🗺",
     "Climate Spirals":   "🌀",
@@ -232,6 +231,11 @@ _TAB_ICONS = {
     "🔍 Validation":     "",
     "🤖 RL Agent":       "",
 }
+# NOTE: "±1°C What-If" is intentionally NOT listed here.
+# Its old body (climate_twin.app_v2._render_tab3) has been retired to
+# ``climate_twin/pages/_archive/whatif_old.py`` and its replacement
+# lives at ``climate_twin/pages/30_What_If.py`` which Streamlit's
+# multipage router registers automatically. See docs/whatif_recon.md.
 
 # ── Glassmorphic global theme (injected ONCE per session for speed) ─────────
 # NOTE: backdrop-filter is expensive (browser must blur the background behind
@@ -4786,17 +4790,18 @@ def _render_tab_explorer():
 
 
 # ── Render ONLY the active section (its fragment); the others never execute. ──
+# NOTE: index 2 was "±1°C What-If" → _render_tab3.  Retired in the What-If
+# engine rebuild (see pages/30_What_If.py + pages/_archive/whatif_old.py).
 _TAB_RENDERERS = {
     _TAB_LABELS[0]: _render_tab_home,           # 🏠 Home (weather-app landing)
     _TAB_LABELS[1]: _render_tab_explorer,       # 🌐 Explorer (merged)
-    _TAB_LABELS[2]: _render_tab3,               # ±1°C What-If
-    _TAB_LABELS[3]: _render_tab4,               # Model Comparison
-    _TAB_LABELS[4]: _render_tab5,               # Zone Projections
-    _TAB_LABELS[5]: _render_tab7,               # Climate Spirals
-    _TAB_LABELS[6]: _render_tab8,               # Deep Analytics
-    _TAB_LABELS[7]: _render_tab9,               # 🔥 Training
-    _TAB_LABELS[8]: _render_tab_validation,     # 🔍 Validation
-    _TAB_LABELS[9]: _render_tab10,              # 🤖 RL Agent
+    _TAB_LABELS[2]: _render_tab4,               # Model Comparison
+    _TAB_LABELS[3]: _render_tab5,               # Zone Projections
+    _TAB_LABELS[4]: _render_tab7,               # Climate Spirals
+    _TAB_LABELS[5]: _render_tab8,               # Deep Analytics
+    _TAB_LABELS[6]: _render_tab9,               # 🔥 Training
+    _TAB_LABELS[7]: _render_tab_validation,     # 🔍 Validation
+    _TAB_LABELS[8]: _render_tab10,              # 🤖 RL Agent
 }
 _TAB_RENDERERS.get(_active_tab, _render_tab_home)()
 

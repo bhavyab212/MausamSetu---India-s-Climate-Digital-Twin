@@ -1,0 +1,76 @@
+"""
+whatif.config — single source of truth for paths + constants.
+
+Nothing else in the package hard-codes a filesystem path or an IMD
+sentinel. If you find a magic number or a path string outside this
+subpackage, it is a bug — file it and move it here.
+"""
+from .paths import (
+    DATA_ROOT,
+    RAINFALL_DIR,
+    TMAX_DIR,
+    TMIN_DIR,
+    INSAT_DIR,
+    SUBBASIN_DIR,
+    PROCESSED_DIR,
+    CUBE_INDIA,
+    CUBE_CAUVERY,
+    MANIFEST_YAML,
+    MANIFEST_SIG,
+    STATES_GEOJSON,
+    ZONES_DIR,
+    ZONE_MASK_NPY,
+    ZONE_MEMBERSHIP_NPY,
+    ZONE_MASK_SHA,
+    ZONE_STATS_JSON,
+    CHECKPOINTS,
+    STREAMLIT_ROOT,
+    CACHE_DIR,
+)
+from .constants import (
+    IMD_SENTINELS,
+    GRID_DEG,
+    N_LAT,
+    N_LON,
+    LAT_MIN,
+    LAT_MAX,
+    LON_MIN,
+    LON_MAX,
+    TZ,
+    UNITS,
+    IMD_RAINFALL_CATEGORIES_MM_DAY,
+)
+
+__all__ = [
+    "DATA_ROOT",
+    "RAINFALL_DIR",
+    "TMAX_DIR",
+    "TMIN_DIR",
+    "INSAT_DIR",
+    "SUBBASIN_DIR",
+    "PROCESSED_DIR",
+    "CUBE_INDIA",
+    "CUBE_CAUVERY",
+    "MANIFEST_YAML",
+    "MANIFEST_SIG",
+    "STATES_GEOJSON",
+    "ZONES_DIR",
+    "ZONE_MASK_NPY",
+    "ZONE_MEMBERSHIP_NPY",
+    "ZONE_MASK_SHA",
+    "ZONE_STATS_JSON",
+    "CHECKPOINTS",
+    "STREAMLIT_ROOT",
+    "CACHE_DIR",
+    "IMD_SENTINELS",
+    "GRID_DEG",
+    "N_LAT",
+    "N_LON",
+    "LAT_MIN",
+    "LAT_MAX",
+    "LON_MIN",
+    "LON_MAX",
+    "TZ",
+    "UNITS",
+    "IMD_RAINFALL_CATEGORIES_MM_DAY",
+]
