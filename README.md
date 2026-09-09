@@ -578,6 +578,18 @@ Open your browser and navigate to:
 http://localhost:8501
 ```
 
+> [!IMPORTANT]
+> **First-Run Warmup & Automatic Cache Generation Notice:**  
+> The **very first run** will be noticeably slower to boot and calculate initial views than subsequent runs.  
+>
+> **Why?** On a cold start without existing caches, the engine automatically:
+> 1. Reads and indexes the 75-year daily master NetCDF cubes (`india.nc` and `cauvery.nc`, ~860 MB of climate data).
+> 2. Computes baseline climatological statistics, land-mean temperatures, and diurnal ranges for every region.
+> 3. Computes and serializes solar extraterrestrial radiation tables (`ra_table.nc`) and Hargreaves potential evapotranspiration coefficients.
+> 4. Populates the on-disk cache directory (`climate_twin/.whatif_cache/`) and in-memory Streamlit caches (`@st.cache_data`).
+>
+> **Subsequent Performance:** Once these initial caches are generated, all subsequent page loads, tab switches, historical queries, and scenario runs are **sub-second / near-instantaneous ($O(1)$)**. You only pay the cold-start cache generation cost once!
+
 ---
 
 ### Testing & Quality Guards
