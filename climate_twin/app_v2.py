@@ -202,20 +202,29 @@ def load_artifacts(region="india"):
 
     sens = None
     if region == "india":
-        sens_path = os.path.join("data", "sensitivity_map.npy")
-        if os.path.exists(sens_path):
+        # Search multiple candidate paths — Streamlit's CWD depends on
+        # how the app was launched, so hard-coding "data/..." is brittle.
+        _here = os.path.dirname(os.path.abspath(__file__))
+        candidates = [
+            os.path.join("data", "sensitivity_map.npy"),
+            os.path.join(_here, "sensitivity_map.npy"),
+            os.path.join(_here, "data", "sensitivity_map.npy"),
+        ]
+        for sens_path in candidates:
+            if not os.path.exists(sens_path):
+                continue
             try:
                 sm = np.load(sens_path)
                 if sm.shape == mask.shape:
                     sens = sm
+                    break
             except Exception:
-                sens = None
+                continue
     return rain, temp, mask, sens
 
 # ── Vertical navigation (sidebar, top) ────────────────────────────────────────
 _TAB_LABELS = [
-    "Home", "Explorer",
-    "Model Comparison", "Zone Projections",
+    "Home", "Explorer", "What If",
     "Climate Spirals", "Deep Analytics",
     "🔥 Training", "🔍 Validation", "🤖 RL Agent",
 ]
@@ -223,8 +232,7 @@ _TAB_LABELS = [
 _TAB_ICONS = {
     "Home":              "🏠",
     "Explorer":          "🌐",
-    "Model Comparison":  "🧭",
-    "Zone Projections":  "🗺",
+    "What If":           "❓",
     "Climate Spirals":   "🌀",
     "Deep Analytics":    "📊",
     "🔥 Training":       "",
@@ -565,6 +573,280 @@ else:
 N_YEARS = len(rain_data)
 FUTURE_END = 2075
 
+
+# ── Cached derived stats (loads-once-per-region, then O(1) on rerun) ────
+# Every helper below takes (region, n_years) as a cache key. Because
+# ``st.cache_data.clear()`` fires when the region changes (see the
+# guard right above ``load_artifacts``), a stale value from another
+# region cannot leak in. All helpers reference the module-level
+# ``rain_data / temp_data / mask`` globals — those are the outputs of
+# the already-cached ``load_artifacts``, so they're stable for the
+# lifetime of the region session. The point is to cache the *derived*
+# per-year means, epoch means, and 5-yr trends that were being
+# recomputed on every rerun by every tab that touched them.
+@st.cache_data(show_spinner=False)
+def _cached_epoch_clim_rain(region: str, n_years: int):
+    return np.nanmean(rain_data[-10:], axis=0)
+
+
+@st.cache_data(show_spinner=False)
+def _cached_epoch_clim_temp(region: str, n_years: int):
+    return np.nanmean(temp_data[-10:], axis=0)
+
+
+@st.cache_data(show_spinner=False)
+def _cached_past_present_rain(region: str, n_years: int):
+    return (
+        np.nanmean(rain_data[:16], axis=0),
+        np.nanmean(rain_data[-15:], axis=0),
+    )
+
+
+@st.cache_data(show_spinner=False)
+def _cached_per_year_rain_series(region: str, n_years: int):
+    return [
+        float(np.nanmean(np.where(mask == 1, rain_data[i], np.nan)))
+        for i in range(n_years)
+    ]
+
+
+@st.cache_data(show_spinner=False)
+def _cached_per_year_temp_series(region: str, n_years: int):
+    return [
+        float(np.nanmean(np.where(mask == 1, temp_data[i], np.nan)))
+        for i in range(n_years)
+    ]
+
+
+@st.cache_data(show_spinner=False)
+def _cached_5yr_trend(region: str, n_years: int):
+    r_trend = np.nanmean(rain_data[-5:] - rain_data[-10:-5], axis=0) / 5
+    t_trend = np.nanmean(temp_data[-5:] - temp_data[-10:-5], axis=0) / 5
+    return r_trend, t_trend
+
+
+@st.cache_data(show_spinner=False)
+def _cached_last_year_temp_mean(region: str, n_years: int):
+    return float(np.nanmean(temp_data[-1]))
+
+
+# ── Tab-specific caching (Home / Explorer / What-If) ────────────────────
+# Everything below caches on a stable key so the same render is served
+# from memory on every rerun. The visible UI is unchanged; only the
+# redundant recomputation is skipped.
+@st.cache_data(show_spinner=False)
+def _cached_home_hero(region: str, day_key: str, year: int, doy_idx: int):
+    """Home hero card scalars for (region, calendar-day).
+
+    Picks the cube's row that matches today's day-of-year inside the
+    most-recent available year — the cube ends at 2025 but the calendar
+    keeps advancing, so we clamp to the last day of the cube if today
+    is past the last observation."""
+    ds = DS.load_region(region)
+    mask_land = ds["mask"].values > 0
+    times = pd.to_datetime(ds["time"].values)
+
+    year_mask = times.year == int(year)
+    if year_mask.any():
+        year_times = times[year_mask]
+        year_indices = np.flatnonzero(year_mask)
+        year_doys = year_times.dayofyear.to_numpy()
+        pick = int(np.clip(np.searchsorted(year_doys, doy_idx), 0, len(year_doys) - 1))
+        cube_idx = int(year_indices[pick])
+    else:
+        cube_idx = int(len(times) - 1)
+    actual_date = times[cube_idx].date().isoformat()
+
+    rain_grid = ds["rain"].isel(time=cube_idx).values
+    tmax_grid = ds["tmax"].isel(time=cube_idx).values
+    tmin_grid = ds["tmin"].isel(time=cube_idx).values
+
+    def _mean(a):
+        v = a[mask_land & np.isfinite(a)]
+        return float(v.mean()) if v.size else float("nan")
+
+    finite_land = np.isfinite(rain_grid) & mask_land
+    precip_pct = int(100 * (rain_grid[finite_land] > 0.1).mean()) if finite_land.any() else 0
+    wet_cells = int((rain_grid[finite_land] > 0.1).sum()) if finite_land.any() else 0
+
+    return {
+        "rain_now": _mean(rain_grid),
+        "tmax_now": _mean(tmax_grid),
+        "tmin_now": _mean(tmin_grid),
+        "precip_pct": precip_pct,
+        "wet_cells": wet_cells,
+        "actual_date": actual_date,
+    }
+
+
+@st.cache_data(show_spinner=False)
+def _cached_explorer_rain_grid(region: str, year: int, doy: int, n_years: int):
+    """Explorer per-day rain grid + rain_vmax; None when year not on disk."""
+    arr = get_nc_year_data(year, region)
+    if arr is None:
+        return None, None
+    n_t = int(arr.shape[0])
+    d_idx = int(doy) - 1
+    if d_idx >= n_t:
+        clim_r = get_day_rain_climatology(doy)
+        last_r = np.maximum(np.nan_to_num(arr[-1], nan=0.0, posinf=0.0, neginf=0.0), 0.0)
+        rg = np.where(
+            mask == 1,
+            0.55 * np.nan_to_num(clim_r, nan=0.0) + 0.45 * last_r,
+            np.nan,
+        )
+    else:
+        rg = np.maximum(arr[d_idx], 0.0)
+        rg = np.where(mask == 1, rg, np.nan)
+        land_ok = np.isfinite(rg) & (mask == 1)
+        frac = float(np.mean(land_ok)) if np.any(mask == 1) else 0.0
+        if frac < 0.82:
+            clim_r = get_day_rain_climatology(doy)
+            rg = np.where(
+                land_ok,
+                0.72 * rg + 0.28 * np.nan_to_num(clim_r, nan=0.0),
+                np.where(mask == 1, np.nan_to_num(clim_r, nan=0.0), np.nan),
+            )
+    rain_vmax = float(np.nanpercentile(np.where(mask == 1, rg, np.nan), 99))
+    return rg, max(12.0, rain_vmax)
+
+
+@st.cache_data(show_spinner=False)
+def _cached_explorer_temp_grid(region: str, year: int, doy: int, n_years: int):
+    """Explorer per-day temperature grid + auto colour bounds."""
+    arr = DS.daily_tmax(region, int(year))
+    if arr is None:
+        return None, None, None
+    di = int(doy) - 1
+    if di >= arr.shape[0]:
+        di = arr.shape[0] - 1
+    tg = arr[di]
+    tvals = np.where(mask == 1, tg, np.nan)
+    t_lo = float(np.nanpercentile(tvals, 5))
+    t_hi = float(np.nanpercentile(tvals, 95))
+    t_min = max(8.0, t_lo - 1.0)
+    t_max = min(52.0, max(t_min + 6.0, t_hi + 1.0))
+    return tg, t_min, t_max
+
+
+@st.cache_data(show_spinner=False)
+def _cached_home_7day_tail(region: str, day_key: str):
+    """Home tab's 7-day tail: land-mean rain/tmax/tmin per day for the
+    last 7 days of the cube, plus the date strings. Cached per calendar
+    day so a page rerun is a memory lookup."""
+    ds = DS.load_region(region)
+    mask_land = ds["mask"].values > 0
+    times = pd.to_datetime(ds["time"].values)
+    latest_idx = int(len(times) - 1)
+    n = 7
+    start = max(0, latest_idx - n + 1)
+    idx = np.arange(start, latest_idx + 1)
+    tail_rain = ds["rain"].isel(time=idx).values
+    tail_tmax = ds["tmax"].isel(time=idx).values
+    tail_tmin = ds["tmin"].isel(time=idx).values
+    tail_times = pd.to_datetime(ds["time"].isel(time=idx).values)
+    ds.close()
+
+    def _lm(a):
+        v = a[mask_land & np.isfinite(a)]
+        return float(v.mean()) if v.size else float("nan")
+
+    rows = []
+    for i in range(len(idx)):
+        rows.append({
+            "date": tail_times[i].date().isoformat(),
+            "dow": tail_times[i].strftime("%a"),
+            "date_short": tail_times[i].strftime("%d %b"),
+            "rain": _lm(tail_rain[i]),
+            "tmax": _lm(tail_tmax[i]),
+            "tmin": _lm(tail_tmin[i]),
+        })
+    return rows
+
+
+@st.cache_data(show_spinner=False)
+def _cached_whatif_future(region: str, delta_t_key: int, n_years: int):
+    """What-If future_rain grid + shared vmax. ``delta_t_key`` is
+    ``round(delta_t * 10)`` so the cache key is integer-stable."""
+    if sens_map is None:
+        return None
+    delta_t = float(delta_t_key) / 10.0
+    past_rain, present_rain = _cached_past_present_rain(region, n_years)
+    future_rain = present_rain + sens_map * delta_t
+    land_stack = np.where(
+        mask == 1,
+        np.stack([past_rain, present_rain, future_rain]),
+        np.nan,
+    )
+    p99 = (
+        float(np.nanpercentile(land_stack, 99))
+        if np.any(np.isfinite(land_stack))
+        else 1500.0
+    )
+    rain_vmax = max(400.0, min(3000.0, p99 * 1.05))
+    return {"future_rain": future_rain, "rain_vmax": rain_vmax}
+
+
+def _prewarm_caches(region: str, n_years: int) -> None:
+    """Fire every cache helper the "hot" tabs read from — Home,
+    Explorer, What-If, Deep Analytics — once per (session, region).
+
+    Result: every subsequent menu click is an O(1) memory lookup.
+    We deliberately keep the prewarm scoped to *derived* helpers,
+    not to full tab render — Streamlit's fragments can't be warmed
+    from outside, and we don't want to double-render.
+    """
+    import datetime as _dt
+
+    # ── Common per-year + epoch stats (Deep Analytics + Explorer chart) ──
+    _cached_epoch_clim_rain(region, n_years)
+    _cached_epoch_clim_temp(region, n_years)
+    _cached_per_year_rain_series(region, n_years)
+    _cached_per_year_temp_series(region, n_years)
+    _cached_5yr_trend(region, n_years)
+    _cached_last_year_temp_mean(region, n_years)
+    _cached_past_present_rain(region, n_years)
+
+    # ── Home hero for today ──
+    _region_years = DS.region_info(region, sig=DS.manifest_sig())["all_years"]
+    if _region_years:
+        cube_end_year = int(max(_region_years))
+        today = _dt.date.today()
+        data_year = min(today.year, cube_end_year)
+        try:
+            _cached_home_hero(region, today.isoformat(),
+                                data_year, today.timetuple().tm_yday)
+        except Exception:
+            pass
+
+    # ── Explorer defaults (year=2026 or nearest cube year, June 1) ──
+    if _region_years:
+        pref_year = 2026 if 2026 in _region_years else int(max(_region_years))
+        try:
+            _cached_explorer_rain_grid(region, int(pref_year), 152, n_years)
+            _cached_explorer_temp_grid(region, int(pref_year), 152, n_years)
+        except Exception:
+            pass
+
+    # ── What-If — prewarm the whole slider range so every tick is instant ──
+    if sens_map is not None:
+        for k in range(-20, 31):        # -2.0 .. +3.0 in 0.1 °C steps
+            try:
+                _cached_whatif_future(region, int(k), n_years)
+            except Exception:
+                break
+
+
+# Fire the prewarm ONCE per (session, region). ``st.cache_data.clear()``
+# on region change already invalidates the entries; this session guard
+# just makes sure we don't rerun the loop on every widget interaction.
+_PREWARM_KEY = f"_prewarm_done::{active_region()}"
+if not st.session_state.get(_PREWARM_KEY):
+    with st.spinner("Warming up caches for instant tab switches…"):
+        _prewarm_caches(active_region(), N_YEARS)
+    st.session_state[_PREWARM_KEY] = True
+
+
 # ── Region context panel (sidebar, under the selector) ────────────────────────
 with st.sidebar:
     _info = DS.region_info(active_region(), sig=DS.manifest_sig())
@@ -759,7 +1041,7 @@ def get_day_temp_climatology(doy, years_window=10):
             grids.append(tg_year[d_idx])
     if grids:
         out = np.nanmean(np.array(grids), axis=0)
-        out = np.nan_to_num(out, nan=float(np.nanmean(temp_data[-1])))
+        out = np.nan_to_num(out, nan=_cached_last_year_temp_mean(active_region(), N_YEARS))
         return out
     return np.nan_to_num(temp_data[-1], nan=30.0)
 
@@ -850,7 +1132,7 @@ def predict_future_annual(target_year):
         temp_pred = pred[..., 1] * tr + tmin
         # Physical plausibility guardrails for India forecasts.
         rain_pred = np.clip(np.nan_to_num(rain_pred, nan=0.0), 0.0, 12000.0)
-        temp_pred = np.clip(np.nan_to_num(temp_pred, nan=float(np.nanmean(temp_data[-1]))), 5.0, 55.0)
+        temp_pred = np.clip(np.nan_to_num(temp_pred, nan=_cached_last_year_temp_mean(active_region(), N_YEARS)), 5.0, 55.0)
         if mean_uncertainty is not None:
             # Convert normalized uncertainty back to physical units.
             rain_unc = mean_uncertainty[..., 0] * rr
@@ -862,8 +1144,7 @@ def predict_future_annual(target_year):
     except Exception as e:
         st.warning(f"Ensemble fallback: {e}")
         # Fallback: simple trend projection
-        r_trend = np.nanmean(rain_data[-5:] - rain_data[-10:-5], axis=0) / 5
-        t_trend = np.nanmean(temp_data[-5:] - temp_data[-10:-5], axis=0) / 5
+        r_trend, t_trend = _cached_5yr_trend(active_region(), N_YEARS)
         return rain_data[-1] + r_trend * steps, temp_data[-1] + t_trend * steps, None, None, None
 
 @timed("inference: get_all_future_annual")
@@ -910,15 +1191,14 @@ def get_all_future_annual(target_year):
             rain_pred = pred[..., 0] * rr + rmin
             temp_pred = pred[..., 1] * tr + tmin
             rain_pred = np.clip(np.nan_to_num(rain_pred, nan=0.0), 0.0, 12000.0)
-            temp_pred = np.clip(np.nan_to_num(temp_pred, nan=float(np.nanmean(temp_data[-1]))), 5.0, 55.0)
+            temp_pred = np.clip(np.nan_to_num(temp_pred, nan=_cached_last_year_temp_mean(active_region(), N_YEARS)), 5.0, 55.0)
             
             results[END_YEAR + 1 + s] = (rain_pred, temp_pred)
             
         return results
     except Exception as e:
         # Fallback
-        r_trend = np.nanmean(rain_data[-5:] - rain_data[-10:-5], axis=0) / 5
-        t_trend = np.nanmean(temp_data[-5:] - temp_data[-10:-5], axis=0) / 5
+        r_trend, t_trend = _cached_5yr_trend(active_region(), N_YEARS)
         for s in range(steps):
             results[END_YEAR + 1 + s] = (rain_data[-1] + r_trend * (s+1), temp_data[-1] + t_trend * (s+1))
         return results
@@ -987,8 +1267,8 @@ def build_animation_grids(target_year, month_idx):
     if pred_rain_ann is None:
         raise ValueError(f"Failed to build future prediction for year={target_year}")
 
-    annual_rain_clim = np.nanmean(rain_data[-10:], axis=0)
-    annual_temp_clim = np.nanmean(temp_data[-10:], axis=0)
+    annual_rain_clim = _cached_epoch_clim_rain(active_region(), N_YEARS)
+    annual_temp_clim = _cached_epoch_clim_temp(active_region(), N_YEARS)
     pred_rain_ann = np.nan_to_num(pred_rain_ann, nan=0.0, posinf=0.0, neginf=0.0)
     pred_temp_ann = np.nan_to_num(pred_temp_ann, nan=float(np.nanmean(annual_temp_clim)))
 
@@ -1698,8 +1978,11 @@ def _render_tab1():
 
     c1, c2, c3 = st.columns(3)
     with c1:
-        yr_list = list(range(START_YEAR, FUTURE_END + 1))
-        yr_idx = yr_list.index(2026) if 2026 in yr_list else min(N_YEARS - 1, len(yr_list) - 1)
+        # Explorer caps the year picker at 2028 — beyond that the
+        # ensemble prediction band widens too much to be informative
+        # for a day-wise view.
+        yr_list = list(range(START_YEAR, 2029))
+        yr_idx = yr_list.index(2026) if 2026 in yr_list else len(yr_list) - 1
         yr = st.selectbox("Year", yr_list, index=yr_idx, key='d_yr')
     with c2:
         sel_month = st.selectbox("Month", MONTHS, index=5, key='d_mon')
@@ -1755,49 +2038,21 @@ def _render_tab1():
             return focus_india_figure("cauvery", field, kind, title, unit, vmin, vmax)
         return plotly_vis.plot_map(field, title, scale_key, custom_range=crange)
     if not is_future:
-        # ── Historical ──
+        # ── Historical (fully cached — rain + temp grids ────────
         with col_r:
-            arr = get_nc_year_data(yr, _region)
-            if arr is not None:
-                n_t = int(arr.shape[0])
-                d_idx = doy - 1
-                if d_idx >= n_t:
-                    clim_r = get_day_rain_climatology(doy)
-                    last_r = np.maximum(np.nan_to_num(arr[-1], nan=0.0, posinf=0.0, neginf=0.0), 0.0)
-                    rg = np.where(
-                        mask == 1,
-                        0.55 * np.nan_to_num(clim_r, nan=0.0) + 0.45 * last_r,
-                        np.nan,
-                    )
-                else:
-                    rg = np.maximum(arr[d_idx], 0.0)
-                    rg = np.where(mask == 1, rg, np.nan)
-                    land_ok = np.isfinite(rg) & (mask == 1)
-                    frac = float(np.mean(land_ok)) if np.any(mask == 1) else 0.0
-                    if frac < 0.82:
-                        clim_r = get_day_rain_climatology(doy)
-                        rg = np.where(
-                            land_ok,
-                            0.72 * rg + 0.28 * np.nan_to_num(clim_r, nan=0.0),
-                            np.where(mask == 1, np.nan_to_num(clim_r, nan=0.0), np.nan),
-                        )
-                rain_vmax = float(np.nanpercentile(np.where(mask == 1, rg, np.nan), 99))
+            rg, rain_vmax = _cached_explorer_rain_grid(_region, int(yr), int(doy), N_YEARS)
+            if rg is not None:
                 st.plotly_chart(
                     _emit_map(rg, "rain", f"Daily Rainfall — {date_label}", "mm",
-                              0.0, max(12.0, rain_vmax), "rain_daily",
-                              [0, max(12.0, rain_vmax)]),
+                              0.0, rain_vmax, "rain_daily",
+                              [0, rain_vmax]),
                     use_container_width=True,
                 )
             else:
                 st.warning(f"Rainfall file for {yr} not found.")
         with col_t:
-            tg = _cached_load_temp(yr, doy - 1, _region)
+            tg, t_min, t_max = _cached_explorer_temp_grid(_region, int(yr), int(doy), N_YEARS)
             if tg is not None:
-                tvals = np.where(mask == 1, tg, np.nan)
-                t_lo = float(np.nanpercentile(tvals, 5))
-                t_hi = float(np.nanpercentile(tvals, 95))
-                t_min = max(8.0, t_lo - 1.0)
-                t_max = min(52.0, max(t_min + 6.0, t_hi + 1.0))
                 st.plotly_chart(
                     _emit_map(tg, "temp", f"Daily Max Temp — {date_label}", "°C",
                               t_min, t_max, "temp_daily", [t_min, t_max]),
@@ -1811,8 +2066,8 @@ def _render_tab1():
 
         if pred_rain_ann is not None:
             # Stable daily disaggregation from trained annual ensemble output.
-            annual_rain_clim = np.nanmean(rain_data[-10:], axis=0)
-            annual_temp_clim = np.nanmean(temp_data[-10:], axis=0)
+            annual_rain_clim = _cached_epoch_clim_rain(active_region(), N_YEARS)
+            annual_temp_clim = _cached_epoch_clim_temp(active_region(), N_YEARS)
 
             pred_rain_ann = np.nan_to_num(pred_rain_ann, nan=0.0, posinf=0.0, neginf=0.0)
             pred_temp_ann = np.nan_to_num(pred_temp_ann, nan=float(np.nanmean(annual_temp_clim)))
@@ -1906,9 +2161,9 @@ def _render_tab1():
     st.caption("Matplotlib day-by-day animation. Pick a single month or the whole year; "
                "Rainfall or Temperature; the map is masked to the active region.")
 
-    # List of years to search for 2026. If not present, fallback to max.
-    yr_list = list(range(START_YEAR, FUTURE_END + 1))
-    yr_idx = yr_list.index(2026) if 2026 in yr_list else min(N_YEARS - 1, len(yr_list) - 1)
+    # Animation year matches the Explorer's Year picker cap (2028).
+    yr_list = list(range(START_YEAR, 2029))
+    yr_idx = yr_list.index(2026) if 2026 in yr_list else len(yr_list) - 1
 
     a_year = st.selectbox(
         "Animation Year",
@@ -1969,8 +2224,8 @@ def _render_tab2():
         )
 
     # National averages time series
-    avg_r = [float(np.nanmean(np.where(mask == 1, rain_data[i], np.nan))) for i in range(N_YEARS)]
-    avg_t = [float(np.nanmean(np.where(mask == 1, temp_data[i], np.nan))) for i in range(N_YEARS)]
+    avg_r = _cached_per_year_rain_series(active_region(), N_YEARS)
+    avg_t = _cached_per_year_temp_series(active_region(), N_YEARS)
     yrs = list(range(START_YEAR, END_YEAR + 1))
 
     fig_ts, (ax1, ax2) = plt.subplots(1, 2, figsize=(14, 4))
@@ -1984,7 +2239,7 @@ def _render_tab2():
 
 
 # ══════════════════════════════════════════════════════════════════════════════
-# TAB 3: ±1°C What-If Storyline
+# TAB 3: What-If Storyline (temperature-change scenario)
 # ══════════════════════════════════════════════════════════════════════════════
 @st.fragment
 def _render_tab3():
@@ -1992,36 +2247,43 @@ def _render_tab3():
     st.markdown("PAST / PRESENT / FUTURE comparison")
 
     if sens_map is not None:
-        delta_t = st.slider("Temperature Change (°C)", -2.0, 3.0, 1.0, 0.1, key='wif')
+        delta_t = st.slider(
+            "Temperature Change (°C)", -2.0, 3.0, 1.0, 0.1, key="wif",
+        )
 
-        past_rain = np.nanmean(rain_data[:16], axis=0)
-        present_rain = np.nanmean(rain_data[-15:], axis=0)
-        future_rain = present_rain + sens_map * delta_t
+        past_rain, present_rain = _cached_past_present_rain(active_region(), N_YEARS)
+        # Cache the future grid + shared vmax keyed on the slider tick
+        # (integer key: 0.1 °C step → int(delta_t * 10)).
+        _wif = _cached_whatif_future(
+            active_region(), int(round(delta_t * 10)), N_YEARS,
+        )
+        future_rain = _wif["future_rain"]
+        rain_vmax = _wif["rain_vmax"]
 
         st.subheader(f"Rainfall Under {delta_t:+.1f}°C Scenario")
-        land_stack = np.where(mask == 1, np.stack([past_rain, present_rain, future_rain]), np.nan)
-        p99 = float(np.nanpercentile(land_stack, 99)) if np.any(np.isfinite(land_stack)) else 1500.0
-        rain_vmax = max(400.0, min(3000.0, p99 * 1.05))
 
         c1, c2, c3 = st.columns(3)
         with c1:
             st.plotly_chart(
                 plotly_vis.plot_map(
-                    past_rain, "PAST (1975–1990)", "rain_annual", custom_range=[0.0, rain_vmax]
+                    past_rain, "PAST (1975–1990)", "rain_annual",
+                    custom_range=[0.0, rain_vmax],
                 ),
                 use_container_width=True,
             )
         with c2:
             st.plotly_chart(
                 plotly_vis.plot_map(
-                    present_rain, "PRESENT (2010–2024)", "rain_annual", custom_range=[0.0, rain_vmax]
+                    present_rain, "PRESENT (2010–2024)", "rain_annual",
+                    custom_range=[0.0, rain_vmax],
                 ),
                 use_container_width=True,
             )
         with c3:
             st.plotly_chart(
                 plotly_vis.plot_map(
-                    future_rain, f"FUTURE ({delta_t:+.1f}°C)", "rain_annual", custom_range=[0.0, rain_vmax]
+                    future_rain, f"FUTURE ({delta_t:+.1f}°C)", "rain_annual",
+                    custom_range=[0.0, rain_vmax],
                 ),
                 use_container_width=True,
             )
@@ -2029,13 +2291,18 @@ def _render_tab3():
         st.markdown("---")
         st.subheader("Sensitivity Map")
         st.plotly_chart(
-            plotly_sensitivity_map(sens_map, "Rainfall Sensitivity (mm per +1°C)"),
+            plotly_sensitivity_map(
+                sens_map, "Rainfall Sensitivity (mm per +1°C)",
+            ),
             use_container_width=True,
         )
-        st.info("🔴 Red = rainfall decreases with warming. 🔵 Blue = rainfall increases.")
+        st.info(
+            "🔴 Red = rainfall decreases with warming. "
+            "🔵 Blue = rainfall increases."
+        )
     else:
         st.warning("Sensitivity map not found. Run the Colab notebook.")
-    plt.close('all')
+    plt.close("all")
 
 # ══════════════════════════════════════════════════════════════════════════════
 # TAB 4: Model Comparison
@@ -2105,8 +2372,8 @@ def _render_tab5():
     st.markdown("---")
     st.subheader("50-Year National Trend")
     yrs = list(range(START_YEAR, END_YEAR + 1))
-    avg_r = [float(np.nanmean(np.where(mask == 1, rain_data[i], np.nan))) for i in range(N_YEARS)]
-    avg_t = [float(np.nanmean(np.where(mask == 1, temp_data[i], np.nan))) for i in range(N_YEARS)]
+    avg_r = _cached_per_year_rain_series(active_region(), N_YEARS)
+    avg_t = _cached_per_year_temp_series(active_region(), N_YEARS)
 
     fig_ts, (ax1, ax2) = plt.subplots(1, 2, figsize=(14, 4))
     ax1.plot(yrs, avg_r, 'b-o', markersize=3); ax1.set_title("National Rainfall Trend"); ax1.set_ylabel("mm"); ax1.grid(alpha=0.3)
@@ -4554,46 +4821,43 @@ def _diurnal_from_daily(tmax: float, tmin: float, hours: int = 24) -> list[float
 
 
 def _render_tab_home():
-    """A weather-app-style landing page driven by the india.nc cube."""
+    """A weather-app-style landing page driven by the india.nc cube.
+
+    Uses today's real calendar date. The cube ends at the last archived
+    year (currently 2025), so we look up the same day-of-year inside
+    the most recent available year — clamped to the last available day
+    if today is past the cube's end. The hero shows today's date on
+    the label; the data source annotation makes the pick explicit."""
     import datetime as _dt
 
     region = active_region()
-    info = DS.region_info(region, sig=DS.manifest_sig())
 
-    # ── Location + latest cube day ────────────────────────────
-    ds = DS.load_region(region)
-    times = pd.to_datetime(ds["time"].values)
-    latest_idx = int(len(times) - 1)
-    latest_date = times[latest_idx].date()
+    # Today's calendar day (system clock — IST because Streamlit runs
+    # on the user's machine in India).
+    today = _dt.date.today()
+    today_doy = today.timetuple().tm_yday
 
-    # National mean over land cells (no per-city gauge in the cube yet)
-    mask_land = ds["mask"].values > 0
-    rain_grid = ds["rain"].isel(time=latest_idx).values
-    tmax_grid = ds["tmax"].isel(time=latest_idx).values
-    tmin_grid = ds["tmin"].isel(time=latest_idx).values
+    # Data comes from the same DOY inside the most-recent available year.
+    _region_years = DS.region_info(region, sig=DS.manifest_sig())["all_years"]
+    cube_end_year = int(max(_region_years)) if _region_years else today.year
+    data_year = min(today.year, cube_end_year)
 
-    def _mean(a):
-        v = a[mask_land & np.isfinite(a)]
-        return float(v.mean()) if v.size else float("nan")
-    rain_now = _mean(rain_grid)
-    tmax_now = _mean(tmax_grid)
-    tmin_now = _mean(tmin_grid)
+    # Cache key includes today's date so a new day recomputes; the
+    # cache size stays at ~1 entry per region.
+    day_key = today.isoformat()
+    hero = _cached_home_hero(region, day_key, data_year, today_doy)
 
-    # Feels-like heuristic (heat index approx for temp + humidity proxy).
-    # Cube has no humidity — use rain-proxy: wet day → +1.5 °C perceived.
-    feels_like = tmax_now + (1.5 if rain_now > 0.5 else 0.0)
-    cond_label, cond_emoji = _weather_condition(rain_now, tmax_now)
-
-    # Precipitation "chance" — from area fraction of finite land cells with rain>0
-    finite_land = np.isfinite(rain_grid) & mask_land
-    if finite_land.any():
-        precip_pct = int(100 * (rain_grid[finite_land] > 0.1).mean())
-    else:
-        precip_pct = 0
+    rain_now = hero["rain_now"]
+    tmax_now = hero["tmax_now"]
+    tmin_now = hero["tmin_now"]
+    precip_pct = hero["precip_pct"]
+    finite_land_count = hero["wet_cells"]
+    actual_date_iso = hero["actual_date"]
 
     # ── Hero card ─────────────────────────────────────────────
     label = DS.REGIONS[region]["label"]
-    stamp = latest_date.strftime("%A, %d %B %Y")
+    stamp = today.strftime("%A, %d %B %Y")
+    _now_ist = _dt.datetime.now().strftime("%H:%M")
     hero_left, hero_right = st.columns([1.2, 1], gap="large")
     with hero_left:
         st.markdown(
@@ -4604,19 +4868,18 @@ def _render_tab_home():
                     📍 <b>{label}</b>
                 </div>
                 <div style="color:rgba(229,233,240,0.55);font-size:0.85em;margin-top:2px;">
-                    {stamp} · {_dt.datetime.now().strftime('%H:%M')} IST
+                    {stamp} · {_now_ist} IST
+                </div>
+                <div style="color:rgba(229,233,240,0.4);font-size:0.72em;margin-top:2px;letter-spacing:0.3px;">
+                    Data · same day-of-year in {actual_date_iso}
                 </div>
                 <div style="display:flex;align-items:center;gap:16px;margin-top:16px;">
                     <div style="font-size:4.5em;font-weight:700;color:#F0F3F8;line-height:1;">
                         {tmax_now:.0f}°<span style="font-size:0.5em;color:rgba(229,233,240,0.55);">C</span>
                     </div>
-                    <div style="font-size:3em;line-height:1;">{cond_emoji}</div>
                 </div>
-                <div style="font-size:1.4em;font-weight:600;color:#F0F3F8;margin-top:6px;">
-                    {cond_label}
-                </div>
-                <div style="color:rgba(229,233,240,0.6);font-size:0.9em;">
-                    Feels like {feels_like:.0f}°C · Rain {rain_now:.1f} mm today
+                <div style="color:rgba(229,233,240,0.6);font-size:0.95em;margin-top:10px;">
+                    Rain {rain_now:.1f} mm today
                 </div>
                 <div style="display:flex;gap:10px;margin-top:16px;">
                     <div style="background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.08);
@@ -4653,12 +4916,11 @@ def _render_tab_home():
             unsafe_allow_html=True,
         )
 
-    # ── Quick stats row (Precipitation / Humidity-proxy / Wind-placeholder) ──
+    # ── Quick stats row: precipitation coverage + rain magnitude + Δ T ──
     st.markdown("")
     stat_cols = st.columns(4)
     stat_cols[0].metric("Precipitation chance", f"{precip_pct}%")
-    stat_cols[1].metric("Cells wet today",
-                         f"{int((rain_grid[finite_land] > 0.1).sum()):,}")
+    stat_cols[1].metric("Cells wet today", f"{finite_land_count:,}")
     stat_cols[2].metric("Rain (mean, land)", f"{rain_now:.1f} mm/day")
     stat_cols[3].metric("Δ tmax vs tmin", f"{(tmax_now - tmin_now):.1f} °C")
 
@@ -4713,27 +4975,18 @@ def _render_tab_home():
             unsafe_allow_html=True,
         )
 
-    # ── 7-day forecast (from the cube tail) ──────────────────────
+    # ── 7-day outlook (cached; last 7 days of the cube) ─────────
     st.markdown("### 7-day outlook  <span style='color:#6b7280;font-weight:400;font-size:0.7em;'>"
                  "last 7 days of the cube · national land mean</span>",
                  unsafe_allow_html=True)
-    n_days = 7
-    tail_start = max(0, latest_idx - n_days + 1)
-    tail_idx = np.arange(tail_start, latest_idx + 1)
-    tail_rain = ds["rain"].isel(time=tail_idx).values
-    tail_tmax = ds["tmax"].isel(time=tail_idx).values
-    tail_tmin = ds["tmin"].isel(time=tail_idx).values
-    tail_times = pd.to_datetime(ds["time"].isel(time=tail_idx).values)
-    ds.close()
-
-    day_cols = st.columns(len(tail_idx))
+    tail = _cached_home_7day_tail(region, day_key)
+    day_cols = st.columns(len(tail))
     for i, col in enumerate(day_cols):
-        r = _mean(tail_rain[i])
-        tmx = _mean(tail_tmax[i])
-        tmn = _mean(tail_tmin[i])
+        row = tail[i]
+        r = row["rain"]
+        tmx = row["tmax"]
+        tmn = row["tmin"]
         lab, emoji = _weather_condition(r, tmx)
-        dow = tail_times[i].strftime("%a")
-        date_short = tail_times[i].strftime("%d %b")
         with col:
             st.markdown(
                 f"""
@@ -4741,8 +4994,8 @@ def _render_tab_home():
                             border:1px solid rgba(255,255,255,0.08);
                             border-radius:14px;padding:12px 10px;text-align:center;
                             min-height:180px;">
-                    <div style="color:#F0F3F8;font-weight:700;">{dow}</div>
-                    <div style="color:rgba(229,233,240,0.5);font-size:0.75em;">{date_short}</div>
+                    <div style="color:#F0F3F8;font-weight:700;">{row['dow']}</div>
+                    <div style="color:rgba(229,233,240,0.5);font-size:0.75em;">{row['date_short']}</div>
                     <div style="font-size:2em;margin:8px 0;">{emoji}</div>
                     <div style="color:#F4A34A;font-weight:700;font-size:1.1em;">{tmx:.0f}°</div>
                     <div style="color:#8AB4F8;font-size:0.85em;">{tmn:.0f}°</div>
@@ -4756,10 +5009,11 @@ def _render_tab_home():
             )
 
     st.markdown("")
+    _cube_span = DS.region_info(region, sig=DS.manifest_sig())["years"]
     st.caption(
         f"Data source: `data/processed/{region}.nc` "
         f"(manifest sig `{DS.manifest_sig()}`) · "
-        f"cube covers {info['years'][0]}–{info['years'][1]}. "
+        f"cube covers {_cube_span[0]}–{_cube_span[1]}. "
         f"Hourly values are a **display reconstruction** from daily "
         f"tmax/tmin; the underlying dataset is daily-only."
     )
@@ -4795,13 +5049,12 @@ def _render_tab_explorer():
 _TAB_RENDERERS = {
     _TAB_LABELS[0]: _render_tab_home,           # 🏠 Home (weather-app landing)
     _TAB_LABELS[1]: _render_tab_explorer,       # 🌐 Explorer (merged)
-    _TAB_LABELS[2]: _render_tab4,               # Model Comparison
-    _TAB_LABELS[3]: _render_tab5,               # Zone Projections
-    _TAB_LABELS[4]: _render_tab7,               # Climate Spirals
-    _TAB_LABELS[5]: _render_tab8,               # Deep Analytics
-    _TAB_LABELS[6]: _render_tab9,               # 🔥 Training
-    _TAB_LABELS[7]: _render_tab_validation,     # 🔍 Validation
-    _TAB_LABELS[8]: _render_tab10,              # 🤖 RL Agent
+    _TAB_LABELS[2]: _render_tab3,               # ❓ What If (Storyline)
+    _TAB_LABELS[3]: _render_tab7,               # Climate Spirals
+    _TAB_LABELS[4]: _render_tab8,               # Deep Analytics
+    _TAB_LABELS[5]: _render_tab9,               # 🔥 Training
+    _TAB_LABELS[6]: _render_tab_validation,     # 🔍 Validation
+    _TAB_LABELS[7]: _render_tab10,              # 🤖 RL Agent
 }
 _TAB_RENDERERS.get(_active_tab, _render_tab_home)()
 

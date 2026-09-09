@@ -50,3 +50,19 @@ desktop.ini
 # Temporary editor files and uninitialized folders
 pretained/
 *.tmp*
+
+# Test & Diagnostics Cache
+.pytest_cache/
+.coverage
+htmlcov/
+
+# Local IDE & agent workspaces
+.zcode/
+
+# What-If runtime caches and scenario outputs
+.whatif_cache/
+.whatif_runs/
+.whatif_scenarios/
+climate_twin/.whatif_cache/
+climate_twin/.whatif_runs/
+climate_twin/.whatif_scenarios/
