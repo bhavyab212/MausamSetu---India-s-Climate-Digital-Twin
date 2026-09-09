@@ -24,6 +24,15 @@
 
 ---
 
+<br />
+
+<div align="center">
+  <img src="outputs/phase4-final-gallery/screen-overview.png" alt="MausamSetu Operations Command Center" width="100%" />
+  <p><sub><strong>Figure 1:</strong> MausamSetu Operations Command Center — Real-time climate monitoring, hydrological KPIs, and spatial intelligence across Indian river basins.</sub></p>
+</div>
+
+<br />
+
 </div>
 
 ## Table of Contents
@@ -314,6 +323,12 @@ India is partitioned into **14 Homogenous Agro-Climatic Zones** based on terrain
 
 </div>
 
+<div align="center">
+  <br />
+  <img src="climate_twin/regions/qc/zones_hard.png" alt="14 Agro-Climatic Zones of India" width="80%" />
+  <p><sub><strong>Figure 2:</strong> India's 14 Homogenous Agro-Climatic Zones used for localized physics bounding, regional normalization, and spatial cross-validation.</sub></p>
+</div>
+
 #### Leave-One-Zone-Out (LOZO) Generalization
 To rigorously evaluate spatial transferability, the models are evaluated under strict LOZO experiments (`climate_twin/train/phase5_holdout_runner.py`):
 - **Holdout Thar Desert:** Tests model stability under extreme hyper-arid zero-rain conditions.
@@ -431,10 +446,20 @@ The primary user-facing digital twin is an ultra-fast, modern glassmorphic appli
 - **Multi-Decadal Time Travel:** Select any day from **1 January 1951 through 31 December 2025** to observe historical weather patterns.
 - **Spatial Sub-basin Overlays:** Toggle Central Water Commission (CWC) river sub-basin boundaries and administrative state lines.
 
+<div align="center">
+  <img src="outputs/phase4-final-gallery/screen-map.png" alt="High-Resolution Map View" width="100%" />
+  <p><sub><strong>Figure 3:</strong> High-Resolution Basin Map View with interactive hydrological sub-basin boundaries, reservoir layers, and gridded rainfall.</sub></p>
+</div>
+
 ### ❓ What-If Tab
 - **Scenario Lever:** Interactive temperature perturbation slider from **$-2.0^\circ\text{C}$ to $+3.0^\circ\text{C}$**.
 - **Three-Epoch Comparison:** Side-by-side synchronized spatial maps comparing **PAST (1975–1990 Climatology)** vs **PRESENT (2010–2024 Climatology)** vs **FUTURE (Perturbed Scenario)**.
 - **Regression Sensitivity Map:** Displays localized empirical rainfall sensitivity in $\text{mm}$ of rainfall per $+1^\circ\text{C}$ temperature rise derived from 75 years of linear trend regression across all grid cells.
+
+<div align="center">
+  <img src="outputs/phase4-final-gallery/screen-scenarios.png" alt="What-If Scenario Studio" width="100%" />
+  <p><sub><strong>Figure 4:</strong> What-If Scenario Studio — Perturbation levers, historical analog matching, and agricultural yield sensitivity analysis.</sub></p>
+</div>
 
 ### 🌀 Climate Spirals
 - **3D Polar Warming Visualization:** Inspired by Ed Hawkins' climate spirals, this module plots monthly national temperature anomalies radiating outward year-by-year from 1951 to 2025.
@@ -452,6 +477,30 @@ The primary user-facing digital twin is an ultra-fast, modern glassmorphic appli
 ### 🔍 Validation Dashboard
 - **Spatial Error Maps:** Pixel-level Root Mean Squared Error (RMSE) and Mean Absolute Error (MAE) evaluated across the 2020–2025 test split.
 - **Baseline Comparisons:** Rigorous quantitative benchmarks proving the AI model outperforms both **Persistence** ($t-1$ holding) and **30-Year Climatology** baselines.
+
+<div align="center">
+  <img src="outputs/phase4-final-gallery/screen-forecast.png" alt="ConvLSTM Probabilistic Forecast Ribbon" width="100%" />
+  <p><sub><strong>Figure 5:</strong> ConvLSTM multi-day probabilistic forecast ribbon with calibrated confidence intervals (p10, p50, p90) and EnKF state correction.</sub></p>
+</div>
+
+<div align="center">
+  <table border="0">
+    <tr>
+      <td width="50%">
+        <img src="outputs/phase4-final-gallery/screen-sectors.png" alt="Sector Impacts" width="100%" />
+      </td>
+      <td width="50%">
+        <img src="outputs/phase4-final-gallery/screen-validation.png" alt="Model Validation" width="100%" />
+      </td>
+    </tr>
+  </table>
+  <p><sub><strong>Figure 6:</strong> Left: Sector impact chain (FAO-56/33 agriculture, hydrology, rupee loss). Right: Spatial RMSE/MAE validation against IMD ground truth.</sub></p>
+</div>
+
+<div align="center">
+  <img src="outputs/phase4-final-gallery/screen-alerts.png" alt="Early Warning Alerts" width="100%" />
+  <p><sub><strong>Figure 7:</strong> Climate Hazard Early Warning System — Automated threshold monitoring and compound risk alerts.</sub></p>
+</div>
 
 ### 🤖 RL Agent Studio
 - **Interactive Reservoir Simulator:** Simulate weekly reservoir releases under user-selected climate scenarios (Normal, Severe Drought, Extreme Flood).
@@ -653,11 +702,10 @@ MausamSetu is built strictly upon validated scientific literature and institutio
 
 ---
 
-## 10. Team & License
+## 10. Creator & License
 
 ### Team MausamSetu
-- **Project Lead & Architecture:** Bhavya Chaudhary ([@bhavyab212](https://github.com/bhavyab212))
-- **Core Contributor:** Lakshya Munjal ([@Munjallaksh](https://github.com/Munjallaksh))
+- **Creator & Lead Architect:** Bhavya Chaudhary ([@bhavyab212](https://github.com/bhavyab212))
 
 ### Open-Source License
 This project is open-sourced under the **Apache 2.0 License**. See `LICENSE` for details.
